@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sign Up | Epic Mail</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">  
+    <link rel="stylesheet" href="../css/stylesheet.css">
+  </head>
+  <body> 
+    <header>
+      <nav class="nav-container" id="page-nav"> 
+        <div class="brand-icon">  
+          <p class="logo">EPIC logo</p>
+          <i id="nav-icon" class="fa fa-bars"></i>
+        </div>
+        
+        <div class="navbar" id="navigation" data-page="nav">
+          <a href="../index.html">Home</a>
+          <a href="sign-up.html">Sign Up</a>
+          <a href="sign-in.html">Sign In</a>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container">
+      
+      <form id="login-form">
+        <div>
+          <h3> Create Account</h3>
+          <p id="form-error"></p>
+
+          <p class="label">First name</p>
+          <input type="text" id="first-name" required placeholder="First name">
+
+          <p class="label">Last name</p>
+          <input type="text" id="second-name" required placeholder="Last name">
+
+          <p class="label">Email</p>
+          <input type="text" id="email" required placeholder="Enter email">
+
+          <p class="label">Password</p>
+          <input type="password" id="password" required placeholder="Enter password">
+
+
+          <p class="label">Confirm Password</p>
+          <input type="password" id="confirm-password" required placeholder="Re-enter password">
+
+          <p class="label">Upload Image</p>
+          <img  width="150px" id="image-preview">
+          <input id="image-upload" type="file" accept="image/*" >
+
+          <button type="submit" id="submit-login">Submit</button>
+        </div>
+      </form>
+    </div> 
+
+    <footer>    
+      <div class="" id="footer">
+        <p>&copy; 2019, <strong>EPIC MAIL</strong> <br>
+        All trademarks and registered trademarks appearing on 
+        this site are the property of their respective owners.</p>      
+      </div>
+    </footer>
+
+
+    <script src="../js/nav.js"> </script>
+    <script src="../js/sign-up.js"> </script>
+  </body>
+</html>
