@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create Group | Epic Mail</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">    
+    <link rel="stylesheet" href="../css/stylesheet.css">
+  </head>
+  <body> 
+    <header>
+      <nav class="nav-container" id="page-nav"> 
+        <div class="brand-icon">  
+          <p class="logo">EPIC logo</p>
+          <i id="nav-icon" class="fa fa-bars"></i>
+        </div>
+        
+        <div class="navbar" id="navigation" data-page="nav">
+          <a href="view-inbox.html">Inbox</a>
+          <a href="create-message.html">Create Message</a>
+          <a href="create-group.html">Create Group</a>          
+        </div>
+      </nav>
+    </header>
+
+    <div class="container">
+      <form id="create-group-form">
+        <h3 class="">Create New Group</h3>
+        <div>
+          <p id="send-message-form-error"></p>
+          <p class="label">Name </p>
+          <input type="text" id="group-name" required placeholder="Group Name">
+
+          <p class="label">Description </p>
+          <input type="text" id="group-description" required placeholder="Group Description">
+
+          <p class="label">Add Group Members</p>
+          <div class="member-list-wrapper">
+            <p><input type="checkbox" value="" >User One </p>
+            <p><input type="checkbox" value="" >User Two </p>
+            <p><input type="checkbox" value="" >User Three </p>
+            <p><input type="checkbox" value="" >User Four </p>            
+            <p><input type="checkbox" value="" >User Five </p>
+            <p><input type="checkbox" value="" >User Six </p>
+          </div>
+
+          <button type="submit" id="send-message">Create Group</button>
+        </div>
+      </form>
+    </div>
+
+
+    <footer>    
+      <div class="" id="footer">
+        <p>&copy; 2019, <strong>EPIC MAIL</strong>
+        <br>
+        All trademarks and registered trademarks appearing on 
+        this site are the property of their respective owners.</p>      
+      </div>
+    </footer>
+
+    <script src="../js/nav.js"> </script>
+  </body>
+</html>
