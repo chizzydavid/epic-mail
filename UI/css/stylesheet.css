@@ -288,3 +288,21 @@ button[type="submit"] {
 
 
 
+
+
+
+/*CREATE GROUP */
+.member-list-wrapper {
+  height: 200px;
+  overflow-y: scroll;
+  border-radius: 2px;
+}
+
+#create-group-form input[type="checkbox"] {
+  width: 20px;
+}
+
+
+
+
+
