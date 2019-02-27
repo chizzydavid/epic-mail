@@ -289,6 +289,154 @@ button[type="submit"] {
 
 
 
+/* VIEW INBOX */
+#loader {
+  padding: 0px auto;
+}
+.msg-header {
+  text-align: center;
+  padding: 1em 0;
+  margin-top: 90px;
+}
+.main-container {
+  display: flex;
+  flex-direction: row;
+  padding: 0 10em;
+  line-height: 1.5em;
+}
+
+.messages-nav {
+  flex: 1;
+  min-width: 270px;
+  margin:0 50px 30px 0;
+}
+.messages-nav ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;  
+}
+.messages-nav li {
+  list-style: none;
+  border-bottom: solid #666 2px;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+}
+.messages-nav li.active {
+  color: #57c1a5;
+  border-bottom: solid #57c1a5 2px;
+}
+.messages-nav ul .fa {
+  padding: 0 10px;
+}
+.message-wrapper {
+  flex: 3;
+}
+.hide {
+  display: none;
+}
+
+.message {
+  padding: 20px;
+  width: 100%;
+  margin-bottom: 10px; 
+  color: #666;
+  border-radius: 3px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+ }
+.message h3, h4 {
+  margin: 5px 0;
+}
+.message h4 {
+  margin-top: 0px;
+  cursor: pointer;
+}
+.message-excerpt {
+  margin: 0;
+}
+.msg-details {
+  display: flex;
+  font-size: 12px;
+  flex-direction: row;
+}
+.msg-details p {
+  width: 49%;
+  margin: 0;
+}
+
+.msg-buttons {
+  width: 49%;
+  font-size: 22px;
+  color: #e74c3c;
+  margin:0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items:center;
+}
+.msg-buttons i {
+  text-align: center;
+  cursor: pointer;
+  padding:0 5px;
+  margin-right:10px;
+}
+.msg-buttons i:hover {
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 1000px) {
+  .main-container {
+    padding: 0 2em;
+  }
+}
+
+
+
+@media screen and (max-width: 760px) {
+  .main-container {
+    flex-direction: column;
+  }
+  .messages {
+    padding: 20px 0;
+  }
+  .messages-nav {
+    width: 100%;
+  }
+  .messages-nav ul {
+    flex-direction: row;
+  }
+  .messages-nav li {
+    padding-left: 0px;
+  }
+  .messages-nav ul .fa {
+    padding-left: 0px;
+  }
+
+
+
+
+}
+
+@media screen and (max-width: 500px) {
+  .main-container {
+    padding: 0 1.5em;
+  }
+  .messages-nav li {
+    padding:10px 0;
+  }
+}
+
+
+
+
+
+
+
+
+
 
 
 /*CREATE GROUP */
