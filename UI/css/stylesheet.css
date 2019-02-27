@@ -3,15 +3,16 @@ body {
   padding: 0;
   margin: 0px;
   color: #666;
+  line-height: 1.5em;
   font-size: 14px;
   font-family: Arial, sans-serif;
 }
-h3 {
-  font-size: 1.5em;
-  color: #555;
-}
 * {
   box-sizing: border-box;
+}
+h3 {
+  font-size: 1.5em;
+  color: #777;
 }
 header {
   font-size: 17px;
@@ -25,14 +26,13 @@ header {
   height: 70px;
   width: 100%;
 }
-
 #nav-icon, #nav-icon-home {
   position:absolute;
   top:20px;
   right:20px;
   color: #fff;
   font-size:20px;
-  cursor:pointer;/*light green #279b84 dark #39997f darker 29705d*/
+  cursor:pointer;
 }
 
 .brand-icon {
@@ -75,8 +75,6 @@ div[data-home="nav"] {
 .home-nav a:hover {
   color:#39997f;
 }
-
-
 #background {
   height:100%;
   position:absolute;
@@ -129,10 +127,9 @@ div[data-home="nav"] {
 }
 .sign-link {
   color: #39997f;
-  font-size: 17px;
+  font-size: 15px;
   text-decoration: none;
 }
-
 @media screen and (max-width: 760px) {
   div[data-home="nav"] {
     padding-right: 0;
@@ -141,10 +138,8 @@ div[data-home="nav"] {
     font-size: 23px;
   }
   .highlight {
-    color: #39997f;
     font-size: 32px;
   }
-
   .start-btn {
     padding: 13px 10px;
   }  
@@ -173,7 +168,6 @@ div[data-home="nav"] {
   .open {
     transform: translateX(-30%);
   }
-
   .navbar a {
     display:block;
     text-decoration:none;
@@ -191,7 +185,6 @@ div[data-home="nav"] {
     font-size: 15px;
   }
   .highlight {
-    color: #39997f;
     font-size: 24px;
   }
 }
@@ -199,15 +192,9 @@ div[data-home="nav"] {
 
 
 
-
-
-
-
-
-
 /*SIGN UP/ SIGN IN */
 #page-nav {
-  background:#39997f ;
+  background:#39997f;
   color: #eee;
 }
 div[data-page="nav"] {
@@ -222,7 +209,23 @@ div[data-page="nav"] {
 .label {
   margin-bottom: 5px;
 }
-
+form h3 {
+  margin-bottom: 30px;
+}
+#form-feedback {
+  padding: 15px;
+  display: none;
+}
+#form-feedback.success {
+  display: block;
+  background: #e9f7f1;
+  color: #1c533b;
+}
+#form-feedback.fail {
+  display: block;
+  background: #fce8e8;
+  color: #8a0f0f;
+}
 input {
   width: 100%;
   padding: 10px ;
@@ -231,6 +234,7 @@ input {
 
 button[type="submit"] {
   margin: 40px 0;
+  margin-bottom: 20px;
   width: 100%;
   padding: 14px 0;
   background: #39997f;
@@ -270,15 +274,14 @@ button[type="submit"] {
   button[type="submit"] {
     width: 100%;
   }
-
 }
 
 @media screen and (max-width: 600px) {
-
   .container {
     padding: 10px 30px;
   }
 }
+
 
 
 
