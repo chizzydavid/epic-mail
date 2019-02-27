@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>View Inbox | Epic Mail</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="../css/font-awesome-icons/css/font-awesome.min.css"/>    
+    <link rel="stylesheet" href="../css/stylesheet.css">
+  </head>
+  <body> 
+    <header>
+    	<nav class="nav-container" id="page-nav">	
+  	  	<div class="brand-icon">	
+  		    <p class="logo">EPIC logo</p>
+  		    <i id="nav-icon" class="fa fa-bars"></i>
+  	  	</div>
+  	    
+  		  <div class="navbar" id="navigation" data-page="nav">
+  				<a href="view-inbox.html">Inbox</a>
+  				<a href="create-message.html">Create Message</a>	
+  	    </div>
+    	</nav>
+    </header>
+
+    <h2 class="msg-header">All Messages</h2>
+
+    <div class="main-container"> 
+      <aside class="messages-nav">
+        <ul>  
+          <li id="all" class="active"><i class="fa fa-folder"> </i>All</li>
+          <li id="unread"><i class="fa fa-envelope"> </i>Unread</li>
+          <li id="read"><i class="fa fa-envelope-open"> </i>Read</li>
+          <li id="sent"><i class="fa fa-send"> </i>Sent</li>
+          <li id="draft"><i class="fa fa-edit"> </i>Drafts</li>          
+        </ul>
+      </aside>
+
+      <main class="message-wrapper">
+        <div class="" id="loader">
+          <div class="sk-wave">
+            <div class="sk-rect sk-rect1"></div>
+            <div class="sk-rect sk-rect2"></div>
+            <div class="sk-rect sk-rect3"></div>
+            <div class="sk-rect sk-rect4"></div>
+            <div class="sk-rect sk-rect5"></div>
+          </div>
+        </div>
+
+        <div class="message-container"> 
+        </div>
+      </main>
+    </div>
+
+    <footer>    
+      <div class="" id="footer">
+        <p>&copy; 2019, <strong>EPIC MAIL</strong>
+        <br>
+        All trademarks and registered trademarks appearing on 
+        this site are the property of their respective owners.</p>      
+      </div>
+    </footer>
+
+    <script src="../js/nav.js"></script>
+    <script src="../js/view-inbox.js"></script>
+  </body>
+</html>
