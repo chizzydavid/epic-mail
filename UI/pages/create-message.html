@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create Message | Epic Mail</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">     
+    <link rel="stylesheet" href="../css/stylesheet.css">
+  </head>
+  <body> 
+    <header>
+      <nav class="nav-container" id="page-nav"> 
+        <div class="brand-icon">  
+          <p class="logo">EPIC logo</p>
+          <i id="nav-icon" class="fa fa-bars"></i>
+        </div>
+        
+        <div class="navbar" id="navigation" data-page="nav">
+          <a href="view-inbox.html">Inbox</a>
+          <a href="create-message.html">Create Message</a>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container">        
+      <form id="login-form">
+        <h3 class="">Create New Message</h3>
+        <div>
+          <p id="send-message-form-error"></p>
+
+          <p class="label">To</p>
+          <input type="text" id="msg-recipient" required placeholder="Enter recipient">
+
+          <p class="label">Send To Group</p>  
+          <select id="select-group">
+            <option value="">Select Group</option>
+            <option value=""> Group One Sample</option>
+            <option value=""> Group Two Sample</option>
+            <option value=""> Group Three Sample</option>
+          </select>
+
+          <p class="label">Subject</p>
+          <input type="text" id="msg-subject" required placeholder="Subject">
+
+          <p class="label">Message</p>
+          <textarea class="" id="msg-body" name="message" placeholder="Message" rows="8" cols="30"></textarea>
+
+          <button type="submit" id="send-message">Send Message</button>
+        </div>
+      </form>
+
+    </div>
+
+
+    <footer>    
+      <div class="" id="footer">
+        <p>&copy; 2019, <strong>EPIC MAIL</strong>
+        <br>
+        All trademarks and registered trademarks appearing on 
+        this site are the property of their respective owners.</p>      
+      </div>
+    </footer>
+
+
+    <script src="../js/nav.js"> </script>
+  </body>
+</html>
