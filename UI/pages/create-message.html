@@ -4,7 +4,7 @@
     <title>Create Message | Epic Mail</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">    
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">     
+    <link rel="stylesheet" href="../css/font-awesome-icons/css/font-awesome.min.css"/>    
     <link rel="stylesheet" href="../css/stylesheet.css">
   </head>
   <body> 
@@ -16,8 +16,10 @@
         </div>
         
         <div class="navbar" id="navigation" data-page="nav">
+          <a href="../index.html">Home</a>
           <a href="view-inbox.html">Inbox</a>
           <a href="create-message.html">Create Message</a>
+          <a href="create-group.html">Create Group</a>  
         </div>
       </nav>
     </header>
@@ -44,7 +46,8 @@
 
           <p class="label">Message</p>
           <textarea class="" id="msg-body" name="message" placeholder="Message" rows="8" cols="30"></textarea>
-
+          
+          <button type="submit" id="save-draft">Save as Draft</button>
           <button type="submit" id="send-message">Send Message</button>
         </div>
       </form>
