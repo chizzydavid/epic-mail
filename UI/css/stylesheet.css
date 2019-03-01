@@ -90,10 +90,10 @@ div[data-home="nav"] {
   font-weight: bold;
 }
 div[data-home="nav"] a {
-  color:#555;
+  color:var(--pri-color);
 }
 div[data-home="nav"] a:hover {
-  color:var(--sec-color);
+  font-weight: bold;
 }
 #login-nav {
   background: var(--sec-color);
