@@ -1,6 +1,7 @@
 //Setup Responsive Navigation
-const navIcon = document.querySelector('#nav-icon'),
-		  nav = document.querySelector("#navigation");
+const navIcon = document.querySelector('#nav-icon') ||
+				document.querySelector('#nav-icon-home'),
+	  nav = document.querySelector('.navbar');
 
 function showNavbar() {
 	if (navIcon.classList.contains("fa-bars")) {
