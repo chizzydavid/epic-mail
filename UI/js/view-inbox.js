@@ -152,10 +152,16 @@ function getMessages(category) {
 }
 
 function messageBtnHandler(e) {
-	if (e.target.tagName === 'LI') {
+	let el = e.target;
+	if (el.tagName === 'LI' || el.tagName === 'I') {
 		messageBtns.forEach(btn => btn.classList.remove('active'));
-		e.target.classList.add('active');
-		getMessages(e.target.id);
+		if (el.tagName === 'LI') { 
+			el.classList.add('active');
+			getMessages(el.id)
+		} else {
+			el.parentElement.classList.add('active');
+			getMessages(el.parentElement.id);
+		}
 	}
 	else return;
 }

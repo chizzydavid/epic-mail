@@ -46,13 +46,20 @@ header {
 }
 
 .brand-icon {
-  width: 25%;
+  width: 31%;
+  margin-top: 0px;
 }
 .logo {
-  padding: 5px 20px;
-  color: #333;
-  font-weight: bold;
-  font-style: italic;
+  padding: 0px;
+  margin-top: 0px;
+  z-index: 4;
+  text-align: center;
+
+}
+.logo-img {
+  margin: 0px;
+  padding: 0px;
+  max-width: 240px;
 }
 .navbar {
   padding:0;
@@ -61,7 +68,7 @@ header {
   top:0;
   right:0;
   text-align:right;
-  width:75%;
+  width:68%;
 }
 div[data-home="nav"] {
   padding-right: 8em;
@@ -77,6 +84,7 @@ div[data-home="nav"] {
   letter-spacing: 1px;
   font-size: 13px;
   padding: 23px 15px;
+  text-transform: uppercase;
 }
 .navbar a:hover {
   font-weight: bold;
@@ -134,7 +142,7 @@ div[data-home="nav"] a:hover {
 .start-btn {
   text-decoration: none;
   color: white;
-  font-weight: lighter;
+  font-weight: normal;
   letter-spacing: 2px;
   width: 190px;
   padding: .8em 2em;
@@ -168,11 +176,11 @@ div[data-home="nav"] a:hover {
 }
 .about-text {
   text-align: center;
-  padding: 1em 17em;
+  padding: 0em 17em;
 }
 .about-text h2 {
   font-size: 30px;
-  font-weight: lighter;
+  font-weight: normal;
 }
 .about-row {
   display:flex;
@@ -195,11 +203,22 @@ div[data-home="nav"] a:hover {
 .about-item h3 {
   margin-top: 10px;
   font-size: 20px;
-  font-weight: lighter;
+  font-weight: normal;
 }
 
 
 @media screen and (max-width: 1000px) {
+  div[data-home="nav"] {
+    padding-right: 1em;
+    text-align: left;
+  }
+  .navbar a {
+    padding: 23px 8px;
+    margin: 0;
+  }
+  .logo-img {
+    max-width: 200px;
+  } 
   .banner-header {
     font-size: 50px;
     padding: 0 2em;
@@ -229,13 +248,13 @@ div[data-home="nav"] a:hover {
     box-shadow: 0 8px 6px -6px black;
   }
   div[data-home="nav"] a, #login-nav {
-    color:var(--sec-color);
+    color:var(--pri-color);
     background: #fff;
     padding: 20px;
   }
   div[data-home="nav"] a:hover, #login-nav:hover {
     color:#fff;
-    background: var(--sec-color);
+    background: var(--pri-color);
   }
   div[data-home="nav"] {
     padding-right: 0;
@@ -251,13 +270,25 @@ div[data-home="nav"] a:hover {
     width: 100%;
     padding: 5px 0;
   }
+  .logo {
+    padding: 0px;
+    padding-left: 5%;
+    margin-top: 0px;
+    text-align: left;
+  }
+  .logo-img {
+    max-width: 160px;
+  }  
   #nav-icon-home {
-    color: var(--sec-color);
+    color: var(--pri-color);
     font-size: 25px;
   }
   .nav-container {
     background: #fff;
     height: 60px;
+  }
+  div[data-home="nav"] {
+    text-align: center;
   }
   .navbar {
     margin-top: 60px;
@@ -271,7 +302,6 @@ div[data-home="nav"] a:hover {
   .open {
     transform: translateX(-30%);
   }
-
   .navbar a {
     display:block;
     text-decoration:none;
@@ -283,9 +313,15 @@ div[data-home="nav"] a:hover {
     background: white;
     color: #32669a;
   }
+  #about {
+    font-size: 14px;
+  }
   .about-text {
-    padding: 1em 6em;
-  }    
+    padding: 0em 6em;
+  }
+  .about-text h2 {
+    margin-top: 0px;
+  }  
   .about-row {
     flex-direction: column;
   }
@@ -304,7 +340,7 @@ div[data-home="nav"] a:hover {
   .banner-header {
     margin-top: 50px;
     padding: 0 .5em;
-    font-size: 36px;
+    font-size: 32px;
   }
   .sub-text {
     font-size: 17px;
@@ -315,7 +351,8 @@ div[data-home="nav"] a:hover {
     padding:.7em 0;   
   }
   .about-text {
-    padding: 1em 2.5em;
+    margin-top: 20px;
+    padding: 2em 2.5em;
   }  
   .about-item {
     padding:0px 1.7em;
@@ -330,7 +367,8 @@ div[data-home="nav"] a:hover {
   color: #eee;
 }
 #page-nav .navbar a {
-  font-weight: bold;
+  pfont-weight: bold;
+  text-transform: uppercase;
 }
 div[data-page="nav"] {
   padding-right: 4em;
@@ -349,7 +387,7 @@ form .label {
 form h3 {
   margin-bottom: 30px;
   font-size: 25px;
-  font-weight: lighter;
+  font-weight: normal;
   text-align: center;
 }
 form .label .fa {
@@ -460,7 +498,7 @@ button[type="submit"]:focus {
   text-align: center;
   padding: 1em 0;
   margin: 110px auto 25px auto;
-  font-weight: lighter;
+  font-weight: normal;
   font-size: 30px;
 }
 .main-container {
@@ -486,7 +524,7 @@ button[type="submit"]:focus {
   text-decoration: none;
   padding: 10px;
   width: 100%;
-  color: #777;
+  color: #555;
   cursor: pointer;
 }
 .messages-nav li.active {
@@ -572,17 +610,18 @@ button[type="submit"]:focus {
   }
   .messages-nav {
     width: 100%;
+    margin-top: -20px;
   }
   .messages-nav ul {
     flex-direction: row;
   }
   .messages-nav li {
-    padding-left: 0px;
+    text-align: center;
+    padding-bottom: 3px;
   }
   .messages-nav ul .fa {
-    padding-left: 0px;
+    width: 100%;
   }
-
 }
 
 @media screen and (max-width: 500px) {
@@ -601,13 +640,11 @@ textarea {
   width: 100%;
   padding: 10px;
 }
-
 #select-group {
   padding: 7px 10px;
   width: 60%;
   margin-bottom: 10px;
 }
-
 #save-draft, #send-message {
   display: inline-block;
   width: 48%;
@@ -623,7 +660,6 @@ textarea {
   overflow-y: scroll;
   border-radius: 2px;
 }
-
 #create-group-form input[type="checkbox"] {
   width: 20px;
 }
@@ -671,4 +707,3 @@ textarea {
   20% {
     -webkit-transform: scaleY(1);
             transform: scaleY(1); } }
-
