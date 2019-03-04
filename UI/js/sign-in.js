@@ -4,7 +4,7 @@ const feedback = document.querySelector('#form-feedback'),
 
 //validate form fields when user submits the form
 function validateInput(e) {
-	e.preventDefault();
+	//e.preventDefault();
 
 	if (email.value.trim() === '' || password.value.trim() === '')
 		return displayFeedback('Please enter all form fields.', 'fail');
@@ -20,7 +20,7 @@ const displayFeedback = (message, status) => {
 }
 
 function eventListeners() {
-	document.querySelector('#submit-login').addEventListener('click', validateInput);
+	//document.querySelector('#submit-login').addEventListener('click', validateInput);
 	document.querySelectorAll('#login-form input').forEach(input => {
 		input.addEventListener('focus', () => feedback.className = '');
 	});
