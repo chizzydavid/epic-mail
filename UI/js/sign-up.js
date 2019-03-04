@@ -7,7 +7,7 @@ const feedback = document.querySelector('#form-feedback'),
 		  passwordTwo = document.querySelector('#confirm-password');
 		  
 function validateInput(e) {
-	e.preventDefault();
+	//e.preventDefault();
 	let nameRegx = /^[a-zA-Z]{2,}$/;
 	//check for empty input fields
 	for (let i = 0; i < inputFields.length; i++) {
@@ -47,7 +47,7 @@ function eventListeners() {
 		imgPreview.addEventListener('load', (e) => URL.revokeObjectURL(e.target.src));
 	});
 
-	document.querySelector('#submit').addEventListener('click', validateInput);
+	//document.querySelector('#submit').addEventListener('click', validateInput);
 	document.querySelectorAll('#form input').forEach(input => {
 		input.addEventListener('focus', () => feedback.className = '');
 	})
