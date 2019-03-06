@@ -19,6 +19,16 @@ class User {
     this.users.push(newUser);
     return { message: 'New user created successfully.', user: newUser };
   }
+
+  
+  login(user) {
+    const foundUser = this.users.find(dbuser => dbuser.email === user.email);
+    if (!foundUser) { return { message: 'User not found' }; }
+
+    if (foundUser.password !== user.password) { return { message: 'Invalid password' }; }
+
+    return { message: 'User login successful', user: foundUser };
+  }
 }
 
 export default new User();
