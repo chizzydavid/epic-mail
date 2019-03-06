@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Message | Epic Mail</title>
+    <title>Group | Epic Mail</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../css/font-awesome-icons/css/font-awesome.min.css"/>    
     <link rel="stylesheet" href="../css/stylesheet.css">
   </head>
-  <body id="view-message">    
+  <body>    
     <header>
       <nav class="nav-container" id="page-nav"> 
         <div class="brand-icon">  
@@ -26,31 +26,29 @@
       </nav>
     </header>
 
-    <h2 class="msg-header">View Message</h2>
+    <h2 class="msg-header">View Group</h2>
 
     <div class="main-container">
-      <main class="message-container"> 
-        <div class="message" data-message-id="">
-          <h3>Message Sender</h3>
-          <h4> Message Subject</h4>
+      <main class="group-container"> 
+        <h3>Group Title</h3>
 
-          <div class="msg-body"> 
-            <p class="msg-excerpt">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse non
-            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  </p>
+        <div class="msg-body"> 
+          <p class="msg-excerpt">group description dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  </p>
 
-            <div class="msg-details">
-              <p>Status: <span class=msg-status>Read </span></p>
-              <div class="msg-buttons">                
-                <i id="" class="reply-message fa fa-reply"></i> 
-                <i id="" class="share-message fa fa-share"></i>
-                <i id="" class="delete-message fa fa-trash"></i>
-              </div>            
-            </div>  
+          <div class="group-members">
+            <h4>Members</h4>
+            <p class="member"><span>User One</span> <i id="" class="delete-member fa fa-trash"></i></p>
+            <p class="member"><span>User Two</span> <i id="" class="delete-member fa fa-trash"></i></p>
+            <p class="member"><span>User Three </span><i id="" class="delete-member fa fa-trash"></i></p>
+            <p class="member"><span>User Four</span> <i id="" class="delete-member fa fa-trash"></i></p>
+            <p class="member"><span>User Five</span> <i id="" class="delete-member fa fa-trash"></i></p>
+          </div>  
+        </div>
 
-          </div>
+        <div class="group-controls">
+          <p>Edit Group</p>
+          <p>Delete Group</p>
         </div>
       </main>
     </div>

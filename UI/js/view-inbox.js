@@ -2,7 +2,7 @@ const messages = [
 	{
 		"id" : 81901920,
 		"createdOn" : 15637839,
-		"subject" : 'Read Message One',
+		"subject" : 'Hello Epic Mail',
 		"message" : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
 		"senderId" : 3427202,
 		"receiverId" : 1173839,
@@ -12,7 +12,7 @@ const messages = [
 	{
 		"id" : 81901920,
 		"createdOn" : 15637839,
-		"subject" : 'Read Message Two',
+		"subject" : 'Let\'s Meet Up Next Week',
 		"message" : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
 		"senderId" : 3427202,
 		"receiverId" : 1173839,
@@ -22,7 +22,7 @@ const messages = [
 	{
 		"id" : 81901920,
 		"createdOn" : 15637839,
-		"subject" : 'Unread Message One',
+		"subject" : 'Reply My Last Message',
 		"message" : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
 		"senderId" : 3427202,
 		"receiverId" : 1173839,
@@ -32,7 +32,7 @@ const messages = [
 	{
 		"id" : 81901920,
 		"createdOn" : 15637839,
-		"subject" : 'Unread Message Two',
+		"subject" : 'Send Me Your House Address',
 		"message" : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
 		"senderId" : 3427202,
 		"receiverId" : 1173839,
@@ -42,7 +42,7 @@ const messages = [
 	{
 		"id" : 81901920,
 		"createdOn" : 15637839,
-		"subject" : 'Sent Message One',
+		"subject" : 'You Still Owe Me',
 		"message" : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
 		"senderId" : 3427202,
 		"receiverId" : 1173839,
@@ -52,7 +52,7 @@ const messages = [
 	{
 		"id" : 81901920,
 		"createdOn" : 15637839,
-		"subject" : 'Draft Message Two',
+		"subject" : 'My House Address',
 		"message" : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
 		"senderId" : 3427202,
 		"receiverId" : 1173839,
@@ -62,14 +62,13 @@ const messages = [
 	{ 
 		"id" : 81901920,
 		"createdOn" : 15637839,
-		"subject" : 'Draft Message Two',
+		"subject" : 'Next Week isn\'t Okay For Me',
 		"message" : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
 		"senderId" : 3427202,
 		"receiverId" : 1173839,
 		"parentMessageId" : 7368728,
 		"status" : 'draft',
-	}	
-],
+	}],
 	messageBtns = document.querySelectorAll('.messages-nav li'),
 	msgHeader = document.querySelector('.msg-header'),
 	msgContainer = document.querySelector('.message-container'),
@@ -87,18 +86,25 @@ function displayMessages(data) {
 		msgContainer.innerHTML = `<p class="msg-body">You have no ${data.category} messages</p>`;
 		return;
 	}
+
 	data.messages.forEach(message => {
+		const { id, subject, status } = message;
+
 		msgContainer.insertAdjacentHTML('beforeend', 
-			`<div class="message" data-message-id="${message.id}">
-        <h4>${message.subject}</h4>
+			`<div class="message" data-message-id="${id}">
+        <h4 class="message-title ${status == 'unread' ? 'unread' : ''} ">
+        	<a href="view-message.html">${subject}</a>
+        </h4>
 
         <div class="msg-body"> 
           <p class="msg-excerpt">${message.message}</p>
 
           <div class="msg-details">
-            <p>Status: <span class=msg-status>${message.status.toUpperCase()} </span></p>
+            <p>Status: <span class="status-${status} msg-status">
+            	${status.replace(status.charAt(0), status.charAt(0).toUpperCase())} </span>
+            </p>
             <div class="msg-buttons">
-            	${message.status === 'draft' ? 
+            	${status === 'draft' ? 
             		'<i id="" class="edit-message fa fa-edit"></i>' +
             	  '<i id="" class="send-message fa fa-send"></i>' : 
                 '<i id="" class="share-message fa fa-share"></i> '
@@ -139,15 +145,15 @@ function getMessages(category) {
 			break;
 
 		case 'sent':
-		  loadMessages('sent');
-		  break;
+			loadMessages('sent');
+			break;
 
 		case 'draft':
-		  loadMessages('draft');
-		  break;
+			loadMessages('draft');
+			break;
 
 		default:
-		  loadMessages();
+			loadMessages();
 	}
 }
 

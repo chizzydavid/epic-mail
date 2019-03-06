@@ -1,7 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway');
+html {
+  height: 100%;
+}
 body {
-  background-color:;
   padding: 0;
+  width: 100%;
+  min-width: 100%;
   margin: 0px;
   color: #444;
   line-height: 1.5em;
@@ -44,7 +48,6 @@ header {
   cursor:pointer;
   padding-right: .5em;
 }
-
 .brand-icon {
   width: 31%;
   margin-top: 0px;
@@ -160,6 +163,10 @@ div[data-home="nav"] a:hover {
 .transparent {
   background: transparent;
   border: solid white 2px;
+}
+a {
+  color: var(--sec-color);
+  text-decoration: none;
 }
 .sign-link {
   color: var(--sec-color);
@@ -307,11 +314,11 @@ div[data-home="nav"] a:hover {
     text-decoration:none;
     padding: 20px;
     color:#eee;
-    background: #32669a;
+    background: #043565;
   }
   .navbar a:hover {
     background: white;
-    color: #32669a;
+    color: #043565;
   }
   #about {
     font-size: 14px;
@@ -361,22 +368,21 @@ div[data-home="nav"] a:hover {
 
 
 
-/*SIGN UP/ SIGN IN*/
+/*SIGN UP/ SIGN IN  32669a*/
 #page-nav {
-  background: #32669a;
+  background: #043565;
   color: #eee;
 }
 #page-nav .navbar a {
-  pfont-weight: bold;
   text-transform: uppercase;
 }
 div[data-page="nav"] {
-  padding-right: 4em;
+  padding-right: .6em;
   background: inherit;
 }
 .container {
   max-width: 550px;
-  margin: 70px auto;
+  margin: 130px auto 80px auto;
   padding: 30px 40px 20px 40px;
   background: white;
 }
@@ -451,25 +457,41 @@ button[type="submit"]:focus {
 #footer {
   margin-top: 50px;
   padding:4em 2em ;
+  width: 100%;
   font-size: 13px;
   line-height: 2em;
   background-color: #222;
   color:#ddd;
   text-align:center;
+  clear: both;
+  position: absolute;
 }
 #footer h4 {
   margin:0px;
 }
-
+  
+@media screen and (max-width: 900px) {
+  div[data-page="nav"] {
+    padding-right: 20px;
+  }
+  #page-nav .navbar a {
+    font-size: 11px;
+    padding: 23px 5px;
+  }
+}
 
 @media screen and (max-width: 760px) {
   .container {
-    margin-top: 60px;
+    margin: 100px auto 0px auto;
   }
   div[data-page="nav"] {
     padding-right: 0;
     background: white;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.6);    
   }
+  #page-nav .navbar a {
+    font-size: 13px;
+  }  
   #login-form input {
     width: 100%;
   }
@@ -484,7 +506,6 @@ button[type="submit"]:focus {
     padding: 10px 30px;
   }
 }
-
 
 
 /* VIEW INBOX */
@@ -506,6 +527,7 @@ button[type="submit"]:focus {
   flex-direction: row;
   padding: 0 10em;
   line-height: 1.5em;
+  min-height: 310px;
 }
 
 .messages-nav {
@@ -540,6 +562,9 @@ button[type="submit"]:focus {
 .hide {
   display: none;
 }
+.message-container {
+  min-height: 250px;
+}
 .message {
   padding: 20px;
   width: 100%;
@@ -548,17 +573,40 @@ button[type="submit"]:focus {
   background: white;
   border-radius: 5px;
   box-shadow: 2px 2px 10px rgba(0,0,0,0.6);
- }
+}
 .message h3, h4 {
   margin: 5px 0;
 }
-.message h4 {
+.message-title {
+  font-size: 16px;
+}
+.message h4 a {
   margin-top: 0px;
   cursor: pointer;
-  color: #32669a;
+  color:  #555;
+  font-weight: bold;
+}
+.message-title.unread a {
+  color:  #0866c4;
+  font-weight: bold;
 }
 .message-excerpt {
   margin: 0;
+}
+.msg-status {
+  font-weight: bold;
+}
+.status-unread {
+  color: #2c97df;
+}
+.status-read {
+  color:var(--sec-color);
+}
+.status-sent {
+  color: #00b300;
+}
+.status-draft {
+  color: #a428a2;
 }
 .msg-details {
   display: flex;
@@ -595,7 +643,6 @@ button[type="submit"]:focus {
     padding: 0 2em;
   }
 }
-
 
 @media screen and (max-width: 760px) {
   .main-container {
@@ -634,7 +681,6 @@ button[type="submit"]:focus {
 }
 
 
-
 /*CREATE MESSAGE*/
 textarea {
   width: 100%;
@@ -665,6 +711,76 @@ textarea {
 }
 
 
+/* VIEW GROUP */
+.group-container {
+  padding: 20px 30px;
+  width: 100%;
+  margin-bottom: 10px; 
+  color: #666;
+  background: white;
+  border-radius: 5px;
+}
+.group-container h3, .group-container h4 {
+  font-weight: normal;
+  font-size: 20px;
+}
+.group-members h4 {
+  margin-top: 30px;
+  font-size: 17px;
+}
+.member {
+  width: 50%;
+  padding: 10px;
+  border-radius: 3px;
+  display: flex;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+}
+.member span {
+  width: 50%;
+  margin-top: 3px;
+}
+.member i {
+  text-align: right;
+  font-size: 18px;
+  color: var(--sec-color);
+  width: 50%;
+  margin: 5px;
+  cursor: pointer;
+}
+.group-controls {
+  margin-top: 50px;
+  padding-right: 40px;
+  width: 100%;
+  text-align: right;
+}
+.group-controls p {
+  display: inline-block;
+  margin-left: 20px;
+  color: var(--sec-color);
+  cursor: pointer;
+}
+.group-controls p:hover {
+  font-weight: bold;
+}
+
+@media screen and (max-width: 760px) {
+  .member {
+    width: 100%;
+  }
+  .group-controls {
+    padding-right: 0px;
+  }
+}
+@media screen and (max-width: 600px) {
+  .group-container {
+    padding: 15px 20px;
+  }  
+}
+
+
+
+
+
 .sk-wave {
   margin: 15px auto;
   width: 50px;
@@ -672,7 +788,7 @@ textarea {
   text-align: center;
   font-size: 10px; }
   .sk-wave .sk-rect {
-    background-color: #279b84;
+    background-color: var(--sec-color);
     height: 100%;
     width: 6px;
     display: inline-block;
