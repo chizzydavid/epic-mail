@@ -23,6 +23,13 @@ class Message {
     const received = this.messages.filter(message => message.receiverId === id);
     return received;
   }
+  
+  findAllUnread(id) {
+    // assuming message status remains 'sent' until the receiver reads it and its marked as 'read';
+    const received = this.findAllReceived(id);
+    const unread = received.filter(message => message.status === 'sent');
+    return unread;
+  }
 
 }
 
