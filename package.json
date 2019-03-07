@@ -27,7 +27,7 @@
   },
   "scripts": {
     "test": "mocha --require @babel/register server/tests/**-test.js",
-    "lint": "eslint --fix server/**/*.js --ignore-pattern node_modules/",
+    "lint": "eslint --fix server.js && server/**/*.js --ignore-pattern node_modules/",
     "start": "nodemon --exec babel-node server.js"
   },
   "repository": {

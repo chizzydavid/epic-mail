@@ -136,7 +136,7 @@ describe('Testing User Endpoints /api/v1/', () => {
           res.should.have.status(400);
           res.body.should.have.property('error').equal('No Authentication Token Provided.');
         });
-    });    
+    });
   });
 
   // testing GET route to get a single user

@@ -23,7 +23,7 @@ class Message {
     const received = this.messages.filter(message => message.receiverId === id);
     return received;
   }
-  
+
   findAllUnread(id) {
     // assuming message status remains 'sent' until the receiver reads it and its marked as 'read';
     const received = this.findAllReceived(id);
@@ -35,19 +35,18 @@ class Message {
     const sent = this.messages.filter(message => message.senderId === id);
     return sent;
   }
-  
+
   findOne(id) {
     const foundMessage = this.messages.find(message => message.id === id);
     return foundMessage;
   }
-  
+
   delete(id) {
     const message = this.findOne(id);
     const index = this.messages.indexOf(message);
     this.messages.splice(index, 1);
     return {};
   }
-
 }
 
 export default new Message();

@@ -20,7 +20,7 @@ class User {
     return { message: 'New user created successfully.', user: newUser };
   }
 
-  
+
   login(user) {
     const foundUser = this.users.find(dbuser => dbuser.email === user.email);
     if (!foundUser) { return { message: 'User not found' }; }
@@ -37,7 +37,7 @@ class User {
   findUser(id) {
     return this.users.find(user => user.id === id);
   }
-  
+
   update(id, data) {
     const user = this.findUser(Number(id));
     user.email = data.email || user.email;
@@ -56,7 +56,6 @@ class User {
     this.users.splice(index, 1);
     return {};
   }
-
 }
 
 export default new User();

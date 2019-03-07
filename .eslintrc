@@ -1,9 +1,9 @@
 {
-	"extends": "airbnb",
-	"env": {
-		"node": true,
-		"browser": true,
-		"es6": true,
-		"mocha": true
-	}
+  "extends": "airbnb",
+  "env": {
+    "node": true,
+    "browser": true,
+    "es6": true,
+    "mocha": true
+  }
 }
