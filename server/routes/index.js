@@ -18,5 +18,6 @@ router.post('/api/v1/messages', Auth.verifyToken, Message.createMessage);
 router.get('/api/v1/messages', Auth.verifyToken, Message.getAllReceived);
 router.get('/api/v1/messages/unread', Auth.verifyToken, Message.getAllUnread);
 router.get('/api/v1/messages/sent', Auth.verifyToken, Message.getAllSent);
+router.get('/api/v1/messages/:id', Auth.verifyToken, Message.getOne);
 
 export default router;
