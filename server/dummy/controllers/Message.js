@@ -17,6 +17,10 @@ const Message = {
       return res.status(200).json({ status: 200, data: [...messages] });
   },
 
-
+  getAllUnread(req, res) {
+    const messages = MessageModel.findAllUnread(req.user.id);
+    return res.status(200).json({ status: 200, data: [...messages] });
+  },
+  
 };
 export default Message;
