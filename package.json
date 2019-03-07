@@ -26,7 +26,7 @@
     "nodemon": "^1.18.10"
   },
   "scripts": {
-    "test": "mocha --require @babel/register server/tests/User-test.js",
+    "test": "mocha --require @babel/register server/tests/**-test.js",
     "lint": "eslint --fix server/**/*.js --ignore-pattern node_modules/",
     "start": "nodemon --exec babel-node server.js"
   },
