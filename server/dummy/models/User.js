@@ -34,7 +34,10 @@ class User {
     return this.users;
   }
 
-  
+  findUser(id) {
+    return this.users.find(user => user.id === id);
+  }
+
 }
 
 export default new User();

@@ -8,6 +8,8 @@ chai.should();
 const url = '/api/v1/';
 
 describe('Testing User Endpoints /api/v1/', () => {
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTU1MTc1NzE4NX0.Lk-grtg76D3mroOGzXE5UuIt240hZLsKfRJWdIxNbc4';
+
   // testing POST routes to create a new user
   describe('POST/ auth/signup - Signup a User', () => {
     const endPoint = 'auth/signup';
@@ -115,22 +117,36 @@ describe('Testing User Endpoints /api/v1/', () => {
   // testing GET route to get all users
   describe('GET/ users - Get all Users', () => {
     const endPoint = 'users';
+
     it('Should return status 200(OK) and an array of User objects', () => {
       chai.request(app)
         .get(`${url}${endPoint}`)
+        .set({ 'access-token': token })
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('data').which.is.an('array');
         });
     });
+
+
+    it('Should return status 400(Bad Request) when there is no Token Provided', () => {
+      chai.request(app)
+        .get(`${url}${endPoint}`)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('error').equal('No Authentication Token Provided.');
+        });
+    });    
   });
 
   // testing GET route to get a single user
   describe('GET/ users/:id - Get single User', () => {
     const endPoint = 'users/';
+
     it('Should return status 200(OK) and a User object', () => {
       chai.request(app)
         .get(`${url}${endPoint}5`)
+        .set({ 'access-token': token })
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('data').which.is.an('object');
@@ -140,6 +156,7 @@ describe('Testing User Endpoints /api/v1/', () => {
     it('Should return status 404(Not Found) if User ID is invalid.', () => {
       chai.request(app)
         .get(`${url}${endPoint}4`)
+        .set({ 'access-token': token })
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.have.property('error').equal('User not found.');
@@ -162,6 +179,7 @@ describe('Testing User Endpoints /api/v1/', () => {
     it('Should return status 201(Created) and a User object', () => {
       chai.request(app)
         .put(`${url}${endPoint}5`)
+        .set({ 'access-token': token })
         .send(user)
         .end((err, res) => {
           res.should.have.status(201);
@@ -188,6 +206,7 @@ describe('Testing User Endpoints /api/v1/', () => {
     it('Should return status 204(Deleted)', () => {
       chai.request(app)
         .delete(`${url}${endPoint}5`)
+        .set({ 'access-token': token })
         .end((err, res) => {
           res.should.have.status(204);
         });
