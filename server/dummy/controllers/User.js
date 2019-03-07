@@ -50,6 +50,15 @@ const User = {
     return res.status(201).json({ status: 201, data: { ...updatedUser } });
   },
 
+  deleteUser(req, res) {
+    const user = UserModel.findUser(Number(req.params.id));
+    if (!user)
+      return res.status(404).json({ status: 404, error: 'User not found.' });
+
+    const ref = UserModel.delete(req.params.id);
+    return res.status(204).send(ref);
+  },
+
 
 };
 
