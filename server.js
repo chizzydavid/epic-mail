@@ -9,7 +9,7 @@ app.use(routes);
 
 const PORT = process.env.port || 5000;
 app.listen(PORT, () => {
-  console.log(`App running at port ${PORT}`);
+  // console.log(`App running at port ${PORT}`);
 });
 
 

@@ -74,7 +74,7 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
     });
   });
 
-	 // testing GET route to get all recieved messages
+  // testing GET route to get all recieved messages
   describe('GET/ - Get all recieved messages', () => {
     it('Should return status 200(OK) and an array of messages', () => {
       chai.request(app)
@@ -152,7 +152,6 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
         .delete(`${url}/5`)
         .set({ 'access-token': token })
         .end((err, res) => {
-          console.log( `${url}/5`);
           res.should.have.status(404);
           res.body.should.have.property('error').equal('Message not found.');
         });
