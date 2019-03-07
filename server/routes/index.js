@@ -7,5 +7,6 @@ const router = Router();
 
 router.post('/api/v1/auth/signup', User.createUser);
 router.post('/api/v1/auth/login', User.loginUser);
+router.get('/api/v1/users', User.getAllUsers);
 
 export default router;

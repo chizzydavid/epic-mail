@@ -29,6 +29,12 @@ class User {
 
     return { message: 'User login successful', user: foundUser };
   }
+
+  findAll() {
+    return this.users;
+  }
+
+  
 }
 
 export default new User();
