@@ -19,6 +19,11 @@ class Message {
     return newMessage;
   }
 
+  findAllReceived(id) {
+    const received = this.messages.filter(message => message.receiverId === id);
+    return received;
+  }
+
 }
 
 export default new Message();

@@ -12,5 +12,11 @@ const Message = {
     return res.status(201).json({ status: 201, data: {...newMessage} });
   },
 
+  getAllReceived(req, res) {
+      const messages = MessageModel.findAllReceived(req.user.id);
+      return res.status(200).json({ status: 200, data: [...messages] });
+  },
+
+
 };
 export default Message;
