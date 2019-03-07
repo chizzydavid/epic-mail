@@ -31,6 +31,11 @@ class Message {
     return unread;
   }
 
+  findAllSent(id) {
+    const sent = this.messages.filter(message => message.senderId === id);
+    return sent;
+  }
+  
 }
 
 export default new Message();
