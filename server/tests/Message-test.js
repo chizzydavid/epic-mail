@@ -152,6 +152,7 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
         .delete(`${url}/5`)
         .set({ 'access-token': token })
         .end((err, res) => {
+          console.log( `${url}/5`);
           res.should.have.status(404);
           res.body.should.have.property('error').equal('Message not found.');
         });
