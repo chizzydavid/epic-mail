@@ -8,3 +8,5 @@ before-script:
   - npm install
 script:
   - npm test
+env:
+  - SECRETKEY=randomsecretvalue
