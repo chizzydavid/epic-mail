@@ -33,6 +33,15 @@ const User = {
   },
 
 
+  getUser(req, res) {
+    const user = UserModel.findUser(Number(req.params.id));
+    if (!user)
+      return res.status(404).json({ status: 404, error: 'User not found.' });
+
+    return res.status(200).json({ status: 200, data: { ...user } });
+  },
+
+
 
 };
 
