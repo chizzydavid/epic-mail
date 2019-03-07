@@ -50,6 +50,12 @@ class User {
     return { message: 'User updated successfully', user };
   }
 
+  delete(id) {
+    const user = this.findUser(id);
+    const index = this.users.indexOf(user);
+    this.users.splice(index, 1);
+    return {};
+  }
 
 }
 
