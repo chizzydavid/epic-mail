@@ -190,6 +190,7 @@ describe('Testing User Endpoints /api/v1/', () => {
     it('Should return status 404(Not Found) if User ID is invalid', () => {
       chai.request(app)
         .put(`${url}${endPoint}4`)
+        .set({ 'access-token': token })
         .send(user)
         .end((err, res) => {
           res.should.have.status(404);
