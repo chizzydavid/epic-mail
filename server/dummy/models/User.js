@@ -37,6 +37,19 @@ class User {
   findUser(id) {
     return this.users.find(user => user.id === id);
   }
+  
+  update(id, data) {
+    const user = this.findUser(Number(id));
+    user.email = data.email || user.email;
+    user.firstName = data.firstName || user.firstName;
+    user.lastName = data.lastName || user.lastName;
+    user.firstName = data.firstName || user.firstName;
+    user.password = data.password || user.password;
+    user.isAdmin = data.isAdmin || user.isAdmin;
+
+    return { message: 'User updated successfully', user };
+  }
+
 
 }
 
