@@ -27,5 +27,11 @@ const Message = {
     return res.status(200).json({ status: 200, data: [...messages] });
   },
 
+  getOne(req, res) {
+    const message = MessageModel.findOne(Number(req.params.id));
+    if (!message) { return res.status(404).json({ status: 404, error: 'Message not found.' }); }
+
+    return res.status(200).json({ status: 200, data: {...message} });
+  },
 };
 export default Message;

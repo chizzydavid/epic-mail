@@ -36,6 +36,11 @@ class Message {
     return sent;
   }
   
+  findOne(id) {
+    const foundMessage = this.messages.find(message => message.id === id);
+    return foundMessage;
+  }
+  
 }
 
 export default new Message();
