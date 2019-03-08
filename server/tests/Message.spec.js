@@ -38,6 +38,7 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
       const message = {
         id: 1,
         subject: 'Hello Mail',
+        message: '',
         parentMessageId: 0,
         senderId: 4,
         receiverId: 5,
@@ -50,7 +51,7 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
         .send(message)
         .end((err, res) => {
           res.should.have.status(400);
-          res.body.should.have.property('error').equal('All fields are required.');
+          res.body.should.have.property('error').which.is.an('array');
         });
     });
 
@@ -58,6 +59,7 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
       const message = {
         id: 1,
         subject: 'Hello Mail',
+        message: 'It\'s nice to meet you, Send me a mail sometime.',
         parentMessageId: 0,
         senderId: 4,
         receiverId: 5,

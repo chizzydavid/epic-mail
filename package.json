@@ -17,16 +17,18 @@
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.3.4",
     "@babel/register": "^7.0.0",
+    "coveralls": "^3.0.3",
     "eslint": "^5.15.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
     "mocha": "^6.0.2",
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "nyc": "^13.3.0"
   },
   "scripts": {
-    "test": "mocha --require @babel/register server/tests/**-test.js",
+    "test": "nyc --reporter=lcov --reporter=html --reporter=text mocha server/tests/**.spec.js --require @babel/register --exit",
     "lint": "eslint --fix server.js && server/**/*.js --ignore-pattern node_modules/",
     "start": "nodemon --exec babel-node server.js"
   },
