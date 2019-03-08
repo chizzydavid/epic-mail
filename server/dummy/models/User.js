@@ -1,4 +1,4 @@
-import Helper from '../controllers/Helper';
+import Helper from '../../controllers/Helper';
 
 class User {
   constructor() {
@@ -12,7 +12,7 @@ class User {
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
-      password: user.password,
+      password: user.passwordOne,
       isAdmin: user.isAdmin,
       token,
     };

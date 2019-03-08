@@ -19,7 +19,8 @@ describe('Testing User Endpoints /api/v1/', () => {
         email: 'cindyroland@gmail.com',
         firstName: 'Cindy',
         lastName: 'Roland',
-        password: 'cindyroland',
+        passwordOne: 'cindyroland',
+        passwordTwo: 'cindyroland',
         isAdmin: false,
       };
 
@@ -34,10 +35,11 @@ describe('Testing User Endpoints /api/v1/', () => {
 
     it('Should return status 400(Bad Request) if user input is incomplete.', () => {
       const user = {
-        id: 5,
+        email: '',
         firstName: 'Cindy',
         lastName: 'Roland',
-        password: 'cindyroland',
+        passwordOne: 'cindyroland',
+        passwordTwo: 'cindyroland',
         isAdmin: false,
       };
 
@@ -46,7 +48,7 @@ describe('Testing User Endpoints /api/v1/', () => {
         .send(user)
         .end((err, res) => {
           res.should.have.status(400);
-          res.body.should.have.property('error').equal('All fields are required.');
+          res.body.should.have.property('error').which.is.an('array');
         });
     });
   });
@@ -57,7 +59,7 @@ describe('Testing User Endpoints /api/v1/', () => {
     it('Should return status 200(OK) and a User Object', () => {
       const user = {
         email: 'cindyroland@gmail.com',
-        password: 'cindyroland',
+        password: 'cindyroland'
       };
 
       chai.request(app)
@@ -71,7 +73,8 @@ describe('Testing User Endpoints /api/v1/', () => {
 
     it('Should return status 400(Bad Request) if user input is incomplete', () => {
       const user = {
-        password: 'cindyroland',
+        email: '',
+        password: 'cindyroland'
       };
 
       chai.request(app)
@@ -79,7 +82,7 @@ describe('Testing User Endpoints /api/v1/', () => {
         .send(user)
         .end((err, res) => {
           res.should.have.status(400);
-          res.body.should.have.property('error').equal('All fields are required.');
+          res.body.should.have.property('error').which.is.an('array');
         });
     });
 
