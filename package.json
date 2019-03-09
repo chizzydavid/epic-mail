@@ -43,6 +43,7 @@
   },
   "homepage": "https://github.com/chizzydavid/epic-mail#readme",
   "engines": {
-    "node": "8.x"
+    "node": "8.x",
+    "npm": "5.x"
   }
 }
