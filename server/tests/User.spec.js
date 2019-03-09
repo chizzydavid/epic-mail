@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../../server';
+import app from '../server';
 
 // configure chai
 chai.use(chaiHttp);
@@ -178,12 +178,24 @@ describe('Testing User Endpoints /api/v1/', () => {
       password: 'updatedpassword',
       isAdmin: false,
     };
+    const nullUser = {};
 
-    it('Should return status 201(Created) and a User object', () => {
+    it('Should return status 201(Created) and a User object with new user data', () => {
       chai.request(app)
         .put(`${url}${endPoint}5`)
         .set({ 'access-token': token })
         .send(user)
+        .end((err, res) => {
+          res.should.have.status(201);
+          res.body.should.have.property('data').which.is.an('object');
+        });
+    });
+
+    it('Should return status 201(Created) and a User object with no new data', () => {
+      chai.request(app)
+        .put(`${url}${endPoint}5`)
+        .set({ 'access-token': token })
+        .send(nullUser)
         .end((err, res) => {
           res.should.have.status(201);
           res.body.should.have.property('data').which.is.an('object');
