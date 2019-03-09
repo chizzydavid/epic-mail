@@ -29,8 +29,10 @@
   },
   "scripts": {
     "test": "nyc --reporter=lcov --reporter=html --reporter=text mocha server/tests/**.spec.js --require @babel/register --exit",
-    "lint": "eslint --fix server.js && server/**/*.js --ignore-pattern node_modules/",
-    "start": "nodemon --exec babel-node server.js"
+    "lint": "eslint --fix server/**/*.js --ignore-pattern node_modules/",
+    "build": "babel -d ./build server -s",
+    "start-heroku": "npm run build && node build/server.js",
+    "start": "nodemon --exec babel-node server/server.js"
   },
   "repository": {
     "type": "git",
