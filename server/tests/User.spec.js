@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../../server';
+import app from '../server';
 
 // configure chai
 chai.use(chaiHttp);
@@ -59,7 +59,7 @@ describe('Testing User Endpoints /api/v1/', () => {
     it('Should return status 200(OK) and a User Object', () => {
       const user = {
         email: 'cindyroland@gmail.com',
-        password: 'cindyroland'
+        password: 'cindyroland',
       };
 
       chai.request(app)
@@ -74,7 +74,7 @@ describe('Testing User Endpoints /api/v1/', () => {
     it('Should return status 400(Bad Request) if user input is incomplete', () => {
       const user = {
         email: '',
-        password: 'cindyroland'
+        password: 'cindyroland',
       };
 
       chai.request(app)
