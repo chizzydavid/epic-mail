@@ -78,6 +78,32 @@ function loader(msg) {
 	msg === 'show' ? wait.classList.remove('hide') : wait.classList.add('hide')
 }
 
+function createMessage(message) {
+	const { id, subject, status } = message;
+	return `
+		<div class="message" data-message-id="${id}">
+      <h4 class="message-title ${status == 'unread' ? 'unread' : ''} ">
+      	<a href="view-message.html">${subject}</a>
+      </h4>
+      <div class="msg-body"> 
+        <p class="msg-excerpt">${message.message}</p>
+        <div class="msg-details">
+          <p>Status: <span class="status-${status} msg-status">
+          	${status.replace(status.charAt(0), status.charAt(0).toUpperCase())} </span>
+          </p>
+          <div class="msg-buttons">
+          	${status === 'draft' ? 
+          		'<i id="" class="edit-message fa fa-edit"></i>' +
+          	  '<i id="" class="send-message fa fa-send"></i>' : 
+              '<i id="" class="share-message fa fa-share"></i> '
+            }
+            <i id="" class="delete-message fa fa-trash"></i>
+          </div>            
+        </div> 
+      </div>
+    </div>
+   `
+}
 
 function displayMessages(data) {
 	loader('hide');
@@ -88,34 +114,8 @@ function displayMessages(data) {
 	}
 
 	data.messages.forEach(message => {
-		const { id, subject, status } = message;
-
-		msgContainer.insertAdjacentHTML('beforeend', 
-			`<div class="message" data-message-id="${id}">
-        <h4 class="message-title ${status == 'unread' ? 'unread' : ''} ">
-        	<a href="view-message.html">${subject}</a>
-        </h4>
-
-        <div class="msg-body"> 
-          <p class="msg-excerpt">${message.message}</p>
-
-          <div class="msg-details">
-            <p>Status: <span class="status-${status} msg-status">
-            	${status.replace(status.charAt(0), status.charAt(0).toUpperCase())} </span>
-            </p>
-            <div class="msg-buttons">
-            	${status === 'draft' ? 
-            		'<i id="" class="edit-message fa fa-edit"></i>' +
-            	  '<i id="" class="send-message fa fa-send"></i>' : 
-                '<i id="" class="share-message fa fa-share"></i> '
-              }
-              <i id="" class="delete-message fa fa-trash"></i>
-            </div>            
-          </div>  
-
-        </div>
-      </div>
-      `)		
+		const newMessage = createMessage(message);
+		msgContainer.insertAdjacentHTML('beforeend', newMessage);		
 	});
 }
 
