@@ -5,15 +5,12 @@ notifications:
   email: false  
 cache:
   directories:
-    - node_modules
-addons:
-  code_climate:
-    repo_token:56cc2c42830f0e8aa4cb24d6a84353d3735a597f78fe0dbc018915997132617e
+    - node_moduless
 before-script:
   - npm install codeclimate-test-reporter istanbul -g
 script:
   - npm test
 after_script:
-  - codeclimate-test-reporter< ./coverage/lcov.info
-env:
-  - SECRETKEY=randomsecretvalue
+  - codeclimate-test-reporter < ./coverage/lcov.info
+
+
