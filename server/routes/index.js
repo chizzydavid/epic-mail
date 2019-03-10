@@ -2,7 +2,7 @@ import { Router } from 'express';
 import User from '../controllers/User';
 import Message from '../controllers/Message';
 import Auth from '../middlewares/Auth';
-import Validate from '../middlewares/validation/validation'
+import Validate from '../middlewares/validation/validation';
 
 const router = Router();
 

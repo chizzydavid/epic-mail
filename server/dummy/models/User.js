@@ -43,7 +43,6 @@ class User {
     user.email = data.email || user.email;
     user.firstName = data.firstName || user.firstName;
     user.lastName = data.lastName || user.lastName;
-    user.firstName = data.firstName || user.firstName;
     user.password = data.password || user.password;
     user.isAdmin = data.isAdmin || user.isAdmin;
 
