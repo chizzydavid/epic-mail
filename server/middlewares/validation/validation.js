@@ -60,7 +60,6 @@ const Validate = {
 
     if (receiverId === '') { errors.push('Please enter the message recipient'); }
 
-
     if (errors.length !== 0) { res.status(400).json({ status: 400, error: errors }); return; }
 
     next();
