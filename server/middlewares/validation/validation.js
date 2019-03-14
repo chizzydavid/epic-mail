@@ -7,39 +7,31 @@ const Validate = {
 
     const nameRegx = /^[a-zA-Z]{2,}$/;
 
-    if (typeof firstName === "undefined") errors.push('There is no firstName field available.')
+    if (typeof firstName === 'undefined') errors.push('There is no firstName field available.');
 
-    else {
-      if (firstName.trim() === '') { errors.push('Please enter a first name.'); } else
-      if (!nameRegx.test(firstName)) errors.push('Please enter a valid first name');
-    }
+    else if (firstName.trim() === '') { errors.push('Please enter a first name.'); } else
+    if (!nameRegx.test(firstName)) errors.push('Please enter a valid first name');
 
 
-    if (typeof lastName === "undefined") errors.push('There is no lastName field available.')
+    if (typeof lastName === 'undefined') errors.push('There is no lastName field available.');
 
-    else {
-       if (lastName.trim() === '') { errors.push('Please enter a last name.'); } else
-       if (!nameRegx.test(lastName)) errors.push('Please enter a valid last name.');      
-    }
+    else if (lastName.trim() === '') { errors.push('Please enter a last name.'); } else
+    if (!nameRegx.test(lastName)) errors.push('Please enter a valid last name.');
 
-    if (typeof email === "undefined") errors.push('There is no email field available.')
-    else {
-       if (email.trim() === '') { errors.push('Please enter an email address.'); } else
-       if (!/^\S+@\S+\.[a-zA-Z0-9]+$/.test(email.trim())) errors.push('Please enter a valid email address.');      
-    }
+    if (typeof email === 'undefined') errors.push('There is no email field available.');
+    else if (email.trim() === '') { errors.push('Please enter an email address.'); } else
+    if (!/^\S+@\S+\.[a-zA-Z0-9]+$/.test(email.trim())) errors.push('Please enter a valid email address.');
 
 
-    if (typeof passwordOne === "undefined" || typeof passwordTwo === "undefined") errors.push('There is a missing password field.')
+    if (typeof passwordOne === 'undefined' || typeof passwordTwo === 'undefined') errors.push('There is a missing password field.');
 
-    else {
-      if (passwordOne.trim() === '') errors.push('Please enter a password');
+    else if (passwordOne.trim() === '') errors.push('Please enter a password');
 
-      else if (passwordTwo.trim() === '') errors.push('Please re-enter your password.');
+    else if (passwordTwo.trim() === '') errors.push('Please re-enter your password.');
 
-      else if (passwordOne.trim().length < 6) { errors.push('Your password must be at least 6 characters in length.'); } else
-      if (passwordOne.trim() !== passwordTwo.trim()) errors.push('Your two passwords don\'t match.');
-      else if (!/^[\w]{6,20}$/.test(passwordOne.trim())) { errors.push('Your password can only contain alphanumeric characters.'); }      
-    }
+    else if (passwordOne.trim().length < 6) { errors.push('Your password must be at least 6 characters in length.'); } else
+    if (passwordOne.trim() !== passwordTwo.trim()) errors.push('Your two passwords don\'t match.');
+    else if (!/^[\w]{6,20}$/.test(passwordOne.trim())) { errors.push('Your password can only contain alphanumeric characters.'); }
 
     if (errors.length !== 0) { res.status(400).json({ status: 400, error: errors }); return; }
 
@@ -50,18 +42,14 @@ const Validate = {
     const { email, password } = req.body;
     const errors = [];
 
-    if (typeof email === "undefined") errors.push('There is no email field available.')
+    if (typeof email === 'undefined') errors.push('There is no email field available.');
 
-    else {
-      if (email.trim() === '') errors.push('Please enter an email address.');
-      else
-      if (!/^\S+@\S+\.[a-zA-Z0-9]+$/.test(email.trim())) { errors.push('Please enter a valid email address.'); }      
-    }
+    else if (email.trim() === '') errors.push('Please enter an email address.');
+    else
+    if (!/^\S+@\S+\.[a-zA-Z0-9]+$/.test(email.trim())) { errors.push('Please enter a valid email address.'); }
 
-    if (typeof password === "undefined") errors.push('There is no password field available.')
-    else {
-      if (password.trim() === '') errors.push('Please enter a password');
-    }
+    if (typeof password === 'undefined') errors.push('There is no password field available.');
+    else if (password.trim() === '') errors.push('Please enter a password');
 
     if (errors.length !== 0) { res.status(400).json({ status: 400, error: errors }); return; }
 
@@ -74,25 +62,17 @@ const Validate = {
     } = req.body;
     const errors = [];
 
-    if (typeof subject === "undefined") errors.push('There is no subject field available.')
-    else {
-      if (subject.trim() === '') { errors.push('Message must have a subject.'); }   
-    }
+    if (typeof subject === 'undefined') errors.push('There is no subject field available.');
+    else if (subject.trim() === '') { errors.push('Message must have a subject.'); }
 
-    if (typeof message === "undefined") errors.push('There is no message field available.')
-    else {
-      if (message.trim() === '') { errors.push('Please enter a message to send.'); }
-    }
+    if (typeof message === 'undefined') errors.push('There is no message field available.');
+    else if (message.trim() === '') { errors.push('Please enter a message to send.'); }
 
-    if (typeof senderId === "undefined") errors.push('There is no senderId field available.')
-    else {
-      if (senderId === '') { errors.push('No sender specified.'); }
-    }
+    if (typeof senderId === 'undefined') errors.push('There is no senderId field available.');
+    else if (senderId === '') { errors.push('No sender specified.'); }
 
-    if (typeof receiverId === "undefined") errors.push('There is no receiverId field available.')
-    else {
-      if (receiverId === '') { errors.push('Please enter the message recipient'); }
-    }
+    if (typeof receiverId === 'undefined') errors.push('There is no receiverId field available.');
+    else if (receiverId === '') { errors.push('Please enter the message recipient'); }
 
     if (errors.length !== 0) { res.status(400).json({ status: 400, error: errors }); return; }
 
