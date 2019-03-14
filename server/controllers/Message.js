@@ -36,6 +36,5 @@ const Message = {
     return res.status(204).json(ref);
   },
 
-
 };
 export default Message;
