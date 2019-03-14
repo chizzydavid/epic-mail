@@ -47,7 +47,7 @@ const messages = [
 		"senderId" : 3427202,
 		"receiverId" : 1173839,
 		"parentMessageId" : 7368728,
-		"status" : 'sdent',
+		"status" : 'sent',
 	},
 	{
 		"id" : 81901920,
