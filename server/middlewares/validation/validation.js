@@ -74,18 +74,25 @@ const Validate = {
     } = req.body;
     const errors = [];
 
-    if (!subject) errors.push('There is no subject field available.')
-    if (!message) errors.push('There is no message field available.')
-    if (!senderId) errors.push('There is no senderId field available.')
-    if (!receiverId) errors.push('There is no receiverId field available.')
+    if (typeof subject === "undefined") errors.push('There is no subject field available.')
+    else {
+      if (subject.trim() === '') { errors.push('Message must have a subject.'); }   
+    }
 
-    if (subject.trim() === '') { errors.push('Message must have a subject.'); }
+    if (typeof message === "undefined") errors.push('There is no message field available.')
+    else {
+      if (message.trim() === '') { errors.push('Please enter a message to send.'); }
+    }
 
-    if (message.trim() === '') { errors.push('Please enter a message to send.'); }
+    if (typeof senderId === "undefined") errors.push('There is no senderId field available.')
+    else {
+      if (senderId === '') { errors.push('No sender specified.'); }
+    }
 
-    if (senderId === '') { errors.push('No sender specified.'); }
-
-    if (receiverId === '') { errors.push('Please enter the message recipient'); }
+    if (typeof receiverId === "undefined") errors.push('There is no receiverId field available.')
+    else {
+      if (receiverId === '') { errors.push('Please enter the message recipient'); }
+    }
 
     if (errors.length !== 0) { res.status(400).json({ status: 400, error: errors }); return; }
 
