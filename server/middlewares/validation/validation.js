@@ -1,11 +1,16 @@
 const Validate = {
   signUp(req, res, next) {
     const {
-      firstName, lastName, email, passwordOne, passwordTwo,
+      id, firstName, lastName, email, passwordOne, passwordTwo,
     } = req.body;
     const errors = [];
 
     const nameRegx = /^[a-zA-Z]{2,}$/;
+
+    if (typeof id === 'undefined') errors.push('There is no id field available.');
+
+    else if (typeof id !== 'number') { errors.push('Please enter a valid user Id.'); }
+
 
     if (typeof firstName === 'undefined') errors.push('There is no firstName field available.');
 
@@ -58,9 +63,11 @@ const Validate = {
 
   sendMessage(req, res, next) {
     const {
-      subject, message, senderId, receiverId,
+      id, subject, message, senderId, receiverId, status
     } = req.body;
     const errors = [];
+    if (typeof id === 'undefined') errors.push('There is no id field available.');
+    else if (typeof id !== 'number') { errors.push('Please enter a valid user Id.'); }
 
     if (typeof subject === 'undefined') errors.push('There is no subject field available.');
     else if (subject.trim() === '') { errors.push('Message must have a subject.'); }
@@ -73,7 +80,9 @@ const Validate = {
 
     if (typeof receiverId === 'undefined') errors.push('There is no receiverId field available.');
     else if (receiverId === '') { errors.push('Please enter the message recipient'); }
-
+    
+    if (typeof status === 'undefined') errors.push('There is no status field available.');
+    else if (status === '') { errors.push('Please enter the message status'); }
     if (errors.length !== 0) { res.status(400).json({ status: 400, error: errors }); return; }
 
     next();
