@@ -46,7 +46,6 @@ const User = {
     return res.status(204).send(ref);
   },
 
-
 };
 
 export default User;

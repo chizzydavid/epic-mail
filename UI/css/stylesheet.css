@@ -6,12 +6,16 @@ body {
   padding: 0;
   width: 100%;
   min-width: 100%;
+  min-height: 100%;
   margin: 0px;
   color: #444;
   line-height: 1.5em;
   font-size: 14px;
   font-family: 'Raleway', sans-serif;
   background: #f3f3f3;
+}
+#bg-wrapper {
+  min-height: 70vh;
 }
 #home {
   background: #fff;
@@ -527,7 +531,6 @@ button[type="submit"]:focus {
   flex-direction: row;
   padding: 0 10em;
   line-height: 1.5em;
-  min-height: 310px;
 }
 
 .messages-nav {
