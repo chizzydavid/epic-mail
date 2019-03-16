@@ -3,9 +3,8 @@ import UserModel from '../dummy/models/User';
 const User = {
   createUser(req, res) {
     const result = UserModel.create(req.body);
-    if (result.message === 'This email is already registered.')
-      return res.status(400).json({ status: 400, data: { ...result }});
-    return res.status(201).json({ status: 201, data: { ...result }});
+    if (result.message === 'This email is already registered.') { return res.status(400).json({ status: 400, data: { ...result } }); }
+    return res.status(201).json({ status: 201, data: { ...result } });
   },
 
   loginUser(req, res) {
@@ -26,8 +25,7 @@ const User = {
 
 
   getUser(req, res) {
-    if (req.user.id != req.params.id) 
-      { return res.status(400).json({ status: 400, error: 'Unauthorized access.' }); }
+    if (req.body.id != req.params.id) { return res.status(400).json({ status: 400, error: 'Unauthorized access.' }); }
 
     const user = UserModel.findUser(Number(req.params.id));
     if (!user) { return res.status(404).json({ status: 404, error: 'User not found.' }); }
@@ -35,8 +33,7 @@ const User = {
   },
 
   updateUser(req, res) {
-    if (req.user.id != req.params.id) 
-      { return res.status(400).json({ status: 400, error: 'Unauthorized access.' }); }    
+    if (req.body.id != req.params.id) { return res.status(400).json({ status: 400, error: 'Unauthorized access.' }); }
 
     const user = UserModel.findUser(Number(req.params.id));
     if (!user) { return res.status(404).json({ status: 404, error: 'User not found.' }); }
@@ -46,8 +43,7 @@ const User = {
   },
 
   deleteUser(req, res) {
-    if (req.user.id != req.params.id) 
-      { return res.status(400).json({ status: 400, error: 'Unauthorized access.' }); }
+    if (req.body.id != req.params.id) { return res.status(400).json({ status: 400, error: 'Unauthorized access.' }); }
     const user = UserModel.findUser(Number(req.params.id));
     if (!user) { return res.status(404).json({ status: 404, error: 'User not found.' }); }
 

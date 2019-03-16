@@ -8,20 +8,17 @@ chai.should();
 const url = '/api/v1/';
 
 describe('Testing User Endpoints /api/v1/', () => {
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTU1MTc1NzE4NX0.Lk-grtg76D3mroOGzXE5UuIt240hZLsKfRJWdIxNbc4';
-
   // testing POST routes to create a new user
   describe('POST/ auth/signup - Signup a User', () => {
     const endPoint = 'auth/signup';
     it('Should return status 201(Created) and a User object', () => {
       const user = {
         id: 5,
-        email: 'cindyroland@gmail.com',
+        email: 'mike@gmail.com',
         firstName: 'Cindy',
         lastName: 'Roland',
         passwordOne: 'cindyroland',
         passwordTwo: 'cindyroland',
-        isAdmin: false,
       };
 
       chai.request(app)
@@ -40,7 +37,6 @@ describe('Testing User Endpoints /api/v1/', () => {
         lastName: 'Roland',
         passwordOne: 'cindyroland',
         passwordTwo: 'cindyroland',
-        isAdmin: false,
       };
 
       chai.request(app)
@@ -58,7 +54,7 @@ describe('Testing User Endpoints /api/v1/', () => {
     const endPoint = 'auth/login';
     it('Should return status 200(OK) and a User Object', () => {
       const user = {
-        email: 'cindyroland@gmail.com',
+        email: 'mike@gmail.com',
         password: 'cindyroland',
       };
 
@@ -97,7 +93,7 @@ describe('Testing User Endpoints /api/v1/', () => {
         .send(user)
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.have.property('error').equal('User not found.');
+          res.body.should.have.property('error').equal('Invalid Login Credentials.');
         });
     });
 
@@ -112,7 +108,7 @@ describe('Testing User Endpoints /api/v1/', () => {
         .send(user)
         .end((err, res) => {
           res.should.have.status(400);
-          res.body.should.have.property('error').equal('Invalid password.');
+          res.body.should.have.property('error').equal('Invalid Login Credentials.');
         });
     });
   });
@@ -124,20 +120,9 @@ describe('Testing User Endpoints /api/v1/', () => {
     it('Should return status 200(OK) and an array of User objects', () => {
       chai.request(app)
         .get(`${url}${endPoint}`)
-        .set({ 'access-token': token })
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('data').which.is.an('array');
-        });
-    });
-
-
-    it('Should return status 400(Bad Request) when there is no Token Provided', () => {
-      chai.request(app)
-        .get(`${url}${endPoint}`)
-        .end((err, res) => {
-          res.should.have.status(400);
-          res.body.should.have.property('error').equal('No Authentication Token Provided.');
         });
     });
   });
@@ -149,20 +134,19 @@ describe('Testing User Endpoints /api/v1/', () => {
     it('Should return status 200(OK) and a User object', () => {
       chai.request(app)
         .get(`${url}${endPoint}5`)
-        .set({ 'access-token': token })
+        .send({ id: 5 })
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('data').which.is.an('object');
         });
     });
 
-    it('Should return status 404(Not Found) if User ID is invalid.', () => {
+    it('Should return status 400(Unauthorized access) if User ID is invalid.', () => {
       chai.request(app)
         .get(`${url}${endPoint}4`)
-        .set({ 'access-token': token })
         .end((err, res) => {
-          res.should.have.status(404);
-          res.body.should.have.property('error').equal('User not found.');
+          res.should.have.status(400);
+          res.body.should.have.property('error').equal('Unauthorized access.');
         });
     });
   });
@@ -175,41 +159,96 @@ describe('Testing User Endpoints /api/v1/', () => {
       email: 'cindyroland@gmail.com',
       firstName: 'Cindy',
       lastName: 'Roland',
-      password: 'updatedpassword',
-      isAdmin: false,
     };
-    const nullUser = {};
-
-    it('Should return status 201(Created) and a User object with new user data', () => {
+    it('Should return status 200(Created) and a User object with new user data', () => {
       chai.request(app)
         .put(`${url}${endPoint}5`)
-        .set({ 'access-token': token })
         .send(user)
         .end((err, res) => {
-          res.should.have.status(201);
+          res.should.have.status(200);
           res.body.should.have.property('data').which.is.an('object');
         });
     });
 
-    it('Should return status 201(Created) and a User object with no new data', () => {
+    const userTwo = {
+      id: 5,
+      lastName: 'Roland',
+      passwordOne: 'updatedpassword',
+    };
+    it('Should return status 400(Created) and an error array', () => {
       chai.request(app)
         .put(`${url}${endPoint}5`)
-        .set({ 'access-token': token })
+        .send(userTwo)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('error').which.is.an('array');
+        });
+    });
+
+    const userThree = {
+      id: 5,
+      passwordOne: '',
+      passwordTwo: 'updated',
+    };
+    it('Should return status 400(Created) and an error array', () => {
+      chai.request(app)
+        .put(`${url}${endPoint}5`)
+        .send(userThree)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('error').which.is.an('array');
+        });
+    });
+
+    const userFour = {
+      id: 5,
+      passwordOne: 'update',
+      passwordTwo: 'updated',
+    };
+    it('Should return status 400(Created) and an error array', () => {
+      chai.request(app)
+        .put(`${url}${endPoint}5`)
+        .send(userFour)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('error').which.is.an('array');
+        });
+    });
+
+    const userFive = {
+      id: 5,
+      passwordOne: 'updated+',
+      passwordTwo: 'updated+',
+    };
+    it('Should return status 400(Created) and an error array', () => {
+      chai.request(app)
+        .put(`${url}${endPoint}5`)
+        .send(userFive)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('error').which.is.an('array');
+        });
+    });
+
+
+    const nullUser = { id: 5 };
+    it('Should return status 200(Created) and a User object with no new data', () => {
+      chai.request(app)
+        .put(`${url}${endPoint}5`)
         .send(nullUser)
         .end((err, res) => {
-          res.should.have.status(201);
+          res.should.have.status(200);
           res.body.should.have.property('data').which.is.an('object');
         });
     });
 
-    it('Should return status 404(Not Found) if User ID is invalid', () => {
+    it('Should return status 400(Unauthorized access) if User ID is invalid', () => {
       chai.request(app)
         .put(`${url}${endPoint}4`)
-        .set({ 'access-token': token })
         .send(user)
         .end((err, res) => {
-          res.should.have.status(404);
-          res.body.should.have.property('error').equal('User not found.');
+          res.should.have.status(400);
+          res.body.should.have.property('error').equal('Unauthorized access.');
         });
     });
   });
@@ -219,22 +258,23 @@ describe('Testing User Endpoints /api/v1/', () => {
   describe('DELETE/ users/:id - Delete User', () => {
     const endPoint = 'users/';
 
-    it('Should return status 204(Deleted)', () => {
+    it('Should return status 200(Deleted)', () => {
       chai.request(app)
         .delete(`${url}${endPoint}5`)
-        .set({ 'access-token': token })
+        .send({ id: 5 })
         .end((err, res) => {
-          res.should.have.status(204);
+          res.should.have.status(200);
+          res.body.should.have.property('message').equal('User successfully deleted.');
         });
     });
 
-    it('Should return status 404(Not Found) if User ID is invalid', () => {
+    it('Should return status 400(Unauthorized access) if User ID is invalid', () => {
       chai.request(app)
-        .delete(`${url}${endPoint}4`)
-        .set({ 'access-token': token })
+        .delete(`${url}${endPoint}5`)
+        .send({ id: 4 })
         .end((err, res) => {
-          res.should.have.status(404);
-          res.body.should.have.property('error').equal('User not found.');
+          res.should.have.status(400);
+          res.body.should.have.property('error').equal('Unauthorized access.');
         });
     });
   });

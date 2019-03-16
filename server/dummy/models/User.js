@@ -1,15 +1,20 @@
-import Helper from '../../controllers/Helper';
-
 class User {
   constructor() {
-    this.users = [];
+    this.users = [
+      {
+        id: 6,
+        email: 'cindyroland@gmail.com',
+        firstName: 'Cindy',
+        lastName: 'Roland',
+        password: 'cindyroland',
+      },
+    ];
+    this.token = 'xyzxyz';
   }
 
   create(user) {
     const foundUser = this.users.find(dbuser => dbuser.email === user.email);
     if (foundUser) { return { message: 'This email is already registered.' }; }
-
-    const token = Helper.generateToken(user.id);
     const newUser = {
       id: user.id,
       email: user.email,
@@ -19,19 +24,16 @@ class User {
       isAdmin: false,
     };
     this.users.push(newUser);
-    return { message: 'New user created successfully.', user: newUser, token };
+    return { message: 'New user created successfully.', user: newUser, token: this.token };
   }
 
 
   login(user) {
-    
     const foundUser = this.users.find(dbuser => dbuser.email === user.email);
     if (!foundUser) { return { message: 'User not found' }; }
 
     if (foundUser.password !== user.password) { return { message: 'Invalid password' }; }
-    const token = Helper.generateToken(foundUser.id);
-
-    return { message: 'User login successful', user: foundUser, token };
+    return { message: 'User login successful', user: foundUser, token: this.token };
   }
 
   findAll() {

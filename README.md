@@ -31,14 +31,14 @@ Users can also upload a picture of their choice for their profile.
 
 
 ### Project Documentation
-You can find the documentation for the Epic Mail API [here](http://chizzy-epicmail.herokuapp.com/api/v1/api-docs)
+You can find the documentation for the Epic Mail API [here](http://chizzy-epicmail.herokuapp.com/api-docs)
 
 
 ### Pivotal Tracker
 Pivotal Tracker was the project management tool used in building this project. You can view this project on PT [here](https://www.pivotaltracker.com/n/projects/2314472)
 
 ### API Endpoints
-**You can access all endpoints on [Heroku](http://chizzy-epicmail.herokuapp.com/api/v1/api-docs)**
+**You can access all endpoints on [Heroku](http://chizzy-epicmail.herokuapp.com/api/v1/)**
 
 | HTTP METHOD        | API ENDPOINT   | DESCRIPTION  |
 | ------------- |:-------------:|:-----:|

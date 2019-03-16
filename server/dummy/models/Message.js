@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 class Message {
   constructor() {
     this.messages = [];
@@ -11,8 +13,8 @@ class Message {
       parentMessageId: data.parentMessageId,
       senderId: data.senderId,
       receiverId: data.receiverId,
-      createdOn: Date.now(),
-      status: "sent",
+      createdOn: moment().format('MMMM Do YYYY, h:mm:ss a'),
+      status: 'sent',
     };
 
     this.messages.push(newMessage);
