@@ -11,7 +11,7 @@ router.post('/api/v1/auth/signup', Validate.signUp, User.createUser);
 router.post('/api/v1/auth/login', Validate.login, User.loginUser);
 router.get('/api/v1/users', Auth.verifyToken, User.getAllUsers);
 router.get('/api/v1/users/:id', Auth.verifyToken, User.getUser);
-router.put('/api/v1/users/:id', Auth.verifyToken, User.updateUser);
+router.put('/api/v1/users/:id', Validate.updateUser, Auth.verifyToken, User.updateUser);
 router.delete('/api/v1/users/:id', Auth.verifyToken, User.deleteUser);
 
 router.post('/api/v1/messages', Validate.sendMessage, Auth.verifyToken, Message.createMessage);

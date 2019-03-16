@@ -6,6 +6,9 @@ class User {
   }
 
   create(user) {
+    const foundUser = this.users.find(dbuser => dbuser.email === user.email);
+    if (foundUser) { return { message: 'This email is already registered.' }; }
+
     const token = Helper.generateToken(user.id);
     const newUser = {
       id: user.id,
@@ -13,21 +16,22 @@ class User {
       firstName: user.firstName,
       lastName: user.lastName,
       password: user.passwordOne,
-      isAdmin: user.isAdmin,
-      token,
+      isAdmin: false,
     };
     this.users.push(newUser);
-    return { message: 'New user created successfully.', user: newUser };
+    return { message: 'New user created successfully.', user: newUser, token };
   }
 
 
   login(user) {
+    
     const foundUser = this.users.find(dbuser => dbuser.email === user.email);
     if (!foundUser) { return { message: 'User not found' }; }
 
     if (foundUser.password !== user.password) { return { message: 'Invalid password' }; }
+    const token = Helper.generateToken(foundUser.id);
 
-    return { message: 'User login successful', user: foundUser };
+    return { message: 'User login successful', user: foundUser, token };
   }
 
   findAll() {

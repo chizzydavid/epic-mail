@@ -12,7 +12,7 @@ class Message {
       senderId: data.senderId,
       receiverId: data.receiverId,
       createdOn: Date.now(),
-      status: data.status,
+      status: "sent",
     };
 
     this.messages.push(newMessage);
