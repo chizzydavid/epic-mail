@@ -8,8 +8,6 @@ chai.should();
 
 const url = '/api/v1/messages';
 describe('Testing Message Endpoints /api/v1/messages', () => {
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTU1MTc1NzE4NX0.Lk-grtg76D3mroOGzXE5UuIt240hZLsKfRJWdIxNbc4';
-
   // testing POST route to create a new messsage
   // error messages should be specified in the tests
   describe('POST/ - Send a Message', () => {
@@ -26,7 +24,6 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
 
       chai.request(app)
         .post(`${url}`)
-        .set({ 'access-token': token })
         .send(message)
         .end((err, res) => {
           res.should.have.status(201);
@@ -47,7 +44,6 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
 
       chai.request(app)
         .post(`${url}`)
-        .set({ 'access-token': token })
         .send(message)
         .end((err, res) => {
           res.should.have.status(400);
@@ -55,7 +51,7 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
         });
     });
 
-    it('Should return status 400(Bad Request) when there is no Token Provided', () => {
+    /*    it('Should return status 400(Bad Request) when there is no Token Provided', () => {
       const message = {
         id: 1,
         subject: 'Hello Mail',
@@ -73,7 +69,7 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
           res.should.have.status(400);
           res.body.should.have.property('error').equal('No Authentication Token Provided.');
         });
-    });
+    }); */
   });
 
   // testing GET route to get all recieved messages
@@ -81,7 +77,7 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
     it('Should return status 200(OK) and an array of messages', () => {
       chai.request(app)
         .get(`${url}`)
-        .set({ 'access-token': token })
+        .send({ id: 6 })
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('data').which.is.an('array');
@@ -94,7 +90,7 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
     it('Should return status 200(OK) and an array of messages', () => {
       chai.request(app)
         .get(`${url}/unread`)
-        .set({ 'access-token': token })
+        .send({ id: 6 })
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('data').which.is.an('array');
@@ -107,7 +103,7 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
     it('Should return status 200(OK) and an array of messages', () => {
       chai.request(app)
         .get(`${url}/sent`)
-        .set({ 'access-token': token })
+        .send({ id: 6 })
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('data').which.is.an('array');
@@ -120,7 +116,7 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
     it('Should return status 200(OK) and a single message object', () => {
       chai.request(app)
         .get(`${url}/4`)
-        .set({ 'access-token': token })
+        .send({ id: 6 })
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('data').which.is.an('object');
@@ -130,7 +126,7 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
     it('Should return status 404(Not Found) if Message ID is invalid.', () => {
       chai.request(app)
         .get(`${url}/5`)
-        .set({ 'access-token': token })
+        .send({ id: 6 })
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.have.property('error').equal('Message not found.');
@@ -140,19 +136,20 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
 
   // testing DELETE route to delete a messsage
   describe('DELETE/ :id - Delete a Message', () => {
-    it('Should return status 204(Deleted)', () => {
+    it('Should return status 200(Message deleted successfully)', () => {
       chai.request(app)
         .delete(`${url}/4`)
-        .set({ 'access-token': token })
+        .send({ id: 6 })
         .end((err, res) => {
-          res.should.have.status(204);
+          res.should.have.status(200);
+          res.body.should.have.property('message').equal('Message successfully deleted.');
         });
     });
 
     it('Should return status 404(Not found) if Message ID is invalid', () => {
       chai.request(app)
         .delete(`${url}/5`)
-        .set({ 'access-token': token })
+        .send({ id: 6 })
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.have.property('error').equal('Message not found.');
