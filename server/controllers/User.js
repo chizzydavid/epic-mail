@@ -1,4 +1,4 @@
-import UserModel from '../dummy/models/User';
+import db from '../db';
 
 const User = {
   createUser(req, res) {
