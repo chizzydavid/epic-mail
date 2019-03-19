@@ -1,5 +1,4 @@
-import MessageModel from '../dummy/models/Message';
-import UserModel from '../dummy/models/User';
+import db from '../db';
 
 const Message = {
   createMessage(req, res) {
