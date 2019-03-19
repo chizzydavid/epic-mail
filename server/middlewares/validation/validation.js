@@ -6,11 +6,7 @@ const Validate = {
     const errors = [];
 
     const nameRegx = /^[a-zA-Z]{2,}$/;
-
-    if (typeof id === 'undefined') errors.push('There is no id field available.');
-
-    else if (typeof id !== 'number') { errors.push('Please enter a valid user Id.'); }
-
+    
     if (typeof firstName === 'undefined') errors.push('There is no firstName field available.');
 
     else if (firstName.trim() === '') { errors.push('Please enter a first name.'); } else
@@ -60,18 +56,14 @@ const Validate = {
   },
 
   updateUser(req, res, next) {
-    if (req.body.id != req.params.id) { return res.status(400).json({ status: 400, error: 'Unauthorized access.' }); }
+    //if (req.body.id != req.params.id) { return res.status(400).json({ status: 400, error: 'Unauthorized access.' }); }
 
     const {
-      id, firstName, lastName, email, passwordOne, passwordTwo,
+      firstName, lastName, email, passwordOne, passwordTwo,
     } = req.body;
     const errors = [];
 
     const nameRegx = /^[a-zA-Z]{2,}$/;
-
-    if (typeof id !== 'undefined') {
-      if (typeof id !== 'number') { errors.push('Please enter a valid user Id.'); }
-    }
 
     if (typeof firstName !== 'undefined') {
       if (firstName.trim() === '') { errors.push('Please enter a first name.'); } else
@@ -100,7 +92,7 @@ const Validate = {
       else if (!/^[\w]{6,20}$/.test(passwordOne.trim())) { errors.push('Your password can only contain alphanumeric characters.'); }
     }
 
-    if (errors.length !== 0) { res.status(400).json({ status: 400, error: errors }); return; }
+    if (errors.length !== 0) {console.log('##############################################,', errors); res.status(400).json({ status: 400, error: errors }); return; }
 
     next();
   },

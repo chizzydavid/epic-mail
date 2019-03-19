@@ -9,8 +9,7 @@ const router = Router();
 router.post('/api/v1/auth/signup', Validate.signUp, User.createUser);
 router.post('/api/v1/auth/login', Validate.login, User.loginUser);
 router.get('/api/v1/users', User.getAllUsers);
-router.get('/api/v1/users/:id', User.getUser);
-router.put('/api/v1/users/:id', Validate.updateUser, User.updateUser);
+router.get('/api/v1/users/:id', User.getSingleUser);
 router.delete('/api/v1/users/:id', User.deleteUser);
 
 router.post('/api/v1/messages', Validate.sendMessage, Message.createMessage);
