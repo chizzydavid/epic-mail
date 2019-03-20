@@ -36,6 +36,23 @@ const User = {
     }
   },
 
+  async loginUser(req, res) {
+    const query = 'SELECT * FROM users WHERE email = $1';
+    try {
+      const { rows } = await db.query(query, [req.body.email]);
+      if (!rows[0]) {
+        return res.status(400).json({ status: 400, error: 'Invalid Login Credentials.'})
+      }
+      if (!Helper.comparePassword(req.body.password, rows[0].password)) {
+        return res.status(400).json({ status: 400, error: 'Invalid Login Credentials.'})
+      }
+      const token = Helper.generateToken(rows[0].user_id);
+      return res.status(200).json({ status: 200, data:[{token}] });
+    } catch(error) {
+      return res.status(400).json({ status: 400, error: `An error occured while trying to log you in. ${e}` });
+    }
+  },
+
 };
 
 export default User;

@@ -12,7 +12,6 @@ pool.on('connect', () => {
 })
 
 const createUserTable = () => {
-	console.log('######################### create Usser')
   const queryText =
     `CREATE TABLE IF NOT EXISTS users (
 		    user_id SERIAL PRIMARY KEY,
@@ -24,14 +23,8 @@ const createUserTable = () => {
 		 )`;
 
   pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+    .then((res) => pool.end())
+    .catch((err) => pool.end());
 }
 
 const createMessageTable = () => {
@@ -48,14 +41,8 @@ const createMessageTable = () => {
   )`;
 
   pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+    .then((res) => pool.end())
+    .catch((err) => pool.end());
 }
 
 const createGroupTable = () => {
@@ -68,14 +55,8 @@ const createGroupTable = () => {
  	)`;
 
   pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+    .then((res) => pool.end())
+    .catch((err) => pool.end());
 }
 
 const createGroupUsersTable = () => {
@@ -87,14 +68,8 @@ const createGroupUsersTable = () => {
   )`;
 
   pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+    .then((res) =>  pool.end())
+    .catch((err) =>  pool.end());
 }
 
 const createInboxTable = () => {
@@ -104,14 +79,8 @@ const createInboxTable = () => {
   message_id INTEGER NOT NULL)`;
 
   pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+    .then((res) => pool.end())
+    .catch((err) => pool.end());
 }
 
 const createOutboxTable = () => {
@@ -121,102 +90,57 @@ const createOutboxTable = () => {
   message_id INTEGER NOT NULL)`;
 
   pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+    .then((res) => pool.end())
+    .catch((err) => pool.end());
 }
-
-
-
 
 
 const dropUserTable = () => {
   const queryText = 'DROP TABLE IF EXISTS users';
 
   pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+    .then((res) => pool.end())
+    .catch((err) => pool.end());
 }
 
 const dropMessageTable = () => {
   const queryText = 'DROP TABLE IF EXISTS messages';
 
   pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+    .then((res) => pool.end())
+    .catch((err) => pool.end());
 }
 
 const dropGroupTable = () => {
   const queryText = 'DROP TABLE IF EXISTS groups';
 
   pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+    .then((res) =>pool.end())
+    .catch((err) =>pool.end());
 }
 
 const dropGroupUsersTable = () => {
   const queryText ='DROP TABLE IF EXISTS group_users';
 
   pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+    .then((res) => pool.end())
+    .catch((err) => pool.end());
 }
 
 const dropInboxTable = () => {
   const queryText ='DROP TABLE IF EXISTS inbox';
 
   pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+    .then((res) => pool.end())
+    .catch((err) => pool.end());
 }
 
 const dropOutboxTable = () => {
   const queryText ='DROP TABLE IF EXISTS outbox';
 
   pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+    .then((res) => pool.end())
+    .catch((err) => pool.end());
 }
 
 
@@ -239,7 +163,6 @@ const dropAllTables = () => {
 }
 
 pool.on('remove', () => {
-  console.log('client removed');
   process.exit(0);
 });
 
