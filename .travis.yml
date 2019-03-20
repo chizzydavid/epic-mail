@@ -6,8 +6,12 @@ notifications:
 cache:
   directories:
     - node_moduless
+services:
+  - postgresql
 before-script:
   - npm install
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - npm run setup-tables
 script:
   - npm test
 after_script:

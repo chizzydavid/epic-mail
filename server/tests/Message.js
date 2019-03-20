@@ -13,13 +13,10 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
   describe('POST/ - Send a Message', () => {
     it('Should return status 201(Created) and a Message object', () => {
       const message = {
-        id: 4,
         subject: 'Hello Mail',
         message: "It's nice to meet you, Send me a mail sometime.",
-        parentMessageId: 0,
         senderId: 4,
         receiverId: 5,
-        status: 'sent',
       };
 
       chai.request(app)

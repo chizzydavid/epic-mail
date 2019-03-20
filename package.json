@@ -4,6 +4,8 @@
   "description": "Epic Mail is a web application designed to make sending and receiving email messages much more efficient. Users create an account with their relevant information, choosing to upload a photograph or not. And then they can login and go on to enjoy all the features of the app.\r The application allows its users send mails either to an individual or to a group, receive messages and also reply to them. It also lists all the messages received by the user, with buttons to view specific message categories.\r Built using the latest web technologies and current best practices all to optimize performance and ensure a great user experience.",
   "main": "server.js",
   "dependencies": {
+    "@babel/polyfill": "^7.2.5",
+    "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
@@ -11,6 +13,7 @@
     "express": "^4.16.4",
     "jsonwebtoken": "^8.5.0",
     "moment": "^2.24.0",
+    "pg": "^7.9.0",
     "swagger-ui-express": "^4.0.2"
   },
   "devDependencies": {
@@ -25,20 +28,22 @@
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
+    "make-runnable": "^1.3.6",
     "mocha": "^6.0.2",
     "mocha-lcov-reporter": "^1.3.0",
     "nodemon": "^1.18.10",
     "nyc": "^13.3.0"
   },
   "scripts": {
-    "test": "nyc --reporter=lcov --reporter=html --reporter=text mocha server/tests/User.js server/tests/Message.js --require @babel/register --exit",
+    "test": "nyc --reporter=lcov --reporter=html --reporter=text mocha server/tests/User.js --require @babel/register --exit",
     "lint": "eslint --fix server/**/*.js --ignore-pattern node_modules/",
     "clean": "rm -rf build && mkdir build",
     "build": "npm run clean && babel -d ./build server -s",
     "dev-start": "nodemon --exec babel-node server/server.js",
     "start": "npm run build && node build/server.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test"
+    "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
+    "setup-tables": "node server/db/db.js dropAllTables && node server/db/db.js createAllTables "
   },
   "repository": {
     "type": "git",
