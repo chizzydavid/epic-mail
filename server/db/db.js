@@ -24,6 +24,7 @@ const createUserTable = () => {
 
   pool.query(queryText)
     .then((res) => {
+      console.log('creating user database')
       pool.end();
     })
     .catch((err) => {
@@ -125,6 +126,8 @@ const insertIntoUsers = () => {
 
   pool.query(queryText)
     .then((res) => {
+      console.log(res);
+      console.log('inserting into users');
       pool.end();
     })
     .catch((err) => {
