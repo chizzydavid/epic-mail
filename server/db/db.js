@@ -4,27 +4,34 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const pool = new Pool({
-	connectionString: process.env.DATABASE_URL
+  connectionString: process.env.DATABASE_URL
 });
 
 pool.on('connect', () => {
-	console.log('connected to the db');
+  console.log('connected to the db');
 })
 
 const createUserTable = () => {
+  console.log('######################### create Usser')
   const queryText =
     `CREATE TABLE IF NOT EXISTS users (
-		    user_id SERIAL PRIMARY KEY,
-		    email VARCHAR(128) NOT NULL,
-		    first_name VARCHAR(50) NOT NULL,
-		    last_name VARCHAR(50) NOT NULL,
-		    password VARCHAR(128),
-		    is_admin SMALLINT
-		 )`;
+        user_id SERIAL PRIMARY KEY,
+        email VARCHAR(128) NOT NULL,
+        first_name VARCHAR(50) NOT NULL,
+        last_name VARCHAR(50) NOT NULL,
+        password VARCHAR(128),
+        is_admin SMALLINT
+     )`;
 
   pool.query(queryText)
-    .then((res) => pool.end())
-    .catch((err) => pool.end());
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      pool.end();
+  });
 }
 
 const createMessageTable = () => {
@@ -41,8 +48,14 @@ const createMessageTable = () => {
   )`;
 
   pool.query(queryText)
-    .then((res) => pool.end())
-    .catch((err) => pool.end());
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      pool.end();
+  });
 }
 
 const createGroupTable = () => {
@@ -52,24 +65,36 @@ const createGroupTable = () => {
     name VARCHAR(128) NOT NULL,
     description TEXT NOT NULL,
     owner_id INTEGER NOT NULL
- 	)`;
+  )`;
 
   pool.query(queryText)
-    .then((res) => pool.end())
-    .catch((err) => pool.end());
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      pool.end();
+  });
 }
 
 const createGroupUsersTable = () => {
   const queryText =
   `CREATE TABLE IF NOT EXISTS group_users (
-	  group_id INTEGER NOT NULL,
-	  user_id INTEGER NOT NULL,
-	  user_role VARCHAR(20) NOT NULL
+    group_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    user_role VARCHAR(20) NOT NULL
   )`;
 
   pool.query(queryText)
-    .then((res) =>  pool.end())
-    .catch((err) =>  pool.end());
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      pool.end();
+  });
 }
 
 const createInboxTable = () => {
@@ -79,8 +104,14 @@ const createInboxTable = () => {
   message_id INTEGER NOT NULL)`;
 
   pool.query(queryText)
-    .then((res) => pool.end())
-    .catch((err) => pool.end());
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      pool.end();
+  });
 }
 
 const createOutboxTable = () => {
@@ -90,57 +121,102 @@ const createOutboxTable = () => {
   message_id INTEGER NOT NULL)`;
 
   pool.query(queryText)
-    .then((res) => pool.end())
-    .catch((err) => pool.end());
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      pool.end();
+  });
 }
+
+
+
 
 
 const dropUserTable = () => {
   const queryText = 'DROP TABLE IF EXISTS users';
 
   pool.query(queryText)
-    .then((res) => pool.end())
-    .catch((err) => pool.end());
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      pool.end();
+  });
 }
 
 const dropMessageTable = () => {
   const queryText = 'DROP TABLE IF EXISTS messages';
 
   pool.query(queryText)
-    .then((res) => pool.end())
-    .catch((err) => pool.end());
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      pool.end();
+  });
 }
 
 const dropGroupTable = () => {
   const queryText = 'DROP TABLE IF EXISTS groups';
 
   pool.query(queryText)
-    .then((res) =>pool.end())
-    .catch((err) =>pool.end());
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      pool.end();
+  });
 }
 
 const dropGroupUsersTable = () => {
   const queryText ='DROP TABLE IF EXISTS group_users';
 
   pool.query(queryText)
-    .then((res) => pool.end())
-    .catch((err) => pool.end());
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      pool.end();
+  });
 }
 
 const dropInboxTable = () => {
   const queryText ='DROP TABLE IF EXISTS inbox';
 
   pool.query(queryText)
-    .then((res) => pool.end())
-    .catch((err) => pool.end());
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      pool.end();
+  });
 }
 
 const dropOutboxTable = () => {
   const queryText ='DROP TABLE IF EXISTS outbox';
 
   pool.query(queryText)
-    .then((res) => pool.end())
-    .catch((err) => pool.end());
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      pool.end();
+  });
 }
 
 
@@ -163,6 +239,7 @@ const dropAllTables = () => {
 }
 
 pool.on('remove', () => {
+  console.log('client removed');
   process.exit(0);
 });
 
@@ -173,3 +250,9 @@ module.exports = {
 };
 
 require('make-runnable');
+
+
+
+
+
+

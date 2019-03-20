@@ -53,7 +53,6 @@ const User = {
     }
   },
 
-
   async getAllUsers(req, res) {
     const query = 'SELECT * FROM users';
     try {
@@ -61,6 +60,19 @@ const User = {
       return res.status(200).json({ status: 200, data: [ {rowCount}, [...rows] ] });
     } catch(e) {
       return res.status(400).json({ status: 400, error: `There was an error getting all users. ${e}` });
+    }
+  },
+
+  async getSingleUser(req, res) {
+    const query = 'SELECT * FROM users  WHERE user_id = $1';
+    try {
+      const { rows } = await db.query(query, [req.params.id]);
+      if (!rows[0]) {
+        return res.status(404).json({status: 404, error: 'User not found'});
+      }
+      return res.status(200).json({ status: 200, data: [rows[0]] });
+    } catch(e) {
+      return res.status(400).json({ status: 400, error: `There was an error retrieving this User. ${e}` });
     }
   },
 
