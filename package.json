@@ -35,7 +35,8 @@
     "nyc": "^13.3.0"
   },
   "scripts": {
-    "test": "nyc --reporter=lcov --reporter=html --reporter=text mocha server/tests/User.js --require @babel/register --exit",
+    "test": "nyc --reporter=lcov --reporter=html --reporter=text mocha server/tests/**.js --recursive --require @babel/register --exit",
+    "dev-test": "nyc --reporter=lcov --reporter=html --reporter=text mocha server/tests/**.js --require @babel/register --exit",
     "lint": "eslint --fix server/**/*.js --ignore-pattern node_modules/",
     "clean": "rm -rf build && mkdir build",
     "build": "npm run clean && babel -d ./build server -s",

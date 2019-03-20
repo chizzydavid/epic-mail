@@ -2,45 +2,74 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../server';
 
-// configure chai
 chai.use(chaiHttp);
 chai.should();
 
-const url = '/api/v1/messages';
-describe('Testing Message Endpoints /api/v1/messages', () => {
-  // testing POST route to create a new messsage
-  // error messages should be specified in the tests
+let token;
+const url = '/api/v2/messages';
+
+describe('Testing Message Endpoints /api/v2/messages', () => {
+
+
+
+  before((done) => {
+    const user = {
+      "email": "davidchizindu@gmail.com",
+      "firstName": "Chizindu",
+      "lastName": "David",
+      "passwordOne": "chizindudavid",
+      "passwordTwo": "chizindudavid"
+    };
+    chai.request(app)
+      .post(`/api/v2/auth/signup`)
+      .send(user)
+      .end(done);
+  })
+
+  before((done) => {
+    const user = {
+      email: 'davidchizindu@gmail.com',
+      password: 'chizindudavid'
+    };
+    chai.request(app)
+      .post(`/api/v2/auth/login`)
+      .send(user)
+      .end((err, res) => {
+        token = res.body.data[0].token;
+        done();
+      });
+  })
+
+
   describe('POST/ - Send a Message', () => {
-    it('Should return status 201(Created) and a Message object', () => {
+    it('Should return status 201(Created) and a Message object', (done) => {
       const message = {
         subject: 'Hello Mail',
         message: "It's nice to meet you, Send me a mail sometime.",
-        senderId: 4,
-        receiverId: 5,
+        receiver: 'jimmycall@gmail.com',
       };
 
       chai.request(app)
         .post(`${url}`)
+        .set('authorization', token)
         .send(message)
         .end((err, res) => {
-          res.should.have.status(201);
-          res.body.should.have.property('data').which.is.an('object');
+          res.body.should.have.status(201);
+          res.body.should.have.property('data').which.is.an('array');
+          done();
         });
     });
 
     it('Should return status 400(Bad Request) if user input incomplete.', () => {
       const message = {
-        id: 1,
         subject: 'Hello Mail',
-        message: '',
-        parentMessageId: 0,
-        senderId: 4,
-        receiverId: 5,
-        status: 'sent',
+        message: 'my mail app rocks',
+        receiver: ''
       };
 
       chai.request(app)
         .post(`${url}`)
+        .set('authorization', token)
         .send(message)
         .end((err, res) => {
           res.should.have.status(400);
@@ -48,15 +77,11 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
         });
     });
 
-    /*    it('Should return status 400(Bad Request) when there is no Token Provided', () => {
+    it('Should return status 400(Bad Request) when there is no Token Provided', () => {
       const message = {
-        id: 1,
         subject: 'Hello Mail',
         message: 'It\'s nice to meet you, Send me a mail sometime.',
-        parentMessageId: 0,
-        senderId: 4,
-        receiverId: 5,
-        status: 'sent',
+        receiver: 'cindy@gmail.com'
       };
 
       chai.request(app)
@@ -66,10 +91,9 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
           res.should.have.status(400);
           res.body.should.have.property('error').equal('No Authentication Token Provided.');
         });
-    }); */
+    });
   });
 
-  // testing GET route to get all recieved messages
   describe('GET/ - Get all recieved messages', () => {
     it('Should return status 200(OK) and an array of messages', () => {
       chai.request(app)
@@ -82,7 +106,6 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
     });
   });
 
-  // testing GET route to get all unread messages
   describe('GET/ unread - Get all unread messages', () => {
     it('Should return status 200(OK) and an array of messages', () => {
       chai.request(app)
@@ -95,7 +118,6 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
     });
   });
 
-  // testing GET route to get all sent messages
   describe('GET/ sent - Get all sent messages', () => {
     it('Should return status 200(OK) and an array of messages', () => {
       chai.request(app)
@@ -108,7 +130,6 @@ describe('Testing Message Endpoints /api/v1/messages', () => {
     });
   });
 
-  // testing GET route to get a single message
   describe('GET/ :id - Get all a single message', () => {
     it('Should return status 200(OK) and a single message object', () => {
       chai.request(app)
