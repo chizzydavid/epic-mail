@@ -53,6 +53,17 @@ const User = {
     }
   },
 
+
+  async getAllUsers(req, res) {
+    const query = 'SELECT * FROM users';
+    try {
+      const { rows, rowCount } = await db.query(query);
+      return res.status(200).json({ status: 200, data: [ {rowCount}, [...rows] ] });
+    } catch(e) {
+      return res.status(400).json({ status: 400, error: `There was an error getting all users. ${e}` });
+    }
+  },
+
 };
 
 export default User;
