@@ -5,7 +5,6 @@ dotenv.config();
 
 const Auth = {
   verifyToken(req, res, next) {
-    const token = req.headers.authorization;
     console.log(token);
     if (!token) { res.status(400).json({ status: 401, error: 'No Authentication Token Provided.' }); return; }
 
