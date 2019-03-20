@@ -28,6 +28,7 @@
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
+    "make-runnable": "^1.3.6",
     "mocha": "^6.0.2",
     "mocha-lcov-reporter": "^1.3.0",
     "nodemon": "^1.18.10",
@@ -41,7 +42,8 @@
     "dev-start": "nodemon --exec babel-node server/server.js",
     "start": "npm run build && node build/server.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test"
+    "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
+    "setup-tables": "node server/db/db.js dropAllTables && node server/db/db.js createAllTables "
   },
   "repository": {
     "type": "git",
