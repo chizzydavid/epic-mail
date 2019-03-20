@@ -76,6 +76,22 @@ const User = {
     }
   },
 
+  async deleteUser(req, res) {
+    const query = 'SELECT * FROM users WHERE user_id = $1';
+    try {
+      const { rowCount } = await db.query(query, [req.params.id]);
+      if (!rowCount) 
+        return res.status(404).json({status: 404, error: 'User not found'});
+    
+      const deleteQuery = 'DELETE FROM users WHERE user_id = $1';
+      const { rows } = await db.query(deleteQuery, [req.params.id]);
+      if(!rows[0]) 
+        return res.status(200).json({status: 200, message: 'User successfully deleted.'});
+    } catch(e) {
+      return res.status(400).json({ status: 400, error: `There was an error deleting this User. ${e}` });
+    }
+  }
+
 };
 
 export default User;
