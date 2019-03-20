@@ -10,6 +10,7 @@ router.post('/api/v2/auth/signup', Validate.signUp, User.createUser);
 router.post('/api/v2/auth/login', Validate.login, User.loginUser);
 router.get('/api/v2/users', Auth.verifyToken, User.getAllUsers);
 router.get('/api/v2/users/:id', Auth.verifyToken, User.getSingleUser);
+router.delete('/api/v2/users/:id', Auth.verifyToken, User.deleteUser);
 
 
 export default router;
