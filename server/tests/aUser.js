@@ -6,12 +6,11 @@ import app from '../server';
 chai.use(chaiHttp);
 chai.should();
 const url = '/api/v2/';
-
+let token;
 describe('Testing User Endpoints /api/v2/', () => {
-  // testing POST routes to create a new user
   describe('POST/ auth/signup - Signup a User', () => {
     const endPoint = 'auth/signup';
-    it('Should return status 201(Created) and a User token', () => {
+    it('Should return status 201(Created) and a User token', (done) => {
       const user = {
         email: 'cindyroland@gmail.com',
         firstName: 'Cindy',
@@ -26,6 +25,8 @@ describe('Testing User Endpoints /api/v2/', () => {
         .end((err, res) => {
           res.should.have.status(201);
           res.body.should.have.property('data').which.is.an('array');
+          res.body.data[0].should.have.property('token');
+          done();
         });
     });
 
@@ -48,7 +49,6 @@ describe('Testing User Endpoints /api/v2/', () => {
     });
   });
 
-  //testing POST routes to login a user
   describe('POST/ auth/login - Login a User', () => {
     const endPoint = 'auth/login';
     it('Should return status 200(OK) and a User token', () => {
@@ -112,63 +112,82 @@ describe('Testing User Endpoints /api/v2/', () => {
     });
   });
 
-  // testing GET route to get all users
   describe('GET/ users - Get all Users', () => {
+    before((done) => {
+      const user = {
+        email: 'cindyroland@gmail.com',
+        password: 'cindyroland',
+      };
+      chai.request(app)
+        .post(`${url}auth/login`)
+        .send(user)
+        .end((err, res) => {
+          token = res.body.data[0].token;
+          done();
+        });      
+    })
     const endPoint = 'users';
 
-    it('Should return status 200(OK) and an array of User objects', () => {
+    it('Should return status 200(OK) and an array of User objects', (done) => {
       chai.request(app)
         .get(`${url}${endPoint}`)
+        .set('authorization', token)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('data').which.is.an('array');
+          done();
         });
     });
   });
 
-  // testing GET route to get a single user
   describe('GET/ users/:id - Get single User', () => {
     const endPoint = 'users/';
 
-    it('Should return status 200(OK) and a User object', () => {
+    it('Should return status 200(OK) and a User object', (done) => {
       chai.request(app)
         .get(`${url}${endPoint}1`)
+        .set('authorization', token)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('data').which.is.an('array');
+          done();
         });
     });
 
-    it('Should return status 404(Not Found) if User ID does not exist.', () => {
+    it('Should return status 404(Not Found) if User ID does not exist.', (done) => {
       chai.request(app)
         .get(`${url}${endPoint}60`)
+        .set('authorization', token)
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.have.property('error').equal('User not found.');
+          done();
         });
     });
   });
 
-
-  // testing DELETE route to delete a user
   describe('DELETE/ users/:id - Delete User', () => {
     const endPoint = 'users/';
 
-    it('Should return status 200(Deleted)', () => {
+    it('Should return status 200(Deleted)', (done) => {
       chai.request(app)
-        .delete(`${url}${endPoint}2`)
+        .delete(`${url}${endPoint}1`)
+        .set('authorization', token)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('message').equal('User successfully deleted.');
+          done();
         });
     });
 
-    it('Should return status 400(Unauthorized access) if User ID is invalid', () => {
+    it('Should return status 404(Unauthorized access) if User ID is invalid', (done) => {
       chai.request(app)
         .delete(`${url}${endPoint}90`)
+        .set('authorization', token)
         .end((err, res) => {
-          res.should.have.status(400);
-          res.body.should.have.property('error').equal('Unauthorized access.');
+          res.should.have.status(404);
+          res.body.should.have.property('error').equal('User not found.');
+          done();
         });
     });
   });

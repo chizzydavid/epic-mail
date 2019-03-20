@@ -10,8 +10,7 @@ services:
   - postgresql
 before-script:
   - npm install
-  - psql -c 'create database travis_ci_test;' -U postgres
-  - npm run setup-tables
+  - psql -c 'CREATE DATABASE epic_mail;' -U postgres
 script:
   - npm test
 after_script:

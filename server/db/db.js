@@ -12,7 +12,6 @@ pool.on('connect', () => {
 })
 
 const createUserTable = () => {
-  console.log('######################### create Usser')
   const queryText =
     `CREATE TABLE IF NOT EXISTS users (
         user_id SERIAL PRIMARY KEY,
@@ -25,11 +24,10 @@ const createUserTable = () => {
 
   pool.query(queryText)
     .then((res) => {
-      console.log(res);
+      console.log('creating user database')
       pool.end();
     })
     .catch((err) => {
-      console.log(err);
       pool.end();
   });
 }
@@ -49,11 +47,9 @@ const createMessageTable = () => {
 
   pool.query(queryText)
     .then((res) => {
-      console.log(res);
       pool.end();
     })
     .catch((err) => {
-      console.log(err);
       pool.end();
   });
 }
@@ -69,11 +65,9 @@ const createGroupTable = () => {
 
   pool.query(queryText)
     .then((res) => {
-      console.log(res);
       pool.end();
     })
     .catch((err) => {
-      console.log(err);
       pool.end();
   });
 }
@@ -88,11 +82,9 @@ const createGroupUsersTable = () => {
 
   pool.query(queryText)
     .then((res) => {
-      console.log(res);
       pool.end();
     })
     .catch((err) => {
-      console.log(err);
       pool.end();
   });
 }
@@ -105,11 +97,9 @@ const createInboxTable = () => {
 
   pool.query(queryText)
     .then((res) => {
-      console.log(res);
       pool.end();
     })
     .catch((err) => {
-      console.log(err);
       pool.end();
   });
 }
@@ -117,22 +107,33 @@ const createInboxTable = () => {
 const createOutboxTable = () => {
   const queryText =
   `CREATE TABLE IF NOT EXISTS outbox (
-  receiver_id INTEGER NOT NULL,
+  sender_id INTEGER NOT NULL,
   message_id INTEGER NOT NULL)`;
 
   pool.query(queryText)
     .then((res) => {
-      console.log(res);
       pool.end();
     })
     .catch((err) => {
-      console.log(err);
       pool.end();
   });
 }
 
+const insertIntoUsers = () => {
+  const queryText =
+  `INSERT INTO users (email, first_name, last_name, password, is_admin) 
+   VALUES('jimmycall@gmail.com', 'Jimmy', 'Call', 'jimmycall', 0)`;
 
-
+  pool.query(queryText)
+    .then((res) => {
+      console.log(res);
+      console.log('inserting into users');
+      pool.end();
+    })
+    .catch((err) => {
+      pool.end();
+  });
+}
 
 
 const dropUserTable = () => {
@@ -140,11 +141,9 @@ const dropUserTable = () => {
 
   pool.query(queryText)
     .then((res) => {
-      console.log(res);
       pool.end();
     })
     .catch((err) => {
-      console.log(err);
       pool.end();
   });
 }
@@ -227,6 +226,7 @@ const createAllTables = () => {
   createGroupUsersTable();
   createInboxTable();
   createOutboxTable();
+  insertIntoUsers();
 }
 
 const dropAllTables = () => {

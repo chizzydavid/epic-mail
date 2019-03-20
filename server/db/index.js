@@ -7,12 +7,9 @@ const pool = new Pool({
 	connectionString: process.env.DATABASE_URL
 });
 
+pool.on('connect', () => console.log('connected to the db'));
 export default {
 	query(text, params) {
-		return new Promise((resolve, reject) => {
-			pool.query(text, params)
-			.then(res => resolve(res))
-			.catch(err => reject(err))
-		});
+		return pool.query(text, params);
 	}
 }
