@@ -11,7 +11,6 @@ services:
 before-script:
   - npm install
   - psql -c 'create database epic_mail;' -U postgres
-  - npm run setup-tables
 script:
   - npm test
 after_script:
