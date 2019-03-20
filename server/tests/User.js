@@ -5,9 +5,9 @@ import app from '../server';
 // configure chai
 chai.use(chaiHttp);
 chai.should();
-const url = '/api/v1/';
+const url = '/api/v2/';
 
-describe('Testing User Endpoints /api/v1/', () => {
+describe('Testing User Endpoints /api/v2/', () => {
   // testing POST routes to create a new user
   describe('POST/ auth/signup - Signup a User', () => {
     const endPoint = 'auth/signup';
@@ -53,8 +53,8 @@ describe('Testing User Endpoints /api/v1/', () => {
     const endPoint = 'auth/login';
     it('Should return status 200(OK) and a User token', () => {
       const user = {
-        email: 'davidchizindu@gmail.com',
-        password: 'chizindudavid',
+        email: 'cindyroland@gmail.com',
+        password: 'cindyroland',
       };
 
       chai.request(app)
@@ -132,7 +132,7 @@ describe('Testing User Endpoints /api/v1/', () => {
 
     it('Should return status 200(OK) and a User object', () => {
       chai.request(app)
-        .get(`${url}${endPoint}2`)
+        .get(`${url}${endPoint}1`)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('data').which.is.an('array');
