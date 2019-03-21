@@ -104,6 +104,29 @@ const Message = {
     }
   },
 
+  async deleteReceivedMessage(req, res) {
+    const query = 'SELECT * FROM messages WHERE message_id =$1';
+    try {
+      const { rows } = await db.query(query, [req.params.id]);
+      if (!rows[0]) {
+        return res.status(404).json({status: 404, error: 'Message not found'});
+      }
+      const { receiver_id } = rows[0];
+      if (req.user.id == receiver_id) {
+        const query = 'DELETE FROM inbox WHERE receiver_id = $1 AND message_id = $2';
+ 
+        let { rowCount } = await db.query(query, [receiver_id, req.params.id]);
+        if (rowCount == 0) {
+            return res.status(200).json({status: 200, message: 'Message successfully deleted.'});          
+        }
+      } else {
+        return res.status(400).json({status: 400, error: 'Unauthorized access.'});
+      }
+      
+    } catch(e) {
+      return res.status(400).json({ status: 400, error: `There was an error deleting this Message. ${e}` });
+    }
+  }
 
 };
 export default Message;
