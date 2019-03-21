@@ -53,7 +53,6 @@ const Message = {
         return res.status(200).json({ status: 200, message: 'You have no received messages yet.' });
       return res.status(200).json({ status: 200, data: [ {rowCount}, [...rows] ] });
     } catch(e) {
-      console.log('##########################################', e);
       return res.status(400).json({ status: 400, error:`There was an error getting all your received messages. ${e}`});
     }
   },
@@ -85,5 +84,26 @@ const Message = {
       return res.status(400).json({ status: 400, error:`There was an error getting your sent messages. ${e}` });
     }
   },
+
+  async getSingleMessage(req, res) {
+    const query = 'SELECT * FROM messages WHERE message_id =$1';
+    try {
+      const { rows } = await db.query(query, [req.params.id]);
+      if (!rows[0]) {
+        return res.status(404).json({status: 404, error: 'Message not found'});
+      }
+      const { sender_id, receiver_id } = rows[0];
+      if (req.user.id == sender_id || req.user.id == receiver_id) {
+        return res.status(200).json({ status: 200, data: [rows[0]] });
+      } else {
+        return res.status(400).json({status: 400, error: 'Unauthorized access.'});
+      }
+      
+    } catch(e) {
+      return res.status(400).json({ status: 400, error: `There was an error retrieving this Message. ${e}` });
+    }
+  },
+
+
 };
 export default Message;

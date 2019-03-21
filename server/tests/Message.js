@@ -36,6 +36,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
       .send(user)
       .end((err, res) => {
         token = res.body.data[0].token;
+        userId = res.body.data[0].userId;
         done();
       });
   })
@@ -46,7 +47,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
       const message = {
         subject: 'Hello Mail',
         message: "It's nice to meet you, Send me a mail sometime.",
-        receiver: 'jimmycall@gmail.com',
+        receiver: 'davidchizindu@gmail.com',
       };
 
       chai.request(app)
@@ -125,9 +126,8 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
         .get(`${url}/sent`)
         .set('authorization', token)
         .end((err, res) => {
-          console.log(res);
           res.should.have.status(200);
-          res.body.should.have.property('messag').equal('You haven\'t sent any messages yet.');
+          res.body.should.have.property('message').equal('You haven\'t sent any messages yet.');
         });
     });
   });
@@ -135,8 +135,8 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
   describe('GET/ :id - Get all a single message', () => {
     it('Should return status 200(OK) and a single message object', () => {
       chai.request(app)
-        .get(`${url}/4`)
-        .send({ id: 6 })
+        .get(`${url}/1`)
+        .set('authorization', token)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('data').which.is.an('object');
@@ -146,7 +146,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
     it('Should return status 404(Not Found) if Message ID is invalid.', () => {
       chai.request(app)
         .get(`${url}/5`)
-        .send({ id: 6 })
+        .set('authorization', token)
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.have.property('error').equal('Message not found.');
