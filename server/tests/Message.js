@@ -98,7 +98,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
         .set('authorization', token)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.have.property('message').equal('You have no received messages yet.');
+          res.body.should.have.property('data').which.is.an('array');
           done();
         });
     });
@@ -111,7 +111,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
         .set('authorization', token)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.have.property('message').equal('You have no unread messages at this time.');
+          res.body.should.have.property('data').which.is.an('array');
         });
     });
   });
@@ -123,7 +123,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
         .set('authorization', token)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.have.property('message').equal('You haven\'t sent any messages yet.');
+          res.body.should.have.property('data').which.is.an('array');
         });
     });
   });

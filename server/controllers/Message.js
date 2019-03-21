@@ -49,8 +49,6 @@ const Message = {
 
     try {
       const { rows, rowCount } = await db.query(query, [req.user.id]);
-      if (rowCount === 0)
-        return res.status(200).json({ status: 200, message: 'You have no received messages yet.' });
       return res.status(200).json({ status: 200, data: [ {rowCount}, [...rows] ] });
     } catch(e) {
       return res.status(400).json({ status: 400, error:`There was an error getting all your received messages. ${e}`});
@@ -62,9 +60,7 @@ const Message = {
       FROM inbox I INNER JOIN messages M USING(receiver_id) WHERE receiver_id = $1 AND status=$2`;
 
     try {
-      const { rows, rowCount } = await db.query(query, [req.user.id, "unread"]);
-      if (rowCount === 0)
-        return res.status(200).json({ status: 400, message: 'You have no unread messages at this time.' });    
+      const { rows, rowCount } = await db.query(query, [req.user.id, "unread"]); 
       return res.status(200).json({ status: 200, data: [ {rowCount}, [...rows] ] });
     } catch(error) {
       return res.status(400).json({ status: 400, error: 'There was an error getting your unread messages.' });
@@ -77,8 +73,6 @@ const Message = {
 
     try {
       const { rows, rowCount } = await db.query(query, [req.user.id]);
-      if (rowCount === 0)
-        return res.status(200).json({ status: 400, message: 'You haven\'t sent any messages yet.' });    
       return res.status(200).json({ status: 200, data: [ {rowCount}, [...rows] ] });
     } catch(e) {
       return res.status(400).json({ status: 400, error:`There was an error getting your sent messages. ${e}` });
