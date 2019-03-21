@@ -44,5 +44,21 @@ const Message = {
   },
 
 
+  async getAllReceived(req, res) {
+    const query = `SELECT DISTINCT I.receiver_id, M.message_id, M.subject, M.message, M.parent_msg_id, M.status, M.created_at 
+      FROM inbox I INNER JOIN messages M USING(receiver_id) WHERE receiver_id = $1`;
+
+    try {
+      const { rows, rowCount } = await db.query(query, [req.user.id]);
+      if (rowCount === 0)
+        return res.status(200).json({ status: 200, message: 'You have no received messages yet.' });
+      return res.status(200).json({ status: 200, data: [ {rowCount}, [...rows] ] });
+    } catch(e) {
+      console.log('##########################################', e);
+      return res.status(400).json({ status: 400, error:`There was an error getting all your received messages. ${e}`});
+    }
+  },
+
+
 };
 export default Message;

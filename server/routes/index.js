@@ -14,6 +14,7 @@ router.get('/api/v2/users/:id', Auth.verifyToken, User.getSingleUser);
 router.delete('/api/v2/users/:id', Auth.verifyToken, User.deleteUser);
 
 router.post('/api/v2/messages', Validate.sendMessage, Auth.verifyToken, Message.sendMessage);
+router.get('/api/v2/messages', Auth.verifyToken, Message.getAllReceived);
 
 
 export default router;
