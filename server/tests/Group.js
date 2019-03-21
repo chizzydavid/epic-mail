@@ -6,17 +6,17 @@ chai.use(chaiHttp);
 chai.should();
 
 let token;
-const url = '/api/v2/messages';
+const url = '/api/v2/groups';
 
-describe('Testing Message Endpoints /api/v2/messages', () => {
+describe('Testing Group Endpoints /api/v2/groups', () => {
 
   before((done) => {
     const user = {
-      "email": "davidchizindu@gmail.com",
-      "firstName": "Chizindu",
-      "lastName": "David",
-      "passwordOne": "chizindudavid",
-      "passwordTwo": "chizindudavid"
+      "email": "johnsnow@gmail.com",
+      "firstName": "John",
+      "lastName": "Snow",
+      "passwordOne": "johnsnow",
+      "passwordTwo": "johnsnow"
     };
     chai.request(app)
       .post(`/api/v2/auth/signup`)
@@ -26,8 +26,8 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
 
   before((done) => {
     const user = {
-      email: 'davidchizindu@gmail.com',
-      password: 'chizindudavid'
+      email: 'johnsnow@gmail.com',
+      password: 'johnsnow'
     };
     chai.request(app)
       .post(`/api/v2/auth/login`)
@@ -38,18 +38,17 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
       });
   })
 
-  describe('POST/ - Send a Message', () => {
-    it('Should return status 201(Created) and a Message object', (done) => {
-      const message = {
-        subject: 'Hello Mail',
-        message: "It's nice to meet you, Send me a mail sometime.",
-        receiver: 'davidchizindu@gmail.com',
+  describe('POST/ - Create a Group', () => {
+    it('Should return status 201(Created) and a Group object', (done) => {
+      const group = {
+        name: 'Bootcamp Guys',
+        description: "New group for all my bootcamp buddies.",
       };
 
       chai.request(app)
         .post(`${url}`)
         .set('authorization', token)
-        .send(message)
+        .send(group)
         .end((err, res) => {
           res.body.should.have.status(201);
           res.body.should.have.property('data').which.is.an('array');
@@ -58,16 +57,15 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
     });
 
     it('Should return status 400(Bad Request) if user input incomplete.', () => {
-      const message = {
-        subject: 'Hello Mail',
-        message: 'my mail app rocks',
-        receiver: ''
+      const group = {
+        name: 'Hello Mail',
+        description: '  '
       };
 
       chai.request(app)
         .post(`${url}`)
         .set('authorization', token)
-        .send(message)
+        .send(group)
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.have.property('error').which.is.an('array');
@@ -75,15 +73,14 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
     });
 
     it('Should return status 400(Bad Request) when there is no Token Provided', () => {
-      const message = {
-        subject: 'Hello Mail',
-        message: 'It\'s nice to meet you, Send me a mail sometime.',
-        receiver: 'cindy@gmail.com'
+      const group = {
+        name: 'Hello Mail',
+        description: 'Mailing group',
       };
 
       chai.request(app)
         .post(`${url}`)
-        .send(message)
+        .send(group)
         .end((err, res) => {
           res.should.have.status(401);
           res.body.should.have.property('error').equal('No Authentication Token Provided.');
@@ -91,7 +88,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
     });
   });
 
-  describe('GET/ - Get all recieved messages', () => {
+ /* describe('GET/ - Get all recieved messages', () => {
     it('Should return status 200(OK) and an array of messages', (done) => {
       chai.request(app)
         .get(`${url}`)
@@ -171,5 +168,5 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
           res.body.should.have.property('error').equal('Message not found.');
         });
     });
-  });
+  });*/
 });
