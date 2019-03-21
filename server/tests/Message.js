@@ -123,10 +123,11 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
     it('Should return status 200(OK) and an array of messages', () => {
       chai.request(app)
         .get(`${url}/sent`)
-        .send({ id: 6 })
+        .set('authorization', token)
         .end((err, res) => {
+          console.log(res);
           res.should.have.status(200);
-          res.body.should.have.property('data').which.is.an('array');
+          res.body.should.have.property('messag').equal('You haven\'t sent any messages yet.');
         });
     });
   });
