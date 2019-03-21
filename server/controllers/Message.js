@@ -59,6 +59,18 @@ const Message = {
     }
   },
 
+  async getAllUnread(req, res) {
+    const query = `SELECT DISTINCT I.receiver_id, M.message_id, M.subject, M.message, M.parent_msg_id, M.status, M.created_at 
+      FROM inbox I INNER JOIN messages M USING(receiver_id) WHERE receiver_id = $1 AND status=$2`;
 
+    try {
+      const { rows, rowCount } = await db.query(query, [req.user.id, "unread"]);
+      if (rowCount === 0)
+        return res.status(200).json({ status: 400, message: 'You have no unread messages at this time.' });    
+      return res.status(200).json({ status: 200, data: [ {rowCount}, [...rows] ] });
+    } catch(error) {
+      return res.status(400).json({ status: 400, error: 'There was an error getting your unread messages.' });
+    }
+  },
 };
 export default Message;
