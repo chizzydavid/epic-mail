@@ -10,8 +10,6 @@ const url = '/api/v2/messages';
 
 describe('Testing Message Endpoints /api/v2/messages', () => {
 
-
-
   before((done) => {
     const user = {
       "email": "davidchizindu@gmail.com",
@@ -36,11 +34,9 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
       .send(user)
       .end((err, res) => {
         token = res.body.data[0].token;
-        userId = res.body.data[0].userId;
         done();
       });
   })
-
 
   describe('POST/ - Send a Message', () => {
     it('Should return status 201(Created) and a Message object', (done) => {
