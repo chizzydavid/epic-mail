@@ -135,17 +135,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
         .set('authorization', token)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.have.property('data').which.is.an('object');
-        });
-    });
-
-    it('Should return status 404(Not Found) if Message ID is invalid.', () => {
-      chai.request(app)
-        .get(`${url}/5`)
-        .set('authorization', token)
-        .end((err, res) => {
-          res.should.have.status(404);
-          res.body.should.have.property('error').equal('Message not found.');
+          res.body.should.have.property('data').which.is.an('array');
         });
     });
   });
@@ -154,8 +144,8 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
   describe('DELETE/ :id - Delete a Message', () => {
     it('Should return status 200(Message deleted successfully)', () => {
       chai.request(app)
-        .delete(`${url}/4`)
-        .send({ id: 6 })
+        .delete(`${url}/1`)
+        .set('authorization', token)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('message').equal('Message successfully deleted.');
@@ -165,7 +155,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
     it('Should return status 404(Not found) if Message ID is invalid', () => {
       chai.request(app)
         .delete(`${url}/5`)
-        .send({ id: 6 })
+        .set('authorization', token)
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.have.property('error').equal('Message not found.');

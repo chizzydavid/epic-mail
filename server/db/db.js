@@ -3,9 +3,16 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
-});
+let connectionString;
+console.log(process.env.NODE_ENV)
+console.log(process.env.DATABASE_URL)
+console.log(process.env.DATABASE_TEST_URL)
+if(process.env.NODE_ENV === 'test') {
+  connectionString = process.env.DATABASE_TEST_URL
+} else {
+  connectionString = process.env.DATABASE_URL
+}
+const pool = new Pool({ connectionString });
 
 pool.on('connect', () => {
   console.log('connected to the db');
@@ -25,10 +32,8 @@ const createUserTable = () => {
   pool.query(queryText)
     .then((res) => {
       console.log('creating user database')
-      pool.end();
     })
     .catch((err) => {
-      pool.end();
   });
 }
 
@@ -47,10 +52,8 @@ const createMessageTable = () => {
 
   pool.query(queryText)
     .then((res) => {
-      pool.end();
     })
     .catch((err) => {
-      pool.end();
   });
 }
 
@@ -65,10 +68,8 @@ const createGroupTable = () => {
 
   pool.query(queryText)
     .then((res) => {
-      pool.end();
     })
     .catch((err) => {
-      pool.end();
   });
 }
 
@@ -82,10 +83,8 @@ const createGroupUsersTable = () => {
 
   pool.query(queryText)
     .then((res) => {
-      pool.end();
     })
     .catch((err) => {
-      pool.end();
   });
 }
 
@@ -97,10 +96,8 @@ const createInboxTable = () => {
 
   pool.query(queryText)
     .then((res) => {
-      pool.end();
     })
     .catch((err) => {
-      pool.end();
   });
 }
 
@@ -112,10 +109,8 @@ const createOutboxTable = () => {
 
   pool.query(queryText)
     .then((res) => {
-      pool.end();
     })
     .catch((err) => {
-      pool.end();
   });
 }
 
@@ -128,10 +123,8 @@ const insertIntoUsers = () => {
     .then((res) => {
       console.log(res);
       console.log('inserting into users');
-      pool.end();
     })
     .catch((err) => {
-      pool.end();
   });
 }
 
@@ -141,10 +134,8 @@ const dropUserTable = () => {
 
   pool.query(queryText)
     .then((res) => {
-      pool.end();
     })
     .catch((err) => {
-      pool.end();
   });
 }
 
@@ -154,11 +145,9 @@ const dropMessageTable = () => {
   pool.query(queryText)
     .then((res) => {
       console.log(res);
-      pool.end();
     })
     .catch((err) => {
       console.log(err);
-      pool.end();
   });
 }
 
@@ -168,11 +157,9 @@ const dropGroupTable = () => {
   pool.query(queryText)
     .then((res) => {
       console.log(res);
-      pool.end();
     })
     .catch((err) => {
       console.log(err);
-      pool.end();
   });
 }
 
@@ -182,11 +169,9 @@ const dropGroupUsersTable = () => {
   pool.query(queryText)
     .then((res) => {
       console.log(res);
-      pool.end();
     })
     .catch((err) => {
       console.log(err);
-      pool.end();
   });
 }
 
@@ -196,11 +181,9 @@ const dropInboxTable = () => {
   pool.query(queryText)
     .then((res) => {
       console.log(res);
-      pool.end();
     })
     .catch((err) => {
       console.log(err);
-      pool.end();
   });
 }
 
@@ -210,11 +193,9 @@ const dropOutboxTable = () => {
   pool.query(queryText)
     .then((res) => {
       console.log(res);
-      pool.end();
     })
     .catch((err) => {
       console.log(err);
-      pool.end();
   });
 }
 
@@ -240,7 +221,6 @@ const dropAllTables = () => {
 
 pool.on('remove', () => {
   console.log('client removed');
-  process.exit(0);
 });
 
 

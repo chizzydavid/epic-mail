@@ -103,19 +103,19 @@ const Message = {
     try {
       const { rows } = await db.query(query, [req.params.id]);
       if (!rows[0]) {
-        return res.status(404).json({status: 404, error: 'Message not found'});
+        return res.status(404).json({status: 404, error: 'Message not found.'});
       }
       const { receiver_id } = rows[0];
-      if (req.user.id == receiver_id) {
-        const query = 'DELETE FROM inbox WHERE receiver_id = $1 AND message_id = $2';
- 
-        let { rowCount } = await db.query(query, [receiver_id, req.params.id]);
-        if (rowCount == 0) {
-            return res.status(200).json({status: 200, message: 'Message successfully deleted.'});          
-        }
-      } else {
+      if (Number(req.user.id) !== receiver_id) {
         return res.status(400).json({status: 400, error: 'Unauthorized access.'});
       }
+
+      const queryStatement = 'DELETE FROM inbox WHERE receiver_id = $1 AND message_id = $2';
+      let result = await db.query(queryStatement, [receiver_id, req.params.id]);
+      console.log(result);
+      if (!rows[0]) {
+        return res.status(200).json({status: 200, message: 'Message successfully deleted.'});          
+      } /**/
       
     } catch(e) {
       return res.status(400).json({ status: 400, error: `There was an error deleting this Message. ${e}` });
