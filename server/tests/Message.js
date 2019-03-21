@@ -95,13 +95,15 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
   });
 
   describe('GET/ - Get all recieved messages', () => {
-    it('Should return status 200(OK) and an array of messages', () => {
+    it('Should return status 200(OK) and an array of messages', (done) => {
       chai.request(app)
         .get(`${url}`)
-        .send({ id: 6 })
+        .set('authorization', token)
         .end((err, res) => {
+          console.log(res);
           res.should.have.status(200);
-          res.body.should.have.property('data').which.is.an('array');
+          res.body.should.have.property('message').equal('You have no received messages yet.');
+          done();
         });
     });
   });
@@ -110,7 +112,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
     it('Should return status 200(OK) and an array of messages', () => {
       chai.request(app)
         .get(`${url}/unread`)
-        .send({ id: 6 })
+        .set('authorization', token)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('data').which.is.an('array');
