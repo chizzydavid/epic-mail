@@ -41,7 +41,7 @@
     "clean": "rm -rf build && mkdir build",
     "build": "npm run clean && babel -d ./build server -s",
     "dev-start": "nodemon --exec babel-node server/server.js",
-    "start": "npm setup-tables && npm run build && node build/server.js",
+    "start": "npm run setup-tables && npm run build && node build/server.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
     "setup-tables": "node server/db/db.js dropAllTables && node server/db/db.js createAllTables "
