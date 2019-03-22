@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import User from '../controllers/User';
 import Message from '../controllers/Message';
+import Group from '../controllers/Group';
 import Validate from '../middlewares/validation/validation';
 import Auth from '../middlewares/Auth';
 
@@ -19,6 +20,9 @@ router.get('/api/v2/messages/unread', Auth.verifyToken, Message.getAllUnread);
 router.get('/api/v2/messages/sent', Auth.verifyToken, Message.getAllSent);
 router.get('/api/v2/messages/:id', Auth.verifyToken, Message.getSingleMessage);
 router.delete('/api/v2/messages/:id', Auth.verifyToken, Message.deleteReceivedMessage);
+
+router.post('/api/v2/groups', Validate.newGroup, Auth.verifyToken, Group.createGroup);
+
 
 export default router;
  

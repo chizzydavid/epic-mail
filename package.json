@@ -35,16 +35,15 @@
     "nyc": "^13.3.0"
   },
   "scripts": {
-    "test": "psql -c 'CREATE DATABASE epic_mail;' -U postgres && npm run setup-tables && nyc --reporter=lcov --reporter=html --reporter=text mocha server/tests/aUser.js server/tests/Message.js --require @babel/register --exit",
-    "dev-test": "nyc --reporter=lcov --reporter=html --reporter=text mocha server/tests/**.js --require @babel/register --exit",
+    "test": "npm run migration && nyc --reporter=lcov --reporter=html --reporter=text mocha server/tests/User.js server/tests/Message.js server/tests/Group.js --require @babel/register --exit",
     "lint": "eslint --fix server/**/*.js --ignore-pattern node_modules/",
     "clean": "rm -rf build && mkdir build",
     "build": "npm run clean && babel -d ./build server -s",
     "dev-start": "nodemon --exec babel-node server/server.js",
-    "start": "npm setup-tables && npm run build && node build/server.js",
+    "start": "npm run migration && npm run build && node build/server.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
-    "setup-tables": "node server/db/db.js dropAllTables && node server/db/db.js createAllTables "
+    "migration": "node server/db/db.js dropAllTables && node server/db/db.js createAllTables"
   },
   "repository": {
     "type": "git",

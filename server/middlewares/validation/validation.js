@@ -65,6 +65,24 @@ const Validate = {
 
     next();
   },
+
+  newGroup(req, res, next) {
+    const {
+      name, description
+    } = req.body;
+    const errors = [];
+
+    if (name.trim() === '') { errors.push('Please enter a group name.'); } else
+    if (!/^[a-zA-Z0-9 ]{4,}$/.test(name)) errors.push('Please enter a valid first name');
+
+    if (description.trim() === '') { errors.push('Please enter a group description.'); } else
+    if (!/^[a-zA-Z0-9."';: ]{4,}$/.test(description)) errors.push('Please enter a valid description');
+
+
+    if (errors.length !== 0) { res.status(400).json({ status: 400, error: errors }); return; }
+
+    next();
+  },  
 };
 
 export default Validate;

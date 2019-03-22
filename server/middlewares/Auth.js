@@ -6,7 +6,7 @@ dotenv.config();
 const Auth = {
   verifyToken(req, res, next) {
     const token = req.headers.authorization;
-    if (!token) { res.status(400).json({ status: 401, error: 'No Authentication Token Provided.' }); return; }
+    if (!token) { res.status(401).json({ status: 401, error: 'No Authentication Token Provided.' }); return; }
 
     try {
       const decoded = jwt.verify(token, process.env.SECRETKEY);

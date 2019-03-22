@@ -11,7 +11,7 @@ pool.on('connect', () => {
   console.log('connected to the db');
 })
 
-const createUserTable = () => {
+const createUserTable = async () => {
   const queryText =
     `CREATE TABLE IF NOT EXISTS users (
         user_id SERIAL PRIMARY KEY,
@@ -22,17 +22,10 @@ const createUserTable = () => {
         is_admin SMALLINT
      )`;
 
-  pool.query(queryText)
-    .then((res) => {
-      console.log('creating user database')
-      pool.end();
-    })
-    .catch((err) => {
-      pool.end();
-  });
+  await pool.query(queryText)
 }
 
-const createMessageTable = () => {
+const createMessageTable = async () => {
   const queryText =
   `CREATE TABLE IF NOT EXISTS messages (
     message_id SERIAL PRIMARY KEY,
@@ -45,16 +38,10 @@ const createMessageTable = () => {
     status VARCHAR(10) NOT NULL
   )`;
 
-  pool.query(queryText)
-    .then((res) => {
-      pool.end();
-    })
-    .catch((err) => {
-      pool.end();
-  });
+  await pool.query(queryText)
 }
 
-const createGroupTable = () => {
+const createGroupTable = async () => {
   const queryText =
   `CREATE TABLE IF NOT EXISTS groups (
     group_id SERIAL PRIMARY KEY,
@@ -63,16 +50,10 @@ const createGroupTable = () => {
     owner_id INTEGER NOT NULL
   )`;
 
-  pool.query(queryText)
-    .then((res) => {
-      pool.end();
-    })
-    .catch((err) => {
-      pool.end();
-  });
+  await pool.query(queryText)
 }
 
-const createGroupUsersTable = () => {
+const createGroupUsersTable = async () => {
   const queryText =
   `CREATE TABLE IF NOT EXISTS group_users (
     group_id INTEGER NOT NULL,
@@ -80,163 +61,97 @@ const createGroupUsersTable = () => {
     user_role VARCHAR(20) NOT NULL
   )`;
 
-  pool.query(queryText)
-    .then((res) => {
-      pool.end();
-    })
-    .catch((err) => {
-      pool.end();
-  });
+  await pool.query(queryText)
 }
 
-const createInboxTable = () => {
+const createInboxTable = async () => {
   const queryText =
   `CREATE TABLE IF NOT EXISTS inbox (
   receiver_id INTEGER NOT NULL,
   message_id INTEGER NOT NULL)`;
 
-  pool.query(queryText)
-    .then((res) => {
-      pool.end();
-    })
-    .catch((err) => {
-      pool.end();
-  });
+  await pool.query(queryText)
 }
 
-const createOutboxTable = () => {
+const createOutboxTable = async () => {
   const queryText =
   `CREATE TABLE IF NOT EXISTS outbox (
   sender_id INTEGER NOT NULL,
   message_id INTEGER NOT NULL)`;
 
-  pool.query(queryText)
-    .then((res) => {
-      pool.end();
-    })
-    .catch((err) => {
-      pool.end();
-  });
+  await pool.query(queryText)
 }
 
-const insertIntoUsers = () => {
+const insertIntoUsers = async () => {
   const queryText =
   `INSERT INTO users (email, first_name, last_name, password, is_admin) 
    VALUES('jimmycall@gmail.com', 'Jimmy', 'Call', 'jimmycall', 0)`;
 
-  pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      console.log('inserting into users');
-      pool.end();
-    })
-    .catch((err) => {
-      pool.end();
-  });
+  await pool.query(queryText)
 }
 
 
-const dropUserTable = () => {
+const dropUserTable = async () => {
   const queryText = 'DROP TABLE IF EXISTS users';
 
-  pool.query(queryText)
-    .then((res) => {
-      pool.end();
-    })
-    .catch((err) => {
-      pool.end();
-  });
+  await pool.query(queryText)
 }
 
-const dropMessageTable = () => {
+const dropMessageTable = async () => {
   const queryText = 'DROP TABLE IF EXISTS messages';
 
-  pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+  await pool.query(queryText)
 }
 
-const dropGroupTable = () => {
+const dropGroupTable = async () => {
   const queryText = 'DROP TABLE IF EXISTS groups';
 
-  pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+  await pool.query(queryText)
 }
 
-const dropGroupUsersTable = () => {
+const dropGroupUsersTable = async () => {
   const queryText ='DROP TABLE IF EXISTS group_users';
 
-  pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+  await pool.query(queryText)
 }
 
-const dropInboxTable = () => {
+const dropInboxTable = async () => {
   const queryText ='DROP TABLE IF EXISTS inbox';
 
-  pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+  await pool.query(queryText)
 }
 
-const dropOutboxTable = () => {
+const dropOutboxTable = async () => {
   const queryText ='DROP TABLE IF EXISTS outbox';
 
-  pool.query(queryText)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-  });
+  await pool.query(queryText)
 }
 
 
-const createAllTables = () => {
-  createUserTable();
-  createMessageTable();
-  createGroupTable();
-  createGroupUsersTable();
-  createInboxTable();
-  createOutboxTable();
-  insertIntoUsers();
+const createAllTables = async () => {
+  await createUserTable();
+  await createMessageTable();
+  await createGroupTable();
+  await createGroupUsersTable();
+  await createInboxTable();
+  await createOutboxTable();
+  await insertIntoUsers();
 }
 
-const dropAllTables = () => {
-  dropUserTable();
-  dropMessageTable();
-  dropGroupTable();
-  dropGroupUsersTable();
-  dropInboxTable();
-  dropOutboxTable();
+const dropAllTables = async () => {
+  await dropUserTable();
+  await dropMessageTable();
+  await dropGroupTable();
+  await dropGroupUsersTable();
+  await dropInboxTable();
+  await dropOutboxTable();
 }
+
+const setupTables = async () => {
+  await dropAllTables();
+  await createAllTables();
+}
+
 
 pool.on('remove', () => {
   console.log('client removed');
@@ -245,14 +160,12 @@ pool.on('remove', () => {
 
 
 module.exports = {
+  dropAllTables,
   createAllTables,
-  dropAllTables
+  setupTables
 };
 
 require('make-runnable');
-
-
-
 
 
 

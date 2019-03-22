@@ -90,7 +90,7 @@ const Message = {
     try {
       const { rows } = await db.query(query, [req.params.id]);
       if (!rows[0]) {
-        return res.status(404).json({status: 404, error: 'Message not found'});
+        return res.status(404).json({status: 404, error: 'Message not found.'});
       }
       const { sender_id, receiver_id } = rows[0];
       if (req.user.id == sender_id || req.user.id == receiver_id) {
@@ -109,7 +109,7 @@ const Message = {
     try {
       const { rows } = await db.query(query, [req.params.id]);
       if (!rows[0]) {
-        return res.status(404).json({status: 404, error: 'Message not found'});
+        return res.status(404).json({status: 404, error: 'Message not found.'});
       }
       const { receiver_id } = rows[0];
       if (req.user.id == receiver_id) {
