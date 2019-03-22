@@ -21,8 +21,15 @@ const Group = {
     }
   },
 
-
-
+  async getAllUserGroups(req, res) {
+    const query = 'SELECT * FROM groups WHERE owner_id = $1';
+    try {
+      const { rows, rowCount } = await db.query(query, [req.user.id]);
+      return res.status(200).json({ status: 200, data: [ {rowCount}, [...rows] ] });
+    } catch(e) {
+      return res.status(400).json({ status: 400, error: `There was an error getting all your groups. ${e}` });
+    }
+  },
 };
 
 export default Group;

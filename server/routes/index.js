@@ -22,6 +22,7 @@ router.get('/api/v2/messages/:id', Auth.verifyToken, Message.getSingleMessage);
 router.delete('/api/v2/messages/:id', Auth.verifyToken, Message.deleteReceivedMessage);
 
 router.post('/api/v2/groups', Validate.newGroup, Auth.verifyToken, Group.createGroup);
+router.get('/api/v2/groups', Auth.verifyToken, Group.getAllUserGroups);
 
 
 export default router;
