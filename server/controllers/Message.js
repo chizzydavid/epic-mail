@@ -1,5 +1,5 @@
 import db from '../db';
-
+import moment from 'moment';
 const Message = {
   async sendMessage(req, res) {
     const getReceiver = 'SELECT user_id FROM users WHERE email = $1';
