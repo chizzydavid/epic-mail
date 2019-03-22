@@ -61,7 +61,6 @@ describe('Testing Group Endpoints /api/v2/groups', () => {
         name: 'Hello Mail',
         description: '  '
       };
-
       chai.request(app)
         .post(`${url}`)
         .set('authorization', token)
@@ -112,6 +111,35 @@ describe('Testing Group Endpoints /api/v2/groups', () => {
         });
     });
   });
+
+  describe('GET/ :groupId/users - Add new users to a group', () => {
+    it('Should return status 201(OK) and a message of success.', () => {
+      chai.request(app)
+        .post(`${url}/1/users`)
+        .set('authorization', token)
+        .send({users: [3, 6]})
+        .end((err, res) => {
+          res.should.have.status(201);
+          res.body.should.have.property('data').which.is.an('array');
+        });
+    });
+  });
+
+  describe('DELETE/ :groupId/users/:id - Delete a user from a group', () => {
+    it('Should return status 200(OK) and a message of success.', () => {
+      chai.request(app)
+        .delete(`${url}/1/users/6`)
+        .set('authorization', token)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property('message').equal('User deleted successfully.');
+        });
+    });
+  });
+
+/*
+
+*/
 
 
 });
