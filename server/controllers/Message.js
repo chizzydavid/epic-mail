@@ -19,7 +19,7 @@ const Message = {
       VALUES($1, $2, $3, $4, $5, $6, $7) returning *`;
 
     const values = [
-      Date.now(),
+      moment().format('MMMM Do YYYY, h:mm:ss a'),
       req.body.subject,
       req.body.message,
       req.user.id,

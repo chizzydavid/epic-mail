@@ -34,7 +34,7 @@ const createMessageTable = async () => {
     parent_msg_id VARCHAR(50),
     sender_id INTEGER NOT NULL,
     receiver_id INTEGER,
-    created_at VARCHAR(50) NOT NULL,
+    created_at VARCHAR(150) NOT NULL,
     status VARCHAR(10) NOT NULL
   )`;
 
