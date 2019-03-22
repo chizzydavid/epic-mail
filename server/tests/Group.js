@@ -101,22 +101,10 @@ describe('Testing Group Endpoints /api/v2/groups', () => {
     });
   });
 
-/*  describe('GET/ unread - Get all unread messages', () => {
-    it('Should return status 200(OK) and an array of messages', () => {
+  describe('GET/ :groupId/:name - Edit Group Name', () => {
+    it('Should return status 200(OK) and the just Updated group', () => {
       chai.request(app)
-        .get(`${url}/unread`)
-        .set('authorization', token)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.have.property('message').equal('You have no unread messages at this time.');
-        });
-    });
-  });
-
-  describe('GET/ sent - Get all sent messages', () => {
-    it('Should return status 200(OK) and an array of messages', () => {
-      chai.request(app)
-        .get(`${url}/sent`)
+        .patch(`${url}/1/Bootcamp Guys Updated`)
         .set('authorization', token)
         .end((err, res) => {
           res.should.have.status(200);
@@ -125,48 +113,5 @@ describe('Testing Group Endpoints /api/v2/groups', () => {
     });
   });
 
-  describe('GET/ :id - Get a single message', () => {
-    it('Should return status 200(OK) and a single message object', () => {
-      chai.request(app)
-        .get(`${url}/1`)
-        .set('authorization', token)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.have.property('data').which.is.an('array');
-        });
-    });
 
-    it('Should return status 404(Not Found) if Message ID is invalid.', () => {
-      chai.request(app)
-        .get(`${url}/5`)
-        .set('authorization', token)
-        .end((err, res) => {
-          res.should.have.status(404);
-          res.body.should.have.property('error').equal('Message not found.');
-        });
-    });
-  });
-
-  // testing DELETE route to delete a messsage
-  describe('DELETE/ :id - Delete a Message', () => {
-    it('Should return status 200(Message deleted successfully)', () => {
-      chai.request(app)
-        .delete(`${url}/1`)
-        .set('authorization', token)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.have.property('message').equal('Message successfully deleted.');
-        });
-    });
-
-    it('Should return status 404(Not found) if Message ID is invalid', () => {
-      chai.request(app)
-        .delete(`${url}/5`)
-        .set('authorization', token)
-        .end((err, res) => {
-          res.should.have.status(404);
-          res.body.should.have.property('error').equal('Message not found.');
-        });
-    });
-  });*/
 });
