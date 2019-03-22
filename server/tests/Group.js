@@ -88,8 +88,8 @@ describe('Testing Group Endpoints /api/v2/groups', () => {
     });
   });
 
- /* describe('GET/ - Get all recieved messages', () => {
-    it('Should return status 200(OK) and an array of messages', (done) => {
+  describe('GET/ - Get all user groups', () => {
+    it('Should return status 200(OK) and an array of user groups', (done) => {
       chai.request(app)
         .get(`${url}`)
         .set('authorization', token)
@@ -101,7 +101,7 @@ describe('Testing Group Endpoints /api/v2/groups', () => {
     });
   });
 
-  describe('GET/ unread - Get all unread messages', () => {
+/*  describe('GET/ unread - Get all unread messages', () => {
     it('Should return status 200(OK) and an array of messages', () => {
       chai.request(app)
         .get(`${url}/unread`)
