@@ -9,7 +9,7 @@ const Helper = {
   },
 
   hashPassword(password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(8))
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
   },
 
   comparePassword(password, hashPassword) {

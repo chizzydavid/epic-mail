@@ -124,8 +124,8 @@ describe('Testing User Endpoints /api/v2/', () => {
         .end((err, res) => {
           token = res.body.data[0].token;
           done();
-        });      
-    })
+        });
+    });
     const endPoint = 'users';
 
     it('Should return status 200(OK) and an array of User objects', (done) => {

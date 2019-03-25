@@ -1,29 +1,30 @@
 const Validate = {
   signUp(req, res, next) {
+    req.values = {};
+    Object.entries(req.body).forEach((input) => { req.values[input[0]] = input[1].trim(); });
     const {
       firstName, lastName, email, passwordOne, passwordTwo,
-    } = req.body;
+    } = req.values;
     const errors = [];
-
     const nameRegx = /^[a-zA-Z]{2,}$/;
 
-    if (firstName.trim() === '') { errors.push('Please enter a first name updated version.'); } else
+    if (firstName === '') { errors.push('Please enter a first name.'); } else
     if (!nameRegx.test(firstName)) errors.push('Please enter a valid first name');
 
-    if (lastName.trim() === '') { errors.push('Please enter a last name.'); } else
+    if (lastName === '') { errors.push('Please enter a last name.'); } else
     if (!nameRegx.test(lastName)) errors.push('Please enter a valid last name.');
 
-    if (email.trim() === '') { errors.push('Please enter an email address.'); } else
-    if (!/^\S+@\S+\.[a-zA-Z0-9]+$/.test(email.trim())) errors.push('Please enter a valid email address.');
+    if (email === '') { errors.push('Please enter an email address.'); } else
+    if (!/^\S+@\S+\.[a-zA-Z0-9]+$/.test(email)) errors.push('Please enter a valid email address.');
 
 
-    if (passwordOne.trim() === '') errors.push('Please enter a password');
+    if (passwordOne === '') errors.push('Please enter a password');
 
-    else if (passwordTwo.trim() === '') errors.push('Please re-enter your password.');
+    else if (passwordTwo === '') errors.push('Please re-enter your password.');
 
-    else if (passwordOne.trim().length < 6) { errors.push('Your password must be at least 6 characters in length.'); } else
-    if (passwordOne.trim() !== passwordTwo.trim()) errors.push('Your two passwords don\'t match.');
-    else if (!/^[\w]{6,20}$/.test(passwordOne.trim())) { errors.push('Your password can only contain alphanumeric characters.'); }
+    else if (passwordOne.length < 6) { errors.push('Your password must be at least 6 characters in length.'); } else
+    if (passwordOne !== passwordTwo) errors.push('Your two passwords don\'t match.');
+    else if (!/^[\w]{6,20}$/.test(passwordOne)) { errors.push('Your password can only contain alphanumeric characters.'); }
 
 
     if (errors.length !== 0) { res.status(400).json({ status: 400, error: errors }); return; }
@@ -32,33 +33,34 @@ const Validate = {
   },
 
   login(req, res, next) {
-    const { email, password } = req.body;
+    req.values = {};
+    Object.entries(req.body).forEach((input) => { req.values[input[0]] = input[1].trim(); });
+    const { email, password } = req.values;
     const errors = [];
 
-    if (email.trim() === '') errors.push('Please enter an email address.');
+    if (email === '') errors.push('Please enter an email address.');
     else
-    if (!/^\S+@\S+\.[a-zA-Z0-9]+$/.test(email.trim())) { errors.push('Please enter a valid email address.'); }
+    if (!/^\S+@\S+\.[a-zA-Z0-9]+$/.test(email)) { errors.push('Please enter a valid email address.'); }
 
-    if (password.trim() === '') errors.push('Please enter a password');
-
+    if (password === '') errors.push('Please enter a password');
     if (errors.length !== 0) { res.status(400).json({ status: 400, error: errors }); return; }
 
     next();
   },
 
   sendMessage(req, res, next) {
-    const {
-      subject, message, receiver
-    } = req.body;
+    req.values = {};
+    Object.entries(req.body).forEach((input) => { req.values[input[0]] = input[1].trim(); });
+    const { subject, message, receiver } = req.values;
     const errors = [];
 
-    if (subject.trim() === '') { errors.push('Message must have a subject.'); }
+    if (subject === '') { errors.push('Message must have a subject.'); }
 
-    if (message.trim() === '') { errors.push('Please enter a message to send.'); }
+    if (message === '') { errors.push('Please enter a message to send.'); }
 
-    //check if the message is being sent to a group.
+    // check if the message is being sent to a group.
     if (!req.params.groupId) {
-      if (receiver.trim() === '') { errors.push('Please enter the message recipient'); }
+      if (receiver === '') { errors.push('Please enter the message recipient'); }
     }
 
     if (errors.length !== 0) { res.status(400).json({ status: 400, error: errors }); return; }
@@ -67,22 +69,21 @@ const Validate = {
   },
 
   newGroup(req, res, next) {
-    const {
-      name, description
-    } = req.body;
+    req.values = {};
+    Object.entries(req.body).forEach((input) => { req.values[input[0]] = input[1].trim(); });
+    const { name, description } = req.values;
     const errors = [];
 
-    if (name.trim() === '') { errors.push('Please enter a group name.'); } else
+    if (name === '') { errors.push('Please enter a group name.'); } else
     if (!/^[a-zA-Z0-9 ]{4,}$/.test(name)) errors.push('Please enter a valid first name');
 
-    if (description.trim() === '') { errors.push('Please enter a group description.'); } else
+    if (description === '') { errors.push('Please enter a group description.'); } else
     if (!/^[a-zA-Z0-9."';: ]{4,}$/.test(description)) errors.push('Please enter a valid description');
-
 
     if (errors.length !== 0) { res.status(400).json({ status: 400, error: errors }); return; }
 
     next();
-  },  
+  },
 };
 
 export default Validate;
