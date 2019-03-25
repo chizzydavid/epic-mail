@@ -23,10 +23,12 @@ router.delete('/api/v2/messages/:id', Auth.verifyToken, Message.deleteReceivedMe
 
 router.post('/api/v2/groups', Validate.newGroup, Auth.verifyToken, Group.createGroup);
 router.get('/api/v2/groups', Auth.verifyToken, Group.getAllUserGroups);
+router.get('/api/v2/groups/:groupId', Auth.verifyToken, Group.getSingleGroup);
 router.patch('/api/v2/groups/:groupId/:name', Auth.verifyToken, Group.editGroupName);
 router.post('/api/v2/groups/:groupId/users', Auth.verifyToken, Group.addUserToGroup);
 router.delete('/api/v2/groups/:groupId/users/:id', Auth.verifyToken, Group.deleteUserFromGroup);
-router.post('/api/v2/groups/:groupId/messages', Auth.verifyToken, Group.sendMessageToGroup);
+router.post('/api/v2/groups/:groupId/messages', Validate.sendMessage, Auth.verifyToken, Group.sendMessageToGroup);
+router.delete('/api/v2/groups/:groupId', Auth.verifyToken, Group.deleteGroup);
+
 
 export default router;
- 

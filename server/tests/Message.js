@@ -9,34 +9,33 @@ let token;
 const url = '/api/v2/messages';
 
 describe('Testing Message Endpoints /api/v2/messages', () => {
-
   before((done) => {
     const user = {
-      "email": "davidchizindu@gmail.com",
-      "firstName": "Chizindu",
-      "lastName": "David",
-      "passwordOne": "chizindudavid",
-      "passwordTwo": "chizindudavid"
+      email: 'davidchizindu@gmail.com',
+      firstName: 'Chizindu',
+      lastName: 'David',
+      passwordOne: 'chizindudavid',
+      passwordTwo: 'chizindudavid',
     };
     chai.request(app)
-      .post(`/api/v2/auth/signup`)
+      .post('/api/v2/auth/signup')
       .send(user)
       .end(done);
-  })
+  });
 
   before((done) => {
     const user = {
       email: 'davidchizindu@gmail.com',
-      password: 'chizindudavid'
+      password: 'chizindudavid',
     };
     chai.request(app)
-      .post(`/api/v2/auth/login`)
+      .post('/api/v2/auth/login')
       .send(user)
       .end((err, res) => {
         token = res.body.data[0].token;
         done();
       });
-  })
+  });
 
   describe('POST/ - Send a Message', () => {
     it('Should return status 201(Created) and a Message object', (done) => {
@@ -61,7 +60,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
       const message = {
         subject: 'Hello Mail',
         message: 'my mail app rocks',
-        receiver: ''
+        receiver: '',
       };
 
       chai.request(app)
@@ -78,7 +77,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
       const message = {
         subject: 'Hello Mail',
         message: 'It\'s nice to meet you, Send me a mail sometime.',
-        receiver: 'cindy@gmail.com'
+        receiver: 'cindy@gmail.com',
       };
 
       chai.request(app)
