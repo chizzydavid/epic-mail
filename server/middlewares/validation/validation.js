@@ -70,7 +70,11 @@ const Validate = {
 
   newGroup(req, res, next) {
     req.values = {};
-    Object.entries(req.body).forEach((input) => { req.values[input[0]] = input[1].trim(); });
+    Object.entries(req.body).forEach((input) => {
+      if (typeof input[1] === "string") {
+        req.values[input[0]] = input[1].trim();
+      }
+    });
     const { name, description } = req.values;
     const errors = [];
 

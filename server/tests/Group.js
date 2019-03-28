@@ -42,6 +42,7 @@ describe('Testing Group Endpoints /api/v2/groups', () => {
       const group = {
         name: 'Bootcamp Guys',
         description: 'New group for all my bootcamp buddies.',
+        members: [2, 4]
       };
 
       chai.request(app)
@@ -119,7 +120,7 @@ describe('Testing Group Endpoints /api/v2/groups', () => {
       chai.request(app)
         .post(`${url}/1/users`)
         .set('authorization', token)
-        .send({ users: [3, 6] })
+        .send({ members: [3, 6] })
         .end((err, res) => {
           res.should.have.status(201);
           res.body.should.have.property('data').which.is.an('array');
@@ -179,7 +180,7 @@ describe('Testing Group Endpoints /api/v2/groups', () => {
     it('Should return status 201(Created) and a Message object', (done) => {
       const message = {
         subject: 'Hello Bootcamp guys',
-        message: 'Hellot all my bootcamp men and women.',
+        message: 'Hey bootcampers, hope you guys are having a splendid time.',
       };
 
       chai.request(app)
