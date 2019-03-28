@@ -1,115 +1,106 @@
 import moment from 'moment';
 import db from '../db';
+import { message, group } from '../db/queries';
 
 const Group = {
   async createGroup(req, res) {
-    const owner_id = req.user.id;
-    const query = `INSERT INTO
-      groups(name, description, owner_id)
-      VALUES($1, $2, $3) returning *`;
-
-    const values = [
-      req.values.name,
-      req.values.description || '',
-      owner_id,
-    ];
-
+    const values = [req.values.name, req.values.description || '', req.user.id];
+    const { members } = req.body;
     try {
-      const { rows } = await db.query(query, values);
-      return res.status(201).json({ status: 201, data: [rows[0]] });
+      const { rows } = await db.query(group.insert, values);
+      let groupId = rows[0].group_id
+
+      if (members.length !== 0) {
+        let memberString = '';
+        members.forEach((user, idx) => {
+          memberString += `('${groupId}', '${user}', 'member')${idx === members.length - 1 ? '' : ','}`;
+        });
+        await db.query(`INSERT INTO group_users(group_id, user_id, user_role) VALUES ${memberString} returning *`)
+      }
+      return res.status(201).json({ 
+        status: 201, 
+        data: [rows[0]] 
+      });
     } catch (e) {
-      return res.status(400).json({ status: 400, error: `There was an error adding your new group to the database. ${e}` });
+      return res.status(400).json({ 
+        status: 400, 
+        error: `There was an error creating your group. ${e}` 
+      });
     }
   },
 
   async getAllUserGroups(req, res) {
-    const query = 'SELECT * FROM groups WHERE owner_id = $1';
     try {
-      const { rows, rowCount } = await db.query(query, [req.user.id]);
-      return res.status(200).json({ status: 200, data: [{ rowCount }, [...rows]] });
+      const { rows } = await db.query(group.selectByOwner, [req.user.id]);
+      return res.status(200).json({ 
+        status: 200, 
+        data: [...rows] 
+      });
     } catch (e) {
-      return res.status(400).json({ status: 400, error: `There was an error getting all your groups. ${e}` });
+      return res.status(400).json({ 
+        status: 400, 
+        error: `There was an error getting all your groups. ${e}` 
+      });
     }
   },
 
   async editGroupName(req, res) {
-    const query = 'SELECT * FROM groups WHERE group_id = $1';
     try {
-      const { rows } = await db.query(query, [req.params.groupId]);
-      if (!rows[0]) {
-        return res.status(409).json({ status: 404, error: 'Group not found.' });
-      }
-      const { owner_id } = rows[0];
-      if (req.user.id !== owner_id) {
-        return res.status(401).json({ status: 401, error: 'Unauthorized access.' });
-      }
+      const { rows } = await db.query(group.updateName, [req.params.name, req.params.groupId]);
+      return res.status(200).json({ 
+        status: 200, 
+        data: [rows[0]] 
+      });
     } catch (e) {
-      return res.status(400).json({ status: 400, error: `There was an error editing your groups name. ${e}` });
-    }
-
-    try {
-      const updateQuery = 'UPDATE groups SET name=$1 WHERE group_id=$2 returning *';
-      const { rows } = await db.query(updateQuery, [req.params.name, req.params.groupId]);
-      return res.status(200).json({ status: 200, data: [rows[0]] });
-    } catch (e) {
-      return res.status(400).json({ status: 400, error: `There was an error editing your groups name. ${e}` });
+      return res.status(400).json({ 
+        status: 400, 
+        error: `There was an error editing your groups name. ${e}` 
+      });
     }
   },
 
   async addUserToGroup(req, res) {
-    const query = 'SELECT owner_id FROM groups WHERE group_id = $1';
     try {
-      const { rows } = await db.query(query, [req.params.groupId]);
-      if (!rows[0]) {
-        return res.status(404).json({ status: 404, error: 'Group not found.' });
-      }
-      if (rows[0].owner_id !== req.user.id) { return res.status(400).json({ status: 400, error: 'Unauthorized access.' }); }
-    } catch (e) {
-      return res.status(400).json({ status: 400, error: `There was an error authenticating user. ${e}` });
-    }
-
-    try {
-      let valueString = '';
-      const { users } = req.body;
-
-      users.forEach((user, idx) => {
-        valueString += `('${req.params.groupId}', '${user}', 'member')${idx === users.length - 1 ? '' : ','}`;
+      let memberString = '';
+      const { members } = req.body;
+      members.forEach((user, idx) => {
+        memberString += `('${req.params.groupId}', '${user}', 'member')${idx === members.length - 1 ? '' : ','}`;
       });
-      const createQuery = `INSERT INTO group_users(group_id, user_id, user_role)
-          VALUES ${valueString} returning *`;
-      const { rows } = await db.query(createQuery);
-      return res.status(201).json({ status: 201, data: [...rows] });
+
+      const { rows } = await db.query(`INSERT INTO group_users(group_id, user_id, user_role) VALUES ${memberString} returning *`);
+      return res.status(201).json({ 
+        status: 201, 
+        data: [...rows] 
+      });
     } catch (e) {
-      return res.status(400).json({ status: 400, error: `There was an error adding new users to your group. ${e}` });
+      return res.status(400).json({ 
+        status: 400, 
+        error: `There was an error adding new users to your group. ${e}` 
+      });
     }
   },
 
   async deleteUserFromGroup(req, res) {
     try {
-      const query = 'SELECT owner_id FROM groups WHERE group_id = $1';
-      const { rows } = await db.query(query, [req.params.groupId]);
-      if (!rows[0]) {
-        return res.status(404).json({ status: 404, error: 'Group not found.' });
-      }
-      if (rows[0].owner_id !== req.user.id) { return res.status(400).json({ status: 400, error: 'Unauthorized access.' }); }
-    } catch (e) {
-      return res.status(400).json({ status: 400, error: `There was an error authenticating user. ${e}` });
-    }
-
-    try {
-      const query = 'SELECT * FROM group_users WHERE group_id = $1 AND user_id = $2';
-      const { rowCount } = await db.query(query, [req.params.groupId, req.params.id]);
+      const { rowCount } = await db.query(group.selectUser, [req.params.groupId, req.params.id]);
       if (rowCount === 0) {
-        return res.status(404).json({ status: 404, error: 'User is not a member of this group.' });
+        return res.status(404).json({ 
+          status: 404, 
+          error: 'User is not a member of this group.' 
+        });
       }
-
-      const deleteQuery = 'DELETE FROM group_users WHERE group_id = $1 AND user_id = $2';
-      const { rows } = await db.query(deleteQuery, [req.params.groupId, req.params.id]);
+      const { rows } = await db.query(group.deleteUser, [req.params.groupId, req.params.id]);
       if (!rows[0]) {
-        return res.status(200).json({ status: 200, message: 'User deleted successfully.' });
+        return res.status(200).json({ 
+          status: 200, 
+          message: 'User deleted successfully.' 
+        });
       }
     } catch (e) {
-      return res.status(400).json({ status: 400, error: `There was an error deleting this user from your group. ${e}` });
+      return res.status(400).json({ 
+        status: 400, 
+        error: `There was an error deleting this user from your group. ${e}` 
+      });
     }
   },
 
@@ -117,34 +108,12 @@ const Group = {
     let inboxString = '';
     let members;
     try {
-      const query = 'SELECT * FROM groups WHERE group_id = $1';
-      const { rows } = await db.query(query, [req.params.groupId]);
-      if (!rows[0]) {
-        return res.status(404).json({ status: 404, error: 'Group not found.' });
-      }
-      if (rows[0].owner_id !== req.user.id) {
-        return res.status(400).json({ status: 400, error: 'Unauthorized access.' });
-      }
-    } catch (e) {
-      return res.status(400).json({ status: 400, error: `There was an error authenticating user. ${e}` });
-    }
+      const result = await db.query(group.selectGroupMembers, [req.params.groupId]);
+      members = result.rows;
 
-    try {
-      const query = 'SELECT user_id FROM group_users WHERE group_id=$1';
-      const { rows } = await db.query(query, [req.params.groupId]);
-      members = rows;
-
-      if (rows.length === 0) {
-        return res.status(400).json({ status: 400, message: 'There are no group members for this group.' });
+      if (members === 0) {
+        return res.status(200).json({ status: 200, message: 'There are no group members for this group.' });
       }
-    } catch (e) {
-      return res.status(400).json({ status: 400, error: `There was an error getting the members of this group. ${e}` });
-    }
-
-    try {
-      const query = `INSERT INTO
-        messages(created_at, subject, message, sender_id, receiver_id, parent_msg_id, status )
-        VALUES($1, $2, $3, $4, $5, $6, $7) returning *`;
 
       const values = [
         moment().format('MMMM Do YYYY, h:mm:ss a'),
@@ -156,69 +125,58 @@ const Group = {
         'sent',
       ];
 
-      const { rows } = await db.query(query, values);
+      const { rows } = await db.query(message.insert, values);
       const { message_id, sender_id } = rows[0];
 
       members.forEach((user, idx) => {
         inboxString += `(${user.user_id}, ${message_id})${idx === members.length - 1 ? '' : ','}`;
       });
-      const inboxQuery = `INSERT INTO inbox (receiver_id, message_id) VALUES ${inboxString}`;
-      const outboxQuery = `INSERT INTO outbox (sender_id, message_id) VALUES (${sender_id}, ${message_id})`;
 
-      await db.query(inboxQuery);
-      await db.query(outboxQuery);
+      await db.query(`INSERT INTO inbox (receiver_id, message_id) VALUES ${inboxString}`);
+      await db.query(`INSERT INTO outbox (sender_id, message_id) VALUES (${sender_id}, ${message_id})`);
 
-      return res.status(201).json({ status: 201, data: [rows[0]] });
+      return res.status(201).json({ 
+        status: 201, 
+        data: [rows[0]] 
+      });
     } catch (e) {
-      return res.status(400).json({ status: 400, error: `There was an error sending your message. ${e}` });
+      return res.status(400).json({ 
+        status: 400, 
+        error: `There was an error sending your message. ${e}` 
+      });
     }
   },
 
   async getSingleGroup(req, res) {
     try {
-      const query = 'SELECT owner_id FROM groups WHERE group_id = $1';
-      const { rows } = await db.query(query, [req.params.groupId]);
-      if (!rows[0]) {
-        return res.status(404).json({ status: 404, error: 'Group not found.' });
-      }
-      if (rows[0].owner_id !== req.user.id) { return res.status(400).json({ status: 400, error: 'Unauthorized access.' }); }
+      const { rows } = await db.query(group.selectByGroupId, [req.params.groupId]);
+      return res.status(200).json({ 
+        status: 200, 
+        data: [rows[0]] 
+      });
     } catch (e) {
-      return res.status(400).json({ status: 400, error: `There was an error authenticating user. ${e}` });
-    }
-
-    try {
-      const query = 'SELECT * FROM groups WHERE group_id=$1';
-      const { rows } = await db.query(query, [req.params.groupId]);
-      return res.status(200).json({ status: 200, data: [rows[0]] });
-    } catch (e) {
-      return res.status(400).json({ status: 400, error: `There was an error retrieving this group. ${e}` });
+      return res.status(400).json({ 
+        status: 400, 
+        error: `There was an error retrieving this group. ${e}` 
+      });
     }
   },
 
   async deleteGroup(req, res) {
     try {
-      const query = 'SELECT owner_id FROM groups WHERE group_id = $1';
-      const { rows } = await db.query(query, [req.params.groupId]);
-      if (!rows[0]) {
-        return res.status(404).json({ status: 404, error: 'Group not found.' });
-      }
-      if (rows[0].owner_id !== req.user.id) { return res.status(400).json({ status: 400, error: 'Unauthorized access.' }); }
+      await db.query(group.deleteGroup, [req.params.groupId]);
+      await db.query(group.deleteGroupUsers, [req.params.groupId]);
+      return res.status(200).json({ 
+        status: 200, 
+        message: 'Group deleted successfully.' 
+      });
     } catch (e) {
-      return res.status(400).json({ status: 400, error: `There was an error authenticating user. ${e}` });
-    }
-
-    try {
-      const query = 'DELETE FROM groups WHERE group_id=$1';
-      const deleteUsers = 'DELETE FROM group_users WHERE group_id=$1';
-
-      await db.query(query, [req.params.groupId]);
-      await db.query(deleteUsers, [req.params.groupId]);
-      return res.status(200).json({ status: 200, message: 'Group deleted successfully.' });
-    } catch (e) {
-      return res.status(400).json({ status: 400, error: `There was an error deleting your group. ${e}` });
+      return res.status(400).json({ 
+        status: 400, 
+        error: `There was an error deleting your group. ${e}` 
+      });
     }
   },
 
 };
-
 export default Group;

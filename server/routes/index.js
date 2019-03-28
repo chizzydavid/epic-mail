@@ -18,17 +18,18 @@ router.post('/api/v2/messages', Validate.sendMessage, Auth.verifyToken, Message.
 router.get('/api/v2/messages', Auth.verifyToken, Message.getAllReceived);
 router.get('/api/v2/messages/unread', Auth.verifyToken, Message.getAllUnread);
 router.get('/api/v2/messages/sent', Auth.verifyToken, Message.getAllSent);
-router.get('/api/v2/messages/:id', Auth.verifyToken, Message.getSingleMessage);
-router.delete('/api/v2/messages/:id', Auth.verifyToken, Message.deleteReceivedMessage);
+router.get('/api/v2/messages/:id', Auth.verifyToken, Auth.verifyMessage, Message.getSingleMessage);
+router.delete('/api/v2/messages/retract/:id', Auth.verifyToken, Auth.verifyMessage, Message.retractMessage);
+router.delete('/api/v2/messages/sent/:id', Auth.verifyToken, Auth.verifyMessage, Message.deleteSentMessage);
+router.delete('/api/v2/messages/:id', Auth.verifyToken, Auth.verifyMessage, Message.deleteReceivedMessage);
 
 router.post('/api/v2/groups', Validate.newGroup, Auth.verifyToken, Group.createGroup);
 router.get('/api/v2/groups', Auth.verifyToken, Group.getAllUserGroups);
-router.get('/api/v2/groups/:groupId', Auth.verifyToken, Group.getSingleGroup);
-router.patch('/api/v2/groups/:groupId/:name', Auth.verifyToken, Group.editGroupName);
-router.post('/api/v2/groups/:groupId/users', Auth.verifyToken, Group.addUserToGroup);
-router.delete('/api/v2/groups/:groupId/users/:id', Auth.verifyToken, Group.deleteUserFromGroup);
-router.post('/api/v2/groups/:groupId/messages', Validate.sendMessage, Auth.verifyToken, Group.sendMessageToGroup);
-router.delete('/api/v2/groups/:groupId', Auth.verifyToken, Group.deleteGroup);
-
+router.get('/api/v2/groups/:groupId', Auth.verifyToken, Auth.verifyGroup, Group.getSingleGroup);
+router.patch('/api/v2/groups/:groupId/:name', Auth.verifyToken, Auth.verifyGroup, Group.editGroupName);
+router.post('/api/v2/groups/:groupId/users', Auth.verifyToken, Auth.verifyGroup, Group.addUserToGroup);
+router.delete('/api/v2/groups/:groupId/users/:id', Auth.verifyToken, Auth.verifyGroup, Group.deleteUserFromGroup);
+router.post('/api/v2/groups/:groupId/messages', Validate.sendMessage, Auth.verifyToken, Auth.verifyGroup, Group.sendMessageToGroup);
+router.delete('/api/v2/groups/:groupId', Auth.verifyToken, Auth.verifyGroup, Group.deleteGroup);
 
 export default router;
