@@ -7,7 +7,7 @@ const feedback = document.querySelector('#form-feedback'),
 		  passwordTwo = document.querySelector('#confirm-password');
 		  
 function validateInput(e) {
-	//e.preventDefault();
+	e.preventDefault();
 	let nameRegx = /^[a-zA-Z]{2,}$/;
 	//check for empty input fields
 	for (let i = 0; i < inputFields.length; i++) {
@@ -40,14 +40,14 @@ const displayFeedback = (message, status) => {
 function eventListeners() {
 	const imgPreview = document.querySelector('#image-preview');
 
-	//set up image preview for when a user uploads his picture
+	//set up image preview for when a user uploads a picture
 	document.querySelector('#image-upload').addEventListener('change', (e) => {
 		imgPreview.src = URL.createObjectURL(e.target.files[0]);
 		imgPreview.setAttribute('height', '150px');
 		imgPreview.addEventListener('load', (e) => URL.revokeObjectURL(e.target.src));
 	});
 
-	//document.querySelector('#submit').addEventListener('click', validateInput);
+	document.querySelector('#submit').addEventListener('click', validateInput);
 	document.querySelectorAll('#form input').forEach(input => {
 		input.addEventListener('focus', () => feedback.className = '');
 	})
