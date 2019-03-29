@@ -1,0 +1,43 @@
+{
+  "name": "epic-mail",
+  "version": "1.0.0",
+  "description": "Epic Mail is a web application designed to make sending and receiving email messages much more efficient. Users create an account with their relevant information, choosing to upload a photograph or not. And then they can login and go on to enjoy all the features of the app.\r The application allows its users send mails either to an individual or to a group, receive messages and also reply to them. It also lists all the messages received by the user, with buttons to view specific message categories.\r Built using the latest web technologies and current best practices all to optimize performance and ensure a great user experience.",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/register": "^7.0.0",
+    "eslint": "^5.15.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4",
+    "mocha": "^6.0.2",
+    "nodemon": "^1.18.10"
+  },
+  "scripts": {
+    "test": "mocha --require @babel/register server/tests/User-test.js",
+    "lint": "eslint --fix server/**/*.js --ignore-pattern node_modules/",
+    "start": "nodemon --exec babel-node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chizzydavid/epic-mail.git"
+  },
+  "author": "Chizindu David",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chizzydavid/epic-mail/issues"
+  },
+  "homepage": "https://github.com/chizzydavid/epic-mail#readme"
+}
