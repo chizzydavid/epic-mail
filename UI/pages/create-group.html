@@ -8,52 +8,55 @@
     <link rel="stylesheet" href="../css/stylesheet.css">
   </head>
   <body> 
-    <header>
-      <nav class="nav-container" id="page-nav"> 
-        <div class="brand-icon">  
-          <p class="logo"><a href="../index.html"><img class="logo-img" src="../img/epic_logo_white.png"></a></p>
-          <i id="nav-icon" class="fa fa-bars"></i>
-        </div>
-        
-        <div class="navbar" id="navigation" data-page="nav">
-          <a href="../index.html">Home</a>
-          <a href="view-inbox.html">Inbox</a>
-          <a href="create-message.html">Send Message</a>
-          <a href="create-group.html">Create Group</a>
-          <a href="all-groups.html">Groups</a>
-          <a href="#" id="logout">Logout</a>  
-        </div>
-      </nav>
-    </header>
+    <section id="bg-wrapper"> 
 
-    <div class="container">
-      <form id="create-group-form">
-        <h3 class="">Create New Group</h3>
-        <div>
-          <p id="send-message-form-error"></p>
-          <p class="label">Name </p>
-          <input type="text" id="group-name" required placeholder="Group Name">
-
-          <p class="label">Description </p>
-          <input type="text" id="group-description" required placeholder="Group Description">
-
-          <p class="label">Add Group Members</p>
-          <div class="member-list-wrapper">
-            <p><input type="checkbox" value="" >User One </p>
-            <p><input type="checkbox" value="" >User Two </p>
-            <p><input type="checkbox" value="" >User Three </p>
-            <p><input type="checkbox" value="" >User Four </p>            
-            <p><input type="checkbox" value="" >User Five </p>
-            <p><input type="checkbox" value="" >User Six </p>
+      <header>
+        <nav class="nav-container" id="page-nav"> 
+          <div class="brand-icon">  
+            <p class="logo"><a href="../index.html"><img class="logo-img" src="../img/epic_logo_white.png"></a></p>
+            <i id="nav-icon" class="fa fa-bars"></i>
           </div>
+          
+          <div class="navbar" id="navigation" data-page="nav">
+            <a href="../index.html">Home</a>
+            <a href="view-inbox.html">Inbox</a>
+            <a href="create-message.html">Compose</a>
+            <a href="all-groups.html">Groups</a>
+            <a href="../index.html" id="logout">Logout</a>  
+          </div>
+        </nav>
+      </header>
 
-          <button type="submit" id="create-group">Create Group</button>
-        </div>
-      </form>
-    </div>
+      <div class="container">
+        <form id="create-group-form">
+          <h3 class="">Create New Group</h3>
+          <div>
+            <p id="send-message-form-error"></p>
+            <p class="label">Name </p>
+            <input type="text" id="group-name" required placeholder="Group Name">
+
+            <p class="label">Description </p>
+            <input type="text" id="group-description" required placeholder="Group Description">
+
+            <p class="label">Add Group Members</p>
+            <div class="member-list-wrapper">
+              <p><input type="checkbox" value="" >User One </p>
+              <p><input type="checkbox" value="" >User Two </p>
+              <p><input type="checkbox" value="" >User Three </p>
+              <p><input type="checkbox" value="" >User Four </p>            
+              <p><input type="checkbox" value="" >User Five </p>
+              <p><input type="checkbox" value="" >User Six </p>
+            </div>
+
+            <button type="submit" id="create-group">Create Group</button>
+          </div>
+        </form>
+      </div>
+
+    </section>
 
 
-    <footer>    
+    <footer>
       <div class="" id="footer">
         <p>&copy; 2019, <strong>EPIC MAIL</strong>
         <br>

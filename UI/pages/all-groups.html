@@ -7,66 +7,73 @@
     <link rel="stylesheet" href="../css/font-awesome-icons/css/font-awesome.min.css"/>    
     <link rel="stylesheet" href="../css/stylesheet.css">
   </head>
-  <body id="view-message">    
-    <header>
-      <nav class="nav-container" id="page-nav"> 
-        <div class="brand-icon">  
-          <p class="logo"><a href="../index.html"><img class="logo-img" src="../img/epic_logo_white.png"></a></p>
-          <i id="nav-icon" class="fa fa-bars"></i>
-        </div>
-        
-        <div class="navbar" id="navigation" data-page="nav">
-          <a href="../index.html">Home</a>
-          <a href="view-inbox.html">Inbox</a>
-          <a href="create-message.html">Send Message</a>  
-          <a href="create-group.html">Create Group</a>  
-          <a href="all-groups.html">Groups</a>  
-          <a href="#" id="logout">Logout</a>  
-        </div>
-      </nav>
-    </header>
-
-    <h2 class="msg-header">All Groups</h2>
-
-    <div class="main-container">
-      <main class="message-container"> 
-        <div class="message" data-message-id="">
-          <h4>Group Sample One</h4>
-          <div class="msg-body"> 
-            <p class="msg-excerpt">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi </p>
-
-            <div class="msg-details">
-              <p><a href="view-group.html">View Details</a></p>
-              <div class="msg-buttons">                
-                <i id="" class="edit-message fa fa-edit"></i>
-                <i id="" class="delete-message fa fa-trash"></i>
-              </div>            
-            </div>  
-
+  <body id="view-message"> 
+    <section id="bg-wrapper"> 
+      <header>
+        <nav class="nav-container" id="page-nav"> 
+          <div class="brand-icon">  
+            <p class="logo"><a href="../index.html"><img class="logo-img" src="../img/epic_logo_white.png"></a></p>
+            <i id="nav-icon" class="fa fa-bars"></i>
           </div>
-        </div>
-
-        <div class="message" data-message-id="">
-          <h4>Group Sample Two</h4>
-          <div class="msg-body"> 
-            <p class="msg-excerpt">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi </p>
-
-            <div class="msg-details">
-              <p><a href="view-group.html">View Details</a></p>
-              <div class="msg-buttons">                
-                <i id="" class="edit-message fa fa-edit"></i>
-                <i id="" class="delete-message fa fa-trash"></i>
-              </div>            
-            </div>  
-
+          
+          <div class="navbar" id="navigation" data-page="nav">
+            <a href="../index.html">Home</a>
+            <a href="view-inbox.html">Inbox</a>
+            <a href="create-message.html">Compose</a>  
+            <a href="all-groups.html">Groups</a>  
+            <a href="../index.html" id="logout">Logout</a>  
           </div>
-        </div>        
-      </main>
-    </div>
+        </nav>
+      </header>
+
+      <h2 class="msg-header">All Groups</h2>
+
+      <div class="main-container">
+
+        <aside class="messages-nav">
+            <a href="create-group.html"><p id="create-group-btn">Create Group <i class="fa fa-plus"> </i></p></a> 
+        </aside>
+
+        <main class="message-container"> 
+          <div class="message" data-message-id="">
+            <h4>Group Sample One</h4>
+            <div class="msg-body"> 
+              <p class="msg-excerpt">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+              quis nostrud exercitation ullamco laboris nisi </p>
+
+              <div class="msg-details">
+                <p><a href="view-group.html">View Details</a></p>
+                <div class="msg-buttons">                
+                  <i id="" class="edit-message fa fa-edit"></i>
+                  <i id="" class="delete-message fa fa-trash"></i>
+                </div>            
+              </div>  
+
+            </div>
+          </div>
+
+          <div class="message" data-message-id="">
+            <h4>Group Sample Two</h4>
+            <div class="msg-body"> 
+              <p class="msg-excerpt">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+              quis nostrud exercitation ullamco laboris nisi </p>
+
+              <div class="msg-details">
+                <p><a href="view-group.html">View Details</a></p>
+                <div class="msg-buttons">                
+                  <i id="" class="edit-message fa fa-edit"></i>
+                  <i id="" class="delete-message fa fa-trash"></i>
+                </div>            
+              </div>  
+
+            </div>
+          </div>        
+        </main>
+      </div>
+    </section>   
+  
 
     <footer>    
       <div class="" id="footer">
