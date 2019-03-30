@@ -796,7 +796,6 @@ textarea {
   width: 20px;
 }
 
-
 /* VIEW GROUP */
 .group-container {
   padding: 20px 30px;
@@ -855,6 +854,9 @@ textarea {
   }
   .group-controls {
     padding-right: 0px;
+  }
+  #create-group-btn {
+    margin-bottom: 0px;
   }
 }
 @media screen and (max-width: 600px) {

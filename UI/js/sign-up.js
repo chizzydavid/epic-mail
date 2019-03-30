@@ -1,12 +1,20 @@
 const feedback = document.querySelector('#form-feedback'),
-			inputFields = Array.from(document.querySelectorAll('.signup-input')),
-			firstName = document.querySelector('#first-name'),
-		  secondName = document.querySelector('#second-name'),
-		  email = document.querySelector('#email'),
-		  passwordOne = document.querySelector('#password'),
-		  passwordTwo = document.querySelector('#confirm-password');
-		  
-function validateInput(e) {
+		inputFields = Array.from(document.querySelectorAll('.signup-input')),
+		firstName = document.querySelector('#first-name'),
+		secondName = document.querySelector('#second-name'),
+		email = document.querySelector('#email'),
+		passwordOne = document.querySelector('#password'),
+		passwordTwo = document.querySelector('#confirm-password');
+
+
+const displayFeedback = (message, status) => {
+	feedback.classList.add(status);
+	feedback.innerText = message;
+	feedback.scrollIntoView({behavior: "smooth", block: "end"});
+	throw'';
+}
+	  
+const validateInput = (e) => {
 	e.preventDefault();
 	let nameRegx = /^[a-zA-Z]{2,}$/;
 	//check for empty input fields
@@ -32,13 +40,7 @@ function validateInput(e) {
 	//send user data to the server
 }
 
-const displayFeedback = (message, status) => {
-	feedback.classList.add(status);
-	feedback.innerText = message;
-	throw'';
-}
-
-function eventListeners() {
+const evtListeners = () => {
 	const imgPreview = document.querySelector('#image-preview');
 
 	//set up image preview for when a user uploads a picture
@@ -54,7 +56,6 @@ function eventListeners() {
 	})
 }
 
-
-eventListeners();
+evtListeners();
 
 
