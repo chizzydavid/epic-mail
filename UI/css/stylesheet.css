@@ -220,8 +220,7 @@ a {
 
 @media screen and (max-width: 1000px) {
   div[data-home="nav"] {
-    padding-right: 1em;
-    text-align: left;
+    padding-right: 4em;
   }
   .navbar a {
     padding: 23px 8px;
@@ -262,6 +261,9 @@ a {
     color:var(--pri-color);
     background: #fff;
     padding: 20px;
+  }
+  #login-nav {
+    border-radius: 0px;
   }
   div[data-home="nav"] a:hover, #login-nav:hover {
     color:#fff;
@@ -381,7 +383,7 @@ a {
   text-transform: uppercase;
 }
 div[data-page="nav"] {
-  padding-right: .6em;
+  padding-right: 2em;
   background: inherit;
 }
 .container {
@@ -479,7 +481,6 @@ button[type="submit"]:focus {
     padding-right: 20px;
   }
   #page-nav .navbar a {
-    font-size: 11px;
     padding: 23px 5px;
   }
 }
@@ -530,13 +531,33 @@ button[type="submit"]:focus {
   display: flex;
   flex-direction: row;
   padding: 0 10em;
-  line-height: 1.5em;
-}
+  line-height: 1.5em;}
 
 .messages-nav {
   flex: 1;
   min-width: 270px;
-  margin:0 50px 30px 0;
+  margin:0 50px 30px 0;  
+  display: flex;
+  flex-direction: column;
+}
+#btn-wrapper {
+  display: none;
+}
+#compose-btn, #create-group-btn {
+  background: var(--sec-color);
+  text-align: center;
+  padding:10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #f5f5f5;
+  margin-bottom: 40px;
+  margin-top: 0px;
+}
+.fa-plus {
+  margin-left: 10px;
+  border: solid 1px #f5f5f5;
+  padding: 5px 7px;
+  border-radius: 50%;
 }
 .messages-nav ul {
   margin: 0;
@@ -551,10 +572,11 @@ button[type="submit"]:focus {
   width: 100%;
   color: #555;
   cursor: pointer;
+  border-bottom: solid #e5e5e5 2px;
 }
 .messages-nav li.active {
   color: var(--sec-color);
-  border-bottom: solid var(--sec-color) 2px;
+  font-weight: bold;
 }
 .messages-nav ul .fa {
   padding: 0 10px;
@@ -569,7 +591,7 @@ button[type="submit"]:focus {
   min-height: 250px;
 }
 .message {
-  padding: 20px;
+  padding: 15px 17px;
   width: 100%;
   margin-bottom: 10px; 
   color: #666;
@@ -577,8 +599,12 @@ button[type="submit"]:focus {
   border-radius: 5px;
   box-shadow: 2px 2px 10px rgba(0,0,0,0.6);
 }
+.msg-excerpt {
+  margin: 7px 0;
+}
+
 .message h3, h4 {
-  margin: 5px 0;
+  margin: 0px 0;
 }
 .message-title {
   font-size: 16px;
@@ -661,18 +687,75 @@ button[type="submit"]:focus {
   .messages-nav {
     width: 100%;
     margin-top: -20px;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 0px;
+    margin-right: 0px;
+  }
+  #compose-btn {
+    width: 170px;
+    order: 1;
+    margin-bottom: 0px;
+  }
+  #nav-wrapper {
+    order: -1;
+    width: 40%;
+    min-width: 210px;
+    height: 46px;
+    overflow: hidden;
+    transition: 0.5s ease;
+    border: solid #e5e5e5 1px;
+  }
+  #btn-wrapper {
+    display: block;
+    height: 30px;
+    width: 30px;
+    float: right;
+  }
+  #inbox-nav-btn {
+    padding: 10px 5px 5px 5px;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--sec-color);
   }
   .messages-nav ul {
-    flex-direction: row;
+    width: 85%;
   }
   .messages-nav li {
-    text-align: center;
-    padding-bottom: 3px;
+    text-align: left;
+    border: none;
+    font-weight: normal;
   }
+  .messages-nav li.active {
+    font-weight: normal;
+}
   .messages-nav ul .fa {
     width: 100%;
+    display: inline-block;
+    width: 40px;
   }
 }
+
+
+@media screen and (max-width: 600px) {
+  .messages-nav ul {
+    width: 80%;
+  }
+  #nav-wrapper {
+    min-width: 160px;
+  }
+  #compose-btn {
+    width: 130px;
+    padding: 10px;
+  }
+}
+
+
+
+
+
+
+
 
 @media screen and (max-width: 500px) {
   .main-container {
@@ -712,7 +795,6 @@ textarea {
 #create-group-form input[type="checkbox"] {
   width: 20px;
 }
-
 
 /* VIEW GROUP */
 .group-container {
@@ -772,6 +854,9 @@ textarea {
   }
   .group-controls {
     padding-right: 0px;
+  }
+  #create-group-btn {
+    margin-bottom: 0px;
   }
 }
 @media screen and (max-width: 600px) {
