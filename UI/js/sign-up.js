@@ -1,13 +1,21 @@
 const feedback = document.querySelector('#form-feedback'),
-			inputFields = Array.from(document.querySelectorAll('.signup-input')),
-			firstName = document.querySelector('#first-name'),
-		  secondName = document.querySelector('#second-name'),
-		  email = document.querySelector('#email'),
-		  passwordOne = document.querySelector('#password'),
-		  passwordTwo = document.querySelector('#confirm-password');
-		  
-function validateInput(e) {
-	//e.preventDefault();
+		inputFields = Array.from(document.querySelectorAll('.signup-input')),
+		firstName = document.querySelector('#first-name'),
+		secondName = document.querySelector('#second-name'),
+		email = document.querySelector('#email'),
+		passwordOne = document.querySelector('#password'),
+		passwordTwo = document.querySelector('#confirm-password');
+
+
+const displayFeedback = (message, status) => {
+	feedback.classList.add(status);
+	feedback.innerText = message;
+	feedback.scrollIntoView({behavior: "smooth", block: "end"});
+	throw'';
+}
+	  
+const validateInput = (e) => {
+	e.preventDefault();
 	let nameRegx = /^[a-zA-Z]{2,}$/;
 	//check for empty input fields
 	for (let i = 0; i < inputFields.length; i++) {
@@ -32,29 +40,22 @@ function validateInput(e) {
 	//send user data to the server
 }
 
-const displayFeedback = (message, status) => {
-	feedback.classList.add(status);
-	feedback.innerText = message;
-	throw'';
-}
-
-function eventListeners() {
+const evtListeners = () => {
 	const imgPreview = document.querySelector('#image-preview');
 
-	//set up image preview for when a user uploads his picture
+	//set up image preview for when a user uploads a picture
 	document.querySelector('#image-upload').addEventListener('change', (e) => {
 		imgPreview.src = URL.createObjectURL(e.target.files[0]);
 		imgPreview.setAttribute('height', '150px');
 		imgPreview.addEventListener('load', (e) => URL.revokeObjectURL(e.target.src));
 	});
 
-	//document.querySelector('#submit').addEventListener('click', validateInput);
+	document.querySelector('#submit').addEventListener('click', validateInput);
 	document.querySelectorAll('#form input').forEach(input => {
 		input.addEventListener('focus', () => feedback.className = '');
 	})
 }
 
-
-eventListeners();
+evtListeners();
 
 

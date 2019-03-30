@@ -19,8 +19,7 @@
           <div class="navbar" id="navigation" data-page="nav">
             <a href="../index.html">Home</a>
             <a href="view-inbox.html">Inbox</a>
-            <a href="create-message.html">Send Message</a>
-            <a href="create-group.html">Create Group</a>  
+            <a href="create-message.html">Compose</a>
             <a href="all-groups.html">Groups</a>            
             <a href="../index.html" id="logout">Logout</a>  
           </div>
@@ -31,13 +30,19 @@
 
       <div class="main-container"> 
         <aside class="messages-nav">
-          <ul>  
-            <li id="all" class="active"><i class="fa fa-folder"> </i>All</li>
-            <li id="unread"><i class="fa fa-envelope"> </i>Unread</li>
-            <li id="read"><i class="fa fa-envelope-open"> </i>Read</li>
-            <li id="sent"><i class="fa fa-send"> </i>Sent</li>
-            <li id="draft"><i class="fa fa-edit"> </i>Drafts</li>          
-          </ul>
+          <a href="create-message.html"><p id="compose-btn">Compose <i class="fa fa-plus"> </i></p></a>
+
+          <div id="nav-wrapper">
+            <div id="btn-wrapper"> <i id="inbox-nav-btn" class="fa fa-caret-down"> </i></div>
+            <ul>  
+              <li id="all" class="active"><i class="fa fa-folder"> </i>All</li>
+              <li id="unread"><i class="fa fa-envelope"> </i>Unread</li>
+              <li id="read"><i class="fa fa-envelope-open"> </i>Read</li>
+              <li id="sent"><i class="fa fa-send"> </i>Sent</li>
+              <li id="draft"><i class="fa fa-edit"> </i>Drafts</li>          
+            </ul>
+          </div>
+
         </aside>
 
         <main class="message-wrapper">
