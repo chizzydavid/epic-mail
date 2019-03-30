@@ -12,22 +12,22 @@ function validateInput(e) {
 	//check for empty input fields
 	for (let i = 0; i < inputFields.length; i++) {
 		if (inputFields[i].value.trim() === '')
-			return displayFeedback('Please enter all form fields.', 'fail');
+			displayFeedback('Please enter all form fields.', 'fail');
 	}
 	if (!nameRegx.test(firstName.value.trim()) || !nameRegx.test(secondName.value.trim()))
-		return displayFeedback('Please enter a valid name', 'fail');
+		displayFeedback('Please enter a valid name', 'fail');
 
 	if (!/^\S+@\S+\.[a-zA-Z0-9]+$/.test(email.value.trim()))
-		return displayFeedback('Please enter a valid email address', 'fail');
+		displayFeedback('Please enter a valid email address', 'fail');
 
 	if (passwordOne.value.trim() !== passwordTwo.value.trim())
-		return displayFeedback('Your two passwords don\'t match', 'fail');
+		displayFeedback('Your two passwords don\'t match', 'fail');
 
 	if (passwordOne.value.trim().length < 6) 
-		return displayFeedback('Your password must be at least 6 characters in length', 'fail');
+		displayFeedback('Your password must be at least 6 characters in length', 'fail');
 
 	if (!/^[\w]{6,20}$/.test(passwordOne.value.trim())) 
-		return displayFeedback('Your password can only contain alphanumeric characters.', 'fail');
+		displayFeedback('Your password can only contain alphanumeric characters.', 'fail');
 
 	//send user data to the server
 }
@@ -35,6 +35,7 @@ function validateInput(e) {
 const displayFeedback = (message, status) => {
 	feedback.classList.add(status);
 	feedback.innerText = message;
+	throw'';
 }
 
 function eventListeners() {

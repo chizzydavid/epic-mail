@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+  - "node"
+notifications:
+  email: false  
+cache:
+  directories:
+    - node_moduless
+services:
+  - postgresql
+before_script:
+  - npm install
+  - psql -c 'CREATE DATABASE epic_mail;' -U postgres
+script:
+  - npm test
+after_script:
+  - npm run coverage
+  - npm run report-coverage
+  - npm run coveralls
+
+
