@@ -25,29 +25,29 @@
       </header>
 
       <div class="container">    
-        <form id="form" action="">
+        <form id="form" enctype="multipart/form-data">
           <div>
             <h3> Create Account</h3>
             <p id="form-feedback"></p>
 
             <p class="label">First name<i class="fa fa-asterisk"></i></p>
-            <input type="text" id="first-name" class="signup-input" placeholder="First name">
+            <input type="text" id="first-name" class="signup-input" name="firstName" placeholder="First name">
 
             <p class="label">Last name<i class="fa fa-asterisk"></i></p>
-            <input type="text" id="second-name" class="signup-input" placeholder="Last name">
+            <input type="text" id="second-name" class="signup-input" name="lastName" placeholder="Last name">
 
             <p class="label">Email<i class="fa fa-asterisk"></i></p>
-            <input type="text" id="email" class="signup-input" placeholder="Enter email">
+            <input type="text" id="email" class="signup-input" name="email" placeholder="Enter email">
 
             <p class="label">Password<i class="fa fa-asterisk"></i></p>
-            <input type="password" id="password" class="signup-input" placeholder="Enter password">
+            <input type="password" id="password" class="signup-input" name="password" placeholder="Enter password">
 
             <p class="label">Confirm Password<i class="fa fa-asterisk"></i></p>
-            <input type="password" id="confirm-password" class="signup-input" placeholder="Re-enter password">
+            <input type="password" id="confirm-password" class="signup-input" name="confirmPassword" placeholder="Re-enter password">
 
             <p class="label">Upload Image</p>
             <img  width="150px" id="image-preview">
-            <input id="image-upload" type="file" accept="image/*" >
+            <input id="image-upload" name="photo" type="file" accept="image/*" >
 
             <button type="submit" id="submit">Submit</button>
             <p>Already have an account? <a class="sign-link" href="sign-in.html">Log In</a></p>          

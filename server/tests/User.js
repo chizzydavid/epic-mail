@@ -15,8 +15,8 @@ describe('Testing User Endpoints /api/v2/', () => {
         email: 'cindyroland@gmail.com',
         firstName: 'Cindy',
         lastName: 'Roland',
-        passwordOne: 'cindyroland',
-        passwordTwo: 'cindyroland',
+        password: 'cindyroland',
+        confirmPassword: 'cindyroland',
       };
 
       chai.request(app)
@@ -35,8 +35,8 @@ describe('Testing User Endpoints /api/v2/', () => {
         email: '',
         firstName: 'Cindy',
         lastName: 'Roland',
-        passwordOne: 'cindyroland',
-        passwordTwo: 'cindyroland',
+        password: 'cindyroland',
+        confirmPassword: 'cindyroland',
       };
 
       chai.request(app)

@@ -14,8 +14,8 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
       email: 'davidchizindu@gmail.com',
       firstName: 'Chizindu',
       lastName: 'David',
-      passwordOne: 'chizindudavid',
-      passwordTwo: 'chizindudavid',
+      password: 'chizindudavid',
+      confirmPassword: 'chizindudavid',
     };
     chai.request(app)
       .post('/api/v2/auth/signup')
@@ -28,8 +28,8 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
       email: 'tomcruise@gmail.com',
       firstName: 'Tom',
       lastName: 'Cruise',
-      passwordOne: 'tomcruise',
-      passwordTwo: 'tomcruise',
+      password: 'tomcruise',
+      confirmPassword: 'tomcruise',
     };
     chai.request(app)
       .post('/api/v2/auth/signup')
