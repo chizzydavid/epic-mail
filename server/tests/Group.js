@@ -14,8 +14,8 @@ describe('Testing Group Endpoints /api/v2/groups', () => {
       email: 'johnsnow@gmail.com',
       firstName: 'John',
       lastName: 'Snow',
-      passwordOne: 'johnsnow',
-      passwordTwo: 'johnsnow',
+      password: 'johnsnow',
+      confirmPassword: 'johnsnow',
     };
     chai.request(app)
       .post('/api/v2/auth/signup')

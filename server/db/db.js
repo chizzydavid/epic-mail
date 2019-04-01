@@ -18,7 +18,8 @@ const createUserTable = async () => {
         first_name VARCHAR(50) NOT NULL,
         last_name VARCHAR(50) NOT NULL,
         password VARCHAR(128),
-        is_admin SMALLINT
+        is_admin SMALLINT,
+        photo VARCHAR(200)
      )`;
 
   await pool.query(queryText);
