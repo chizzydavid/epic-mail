@@ -1,5 +1,5 @@
 const user = {
-	insert: `INSERT INTO users (email, first_name, last_name, password, is_admin) VALUES($1, $2, $3, $4, $5) returning *`,
+	insert: `INSERT INTO users (email, first_name, last_name, password, is_admin, photo) VALUES($1, $2, $3, $4, $5, $6) returning *`,
 	selectAll: `SELECT * FROM users`,
 	selectByEmail: `SELECT * FROM users WHERE email = $1`,
 	selectById: `SELECT * FROM users WHERE user_id = $1`,

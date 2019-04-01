@@ -5,30 +5,18 @@ import { user } from '../db/queries';
 const User = {
   async createUser(req, res) {
     try {
-      const { rows } = await db.query(user.selectByEmail, [req.values.email]);
-      if (rows[0]) {
-        return res.status(400).json({ 
-          status: 400, 
-          message: 'This email has already been registered.' 
-        });
-      }
-    } catch (e) {
-      return res.status(400).json({ 
-        status: 400, 
-        error: `An error occured while creating your account. ${e}` 
-      });
-    }
-    const hashPassword = Helper.hashPassword(req.values.passwordOne);
+      const hashPassword = Helper.hashPassword(req.values.password);
+      const imgName = req.file ? req.file.filename : 'avatar.jpg';
+      const imgPath = `${req.headers.host}/uploads/${imgName}`;
+      const values = [
+        req.values.email,
+        req.values.firstName,
+        req.values.lastName,
+        hashPassword,
+        req.values.is_admin || 0,
+        imgPath
+      ];
 
-    const values = [
-      req.values.email,
-      req.values.firstName,
-      req.values.lastName,
-      hashPassword,
-      req.values.is_admin || 0,
-    ];
-
-    try {
       const { rows } = await db.query(user.insert, values);
       if (rows[0].user_id) {
         const token = Helper.generateToken(rows[0].user_id);
