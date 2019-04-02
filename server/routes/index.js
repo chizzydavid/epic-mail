@@ -9,37 +9,37 @@ import path from 'path';
 
 const router = Router();
 const storage = multer.diskStorage({
-    destination: './server/uploads',
-    filename: (req, file, cb) => {
-      const { email } = req.body;
-      const [ name ] = email.trim().split('@');
-      const ext = path.extname(file.originalname) || '.jpg';
-      cb(null, name + ext);
-    }
-  })
+	destination: './server/uploads',
+	filename: (req, file, cb) => {
+		const { email } = req.body;
+		const [ name ] = email.trim().split('@');
+		const ext = path.extname(file.originalname) || '.jpg';
+		cb(null, name + ext);
+	}
+})
 
-  const upload = multer({
-    storage: storage,
-    limits: {fileSize: 200000},
-    fileFilter: (req, file, cb) => {
-      if (/image\//.test(file.mimetype)) 
-        cb(null, true);
-      else 
-        cb(`Error: Upload an image file.`)
-    }
-  }).single('photo');
-  
-  const uploadFile = (req, res, next) => {
-    upload(req, res, (e) => {
-			if (e) {
-				return res.status(400).json({
-					status: 400,
-					error: `Error uploading image. ${e}`
-				})
-			}
-			next();
-		})
-  }
+const upload = multer({
+	storage: storage,
+	limits: {fileSize: 200000},
+	fileFilter: (req, file, cb) => {
+		if (/image\//.test(file.mimetype)) 
+			cb(null, true);
+		else 
+			cb(`Error: Upload an image file.`)
+	}
+}).single('photo');
+
+const uploadFile = (req, res, next) => {
+	upload(req, res, (e) => {
+		if (e) {
+			return res.status(400).json({
+				status: 400,
+				error: `Error uploading image. ${e}`
+			})
+		}
+		next();
+	})
+}
 
 router.post('/api/v2/auth/signup', uploadFile, Validate.signUp, User.createUser);
 router.post('/api/v2/auth/login', Validate.login, User.loginUser);

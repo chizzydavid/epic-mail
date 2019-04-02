@@ -72,10 +72,10 @@ const messages = [
 	messageBtns = document.querySelectorAll('.messages-nav li'),
 	msgHeader = document.querySelector('.msg-header'),
 	msgContainer = document.querySelector('.message-container'),
-	wait = document.querySelector('#loader');
-const inboxNav = document.querySelector('#nav-wrapper');
-const inboxNavBtn = document.querySelector('#inbox-nav-btn');
-
+	wait = document.querySelector('#loader'),
+	inboxNav = document.querySelector('#nav-wrapper'),
+	inboxNavBtn = document.querySelector('#inbox-nav-btn'),
+	url = `http://localhost:5000/api/v2/messages/`;
 
 function loader(msg) {
 	msg === 'show' ? wait.classList.remove('hide') : wait.classList.add('hide')
@@ -185,7 +185,6 @@ function messageBtnHandler(e) {
 	}
 	else return;
 }
-
 
 function inboxNavBtnHandler(e) {
 	let el = e.target;
