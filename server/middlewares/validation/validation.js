@@ -57,7 +57,7 @@ const Validate = {
 
   login(req, res, next) {
     req.values = {};
-    Object.entries(req.body).forEach((input) => { 
+    Object.entries(req.body).forEach(input => { 
       req.values[input[0]] = input[1].trim(); 
     });
     const { email, password } = req.values;
@@ -66,7 +66,6 @@ const Validate = {
     if (email === '') errors.push('Please enter an email address.');
     else
     if (!/^\S+@\S+\.[a-zA-Z0-9]+$/.test(email)) { errors.push('Please enter a valid email address.'); }
-
     if (password === '') errors.push('Please enter a password');
     if (errors.length !== 0) { 
       return res.status(400).json({ 
