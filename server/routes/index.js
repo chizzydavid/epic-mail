@@ -48,10 +48,14 @@ router.get('/api/v2/users/:id', Auth.verifyToken, User.getSingleUser);
 router.delete('/api/v2/users/:id', Auth.verifyToken, User.deleteUser);
 
 router.post('/api/v2/messages', Validate.sendMessage, Auth.verifyToken, Message.sendMessage);
+router.post('/api/v2/messages/draft', Validate.saveDraft, Auth.verifyToken, Message.saveAsDraft);
 router.get('/api/v2/messages', Auth.verifyToken, Message.getAllReceived);
-router.get('/api/v2/messages/unread', Auth.verifyToken, Message.getAllUnread);
+router.get('/api/v2/messages/unread', Auth.verifyToken, Message.getAllCategory('unread'));
+router.get('/api/v2/messages/read', Auth.verifyToken, Message.getAllCategory('read'));
+router.get('/api/v2/messages/draft', Auth.verifyToken, Message.getAllCategory('draft'));
 router.get('/api/v2/messages/sent', Auth.verifyToken, Message.getAllSent);
 router.get('/api/v2/messages/:id', Auth.verifyToken, Auth.verifyMessage, Message.getSingleMessage);
+router.patch('/api/v2/messages/:id', Auth.verifyToken, Auth.verifyMessage, Message.updateToRead);
 router.delete('/api/v2/messages/retract/:id', Auth.verifyToken, Auth.verifyMessage, Message.retractMessage);
 router.delete('/api/v2/messages/sent/:id', Auth.verifyToken, Auth.verifyMessage, Message.deleteSentMessage);
 router.delete('/api/v2/messages/:id', Auth.verifyToken, Auth.verifyMessage, Message.deleteReceivedMessage);

@@ -1,106 +1,51 @@
-const messages = [
-	{
-		"id" : 81901920,
-		"createdOn" : 15637839,
-		"subject" : 'Hello Epic Mail',
-		"message" : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
-		"senderId" : 3427202,
-		"receiverId" : 1173839,
-		"parentMessageId" : 7368728,
-		"status" : 'read',
-	},
-	{
-		"id" : 81901920,
-		"createdOn" : 15637839,
-		"subject" : 'Let\'s Meet Up Next Week',
-		"message" : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
-		"senderId" : 3427202,
-		"receiverId" : 1173839,
-		"parentMessageId" : 7368728,
-		"status" : 'read',
-	},
-	{
-		"id" : 81901920,
-		"createdOn" : 15637839,
-		"subject" : 'Reply My Last Message',
-		"message" : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
-		"senderId" : 3427202,
-		"receiverId" : 1173839,
-		"parentMessageId" : 7368728,
-		"status" : 'unread',
-	},
-	{
-		"id" : 81901920,
-		"createdOn" : 15637839,
-		"subject" : 'Send Me Your House Address',
-		"message" : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
-		"senderId" : 3427202,
-		"receiverId" : 1173839,
-		"parentMessageId" : 7368728,
-		"status" : 'unread',
-	},
-	{
-		"id" : 81901920,
-		"createdOn" : 15637839,
-		"subject" : 'You Still Owe Me',
-		"message" : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
-		"senderId" : 3427202,
-		"receiverId" : 1173839,
-		"parentMessageId" : 7368728,
-		"status" : 'sent',
-	},
-	{
-		"id" : 81901920,
-		"createdOn" : 15637839,
-		"subject" : 'My House Address',
-		"message" : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
-		"senderId" : 3427202,
-		"receiverId" : 1173839,
-		"parentMessageId" : 7368728,
-		"status" : 'draft',
-	},
-	{ 
-		"id" : 81901920,
-		"createdOn" : 15637839,
-		"subject" : 'Next Week isn\'t Okay For Me',
-		"message" : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
-		"senderId" : 3427202,
-		"receiverId" : 1173839,
-		"parentMessageId" : 7368728,
-		"status" : 'draft',
-	}],
+const feedback = document.querySelector('#feedback'),
 	messageBtns = document.querySelectorAll('.messages-nav li'),
 	msgHeader = document.querySelector('.msg-header'),
 	msgContainer = document.querySelector('.message-container'),
 	wait = document.querySelector('#loader'),
 	inboxNav = document.querySelector('#nav-wrapper'),
 	inboxNavBtn = document.querySelector('#inbox-nav-btn'),
-	url = `http://localhost:5000/api/v2/messages/`;
+	token = localStorage.epicMailToken,
+	userId = localStorage.userId;
 
 function loader(msg) {
+	feedback.classList.add('hide');
 	msg === 'show' ? wait.classList.remove('hide') : wait.classList.add('hide')
 }
 
-function createMessage(message) {
-	const { id, subject, status } = message;
+const displayFeedback = (message) => {
+	loader('hide');
+	feedback.classList.remove('hide');
+	msgContainer.innerHTML = '';
+	feedback.innerHTML = message;
+	feedback.scrollIntoView({behavior: "smooth", block: "end"});
+}
+
+const createMessage = (messageItem) => {
+	const { message_id, subject, email, sender_id, message, status } = messageItem;
+	let id = message_id;
+	const msgBody = message.length >= 70 ? `${message.substr(0, 70)}...` : message ;
+	const type = Number(userId) === sender_id ? 'sent' : 'received';
+
 	return `
-		<div class="message" data-message-id="${id}">
+		<div class="message" data-message-id="${id}" data-message-type="${type}" data-message-status="${status}">
       <h4 class="message-title ${status == 'unread' ? 'unread' : ''} ">
-      	<a href="view-message.html">${subject}</a>
+			  ${subject}
       </h4>
       <div class="msg-body"> 
-        <p class="msg-excerpt">${message.message}</p>
+        <p class="msg-excerpt">${msgBody}</p>
         <div class="msg-details">
-          <p>Status: <span class="status-${status} msg-status">
-          	${status.replace(status.charAt(0), status.charAt(0).toUpperCase())} </span>
+          <p>Status: <span class="status-${status} msg-status">	${status.replace(status[0], status[0].toUpperCase())} </span>
           </p>
           <div class="msg-buttons">
           	${status === 'draft' ? 
-          		'<i id="" class="edit-message fa fa-edit"></i>' +
-          	  '<i id="" class="send-message fa fa-send"></i>' : 
-              '<i id="" class="share-message fa fa-share"></i> '
-            }
-            <i id="" class="delete-message fa fa-trash"></i>
+							'<i id="' + `${id}` + '" data-draft-receiver="' + `${email}` + '" class="edit-draft fa fa-edit"></i>' +
+							'<p class="hide">' + `${message}` + '</p>' : ''  }
+							
+						${type === 'sent' && status !== 'draft' ?
+							'<i id="' + `${id}` + '" class="retract-message fa fa-undo"></i>' : ''  }
+								
+				      <i id="${id}" data-message-type="${type}" class="delete-message fa fa-trash"></i>
           </div>            
         </div> 
       </div>
@@ -108,85 +53,70 @@ function createMessage(message) {
    `
 }
 
-function displayMessages(data) {
+const displayMessages = (messages) => {
 	loader('hide');
 	msgContainer.innerHTML = '';
-	if (data.messages.length === 0) {
-		msgContainer.innerHTML = `<p class="msg-body">You have no ${data.category} messages</p>`;
-		return;
-	}
 
-	data.messages.forEach(message => {
+	messages.forEach(message => {
 		const newMessage = createMessage(message);
 		msgContainer.insertAdjacentHTML('beforeend', newMessage);		
 	});
 }
-
-function loadMessages(query = '') {
+		
+const fetchMessages = async (query) => {
 	loader('show');
+	const category = query === 'all' ? '' : query;
+	let result = {};
+	try {
+		const response = await fetch(`${url}messages/${category}`, {
+			method: 'GET',
+			headers: { 'Authorization': token }
+		});
+		result = await response.json();
+		console.log(response);
+		console.log(result);
+		if (result.error !== undefined) console.log(result.error);
 
-	//load messages from data objects stored in memory
-	//query/category is 'all' by default
-	const category = query === '' ? 'all' : query,
-		sorted = category === 'all' ? messages : messages.filter(message => message.status === query);
+		if (result.status === 200 && result.data !== undefined) {
+			displayMessages(result.data);
+		}
+		else if (result.status === 200 && result.message !== undefined) {
+			displayFeedback(result.message)
+		}
+		else if (result.status === 401) {
+			displayFeedback('There was a problem getting your messages, please try again.');
+		}
 
-	displayMessages({category, messages: sorted});
-	//update header of the page depending on category of message
-	const newHeader = category.replace(category.charAt(0), category.charAt(0).toUpperCase());
-	msgHeader.innerText = `${newHeader}${category === 'draft' ? 's' : ' Messages'}`;
-}
-
-function getMessages(category) {
-	//request different message categories depending on the button clicked
-	switch(category) {
-		case 'unread':
-			loadMessages('unread');
-			break;
-
-		case 'read':
-			loadMessages('read')
-			break;
-
-		case 'sent':
-			loadMessages('sent');
-			break;
-
-		case 'draft':
-			loadMessages('draft');
-			break;
-
-		default:
-			loadMessages();
+	} catch (e) {
+		displayFeedback('There was a problem getting your messages, please try again.')
+		console.log(`An error occured while fetching your messages. ${e || result.error}`);
 	}
 }
 
-function messageBtnHandler(e) {
+const messageBtnHandler = (e) => {
 	let el = e.target;
+
 	if (el.tagName === 'LI' || el.tagName === 'I') {
+		const category = el.id || el.parentElement.id;
+		fetchMessages(category);
 		messageBtns.forEach(btn => btn.classList.remove('active'));
+		const newHeader = category.replace(category[0], category[0].toUpperCase());
+		msgHeader.innerText = `${newHeader}${category === 'draft' ? 's' : category === 'all' ?
+		' Received Messages': ' Messages'}`;
 
-
-		if (el.tagName === 'LI') {
-			if (window.innerWidth <= 760) {
-				messageBtns.forEach(btn => btn.classList.add('hide'));
-				inboxNavBtn.click();
-				el.classList.remove('hide');
-			}
-			el.classList.add('active');
-			getMessages(el.id)
-
-		} else {
+		if (window.innerWidth <= 760) {
 			messageBtns.forEach(btn => btn.classList.add('hide'));
 			inboxNavBtn.click();
-			el.parentElement.classList.remove('hide');
-			el.parentElement.classList.add('active');
-			getMessages(el.parentElement.id);
+			el.tagName === 'LI' ? el.classList.remove('hide') : el.parentElement.classList.remove('hide');
 		}
+		el.tagName === 'LI' ? el.classList.add('active') : el.parentElement.classList.add('active');
+
 	}
+	
 	else return;
 }
 
-function inboxNavBtnHandler(e) {
+const inboxNavBtnHandler = (e) => {
 	let el = e.target;
 	
 	if (el.classList.contains('fa-caret-down')) {
@@ -198,7 +128,7 @@ function inboxNavBtnHandler(e) {
 		el.className = 'fa fa-caret-down';
 		inboxNav.style.height = '46px';
 		messageBtns.forEach(btn => {
-			if (!btn.classList.contains('active'))  btn.classList.add('hide');		
+			if (!btn.classList.contains('active')) btn.classList.add('hide');		
 		});
 	}
 }
@@ -215,12 +145,107 @@ const handleNavResize = () => {
 	
 }
 
+const viewMessage = async (e) => {
+	let result = {};
+	try {
+		const msg = e.target,
+		  msgId = msg.parentElement.getAttribute('data-message-id'),
+		  msgType = msg.parentElement.getAttribute('data-message-type'); 
+
+		//If message is a received-message and if its unread, send a request to mark it as read
+		if (msg.classList.contains('unread') && msgType === 'received') {
+		  const response = await fetch(`${url}messages/${msgId}`, {
+				method: 'PATCH',
+				headers: { 'Authorization': token }
+			});
+			result = await response.json();
+		}
+		localStorage.setItem('viewMessageId', msgId);
+		location.href = location.href.replace('view-inbox.html', 'view-message.html');
+	} catch(e) {
+		console.log(`An error occured while updating your message status. ${e || result.error}`);
+	}
+}
+
+const retractMessage = async (e) => {
+	const msg = e.target;
+	let result = {};
+	try { 
+		const response = await fetch(`${url}messages/retract/${msg.id}`, {
+			method: 'DELETE',
+			headers: { 'Authorization': token }
+		});
+		result = await response.json();
+		if (result.error !== undefined) console.log(result.error);
+
+		else if (result.status === 200 && result.message !== undefined) {
+			const message = msg.parentElement.parentElement.parentElement.parentElement;
+			message.classList.add('fadeout');
+			message.addEventListener('transitionend', (e) => message.parentElement.removeChild(message));
+		}
+	} catch (e) {
+		displayFeedback('There was a problem retracting this message, please try again.')
+		console.log(`An error occured while retracting this message. ${e || result.error}`);
+	}	
+}
+const deleteMessage = async (e) => {
+	const msg = e.target;
+	let result = {};
+	const query = msg.getAttribute('data-message-type') === 'sent' ? `sent/${msg.id}` : `${msg.id}`;
+	try { 
+		const response = await fetch(`${url}messages/${query}`, {
+			method: 'DELETE',
+			headers: { 'Authorization': token }
+		});
+		result = await response.json();
+		if (result.error !== undefined) console.log(result.error);
+
+		else if (result.status === 200 && result.message !== undefined) {
+			const message = msg.parentElement.parentElement.parentElement.parentElement;
+			message.classList.add('fadeout');
+			message.addEventListener('transitionend', (e) => message.parentElement.removeChild(message));
+		}
+	} catch (e) {
+		displayFeedback('There was a problem deleting this message, please try again.')
+		console.log(`An error occured while fetching your messages. ${e || result.error}`);
+	}	
+}
+
+const editDraft = (e) => {
+	const draft = e.target;
+	let subject = draft.parentElement.parentElement.parentElement.previousElementSibling.innerText,
+	message = draft.nextElementSibling.innerText,
+	receiver = draft.getAttribute('data-draft-receiver'),
+	id = draft.id;
+	const draftMessageData = JSON.stringify({id, subject, message, receiver});
+	localStorage.setItem('draftMessageData', draftMessageData);
+	location.href = location.href.replace('view-inbox.html', 'create-message.html')
+}
+
+const handleMsgContainerClick = (e) => {
+	if (e.target.classList.contains('message-title'))
+		viewMessage(e);
+
+	if (e.target.classList.contains('retract-message'))
+		retractMessage(e);	
+		
+	if (e.target.classList.contains('delete-message'))
+		deleteMessage(e);
+		
+	if (e.target.classList.contains('edit-draft'))
+		editDraft(e);
+}
 
 function init() {
-	loadMessages();
+	isLoggedIn();;
+	if (token === undefined || token === '') {
+		location.href = location.href.replace('view-inbox.html', 'sign-in.html');
+	}
+	fetchMessages('all');
 	document.querySelector('.messages-nav ul').addEventListener('click', messageBtnHandler);
 	inboxNavBtn.addEventListener('click', inboxNavBtnHandler);
 	window.addEventListener('resize', handleNavResize);
+	msgContainer.addEventListener('click', handleMsgContainerClick);
 }
 
 init();
