@@ -17,7 +17,8 @@
     "moment": "^2.24.0",
     "multer": "^1.4.1",
     "pg": "^7.9.0",
-    "swagger-ui-express": "^4.0.2"
+    "swagger-ui-express": "^4.0.2",
+    "travis-cli": "^1.0.9"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

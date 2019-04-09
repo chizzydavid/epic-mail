@@ -7,37 +7,28 @@ const Message = {
   async sendMessage(req, res) {
     let receiver_id;
     try {
-      const { rows } = await db.query(message.selectUser, [req.values.receiver]);
-      if (!rows[0]) { 
+      const result = await db.query(message.selectUser, [req.values.recipient]);
+      if (!result.rows[0]) { 
 				return res.status(401).json({ 
           status: 401, 
-          error: 'Message Recipient doesn\'t exist on the db.' 
-        }); 
-			}
-      receiver_id = rows[0].user_id;
-    } catch (e) {
-      return res.status(400).json({ 
-        status: 400, 
-        error: `There was an error sending your message. ${e}` 
-      });
-    }
-
-    const values = [
-      moment().format('MMMM Do YYYY, h:mm:ss a'),
-      req.values.subject,
-      req.values.message,
-      req.user.id,
-      receiver_id,
-      req.values.parentMessageId || 0,
-      'sent',
-    ];
-    try {
+          error: 'Message recipient is not a registered user.' 
+        });
+      }
+      
+      receiver_id = result.rows[0].user_id;
+      const values = [
+        moment().format('MMMM Do YYYY, h:mm:ss a'),
+        req.values.subject,
+        req.values.message,
+        req.user.id,
+        receiver_id,
+        req.values.parentMessageId || 0,
+        'sent',
+      ];
       const { rows } = await db.query(message.insert, values);
       const { message_id, sender_id } = rows[0];
-
-      await db.query(`INSERT INTO inbox (receiver_id, message_id) VALUES (${receiver_id}, ${message_id})`);
-      await db.query(`INSERT INTO outbox (sender_id, message_id) VALUES (${sender_id}, ${message_id})`);
-
+      await db.query(`INSERT INTO inbox (receiver_id, message_id) VALUES (${receiver_id}, ${message_id}) returning *`);
+      await db.query(`INSERT INTO outbox (sender_id, message_id) VALUES (${sender_id}, ${message_id}) returning *`);
       return res.status(201).json({ 
         status: 201, 
         data: [rows[0]] 
@@ -50,18 +41,60 @@ const Message = {
     }
   },
 
+  async saveAsDraft(req, res) {
+    let receiver_id;
+    try {
+      if (req.values.recipient !== "") {
+        const result = await db.query(message.selectUser, [req.values.recipient]);
+        if (!result.rows[0]) { 
+          return res.status(401).json({ 
+            status: 401,
+            error: 'Message recipient is not a registered user.' 
+          }); 
+        }
+        receiver_id = result.rows[0].user_id;
+      } 
+
+      const values = [
+        moment().format('MMMM Do YYYY, h:mm:ss a'),
+        req.values.subject,
+        req.values.message,
+        req.user.id,
+        receiver_id || 0,
+        req.values.parentMessageId || 0,
+        'draft',
+      ];
+
+      const { rows } = await db.query(message.insert, values);
+      const { message_id, sender_id } = rows[0];
+      await db.query(`INSERT INTO outbox (sender_id, message_id) VALUES (${sender_id}, ${message_id}) returning *`);
+
+      return res.status(201).json({ 
+        status: 201, 
+        data: [rows[0]] 
+      });
+
+    } catch (e) {
+      return res.status(400).json({ 
+        status: 400, 
+        error: `There was an error saving your draft. ${e}` 
+      });
+    }
+  },
+
   async getAllReceived(req, res) {
     try {
+      await db.query(message.updateStatusUnread, [req.user.id]);
       const { rows, rowCount } = await db.query(message.selectAllReceived, [req.user.id]);
       if (rowCount === 0) { 
         return res.status(200).json({ 
           status: 200, 
-          message: 'You have no received messages yet.' 
+          message: 'You have no received messages.' 
         }); 
       }
       return res.status(200).json({ 
         status: 200, 
-        data: [{ rowCount }, [...rows]] 
+        data: [...rows] 
       });
     } catch (e) {
       return res.status(400).json({ 
@@ -71,25 +104,31 @@ const Message = {
     }
   },
 
-  async getAllUnread(req, res) {
-    try {
-      const { rows, rowCount } = await db.query(message.selectAllUnread, [req.user.id, 'unread']);
-      if (rowCount === 0) { 
+  getAllCategory(category) {
+    return async function(req, res, next) {
+      let query = category === 'draft' ? message.selectAllDrafts : message.selectAllCategory
+      try {
+        const { rows, rowCount } = await db.query(query, [req.user.id, category]);
+        if (rowCount === 0) { 
+          return res.status(200).json({ 
+            status: 200, 
+            message: `You have no ${category} messages.` 
+          }); 
+        }
+
         return res.status(200).json({ 
+          status: 200, 
+          data: [...rows] 
+        });
+
+      } catch (e) {
+        return res.status(400).json({ 
           status: 400, 
-          message: 'You have no unread messages at this time.' 
-        }); 
-      }
-      return res.status(200).json({ 
-        status: 200, 
-        data: [{ rowCount }, [...rows]] 
-      });
-    } catch (e) {
-      return res.status(400).json({ 
-        status: 400, 
-        error: `There was an error getting your unread messages. ${e}` 
-      });
+          error: `There was an error getting your ${category} messages. ${e}` 
+        });
+      }      
     }
+
   },
 
   async getAllSent(req, res) {
@@ -97,13 +136,14 @@ const Message = {
       const { rows, rowCount } = await db.query(message.selectAllSent, [req.user.id]);
       if (rowCount === 0) { 
         return res.status(200).json({ 
-          status: 400, 
-          message: 'You haven\'t sent any messages yet.' 
+          status: 200, 
+          message: 'You haven\'t sent any messages.' 
         }); 
       }
+      
       return res.status(200).json({ 
         status: 200, 
-        data: [{ rowCount }, [...rows]] 
+        data: [...rows]
       });
     } catch (e) {
       return res.status(400).json({ 
@@ -115,7 +155,7 @@ const Message = {
 
   async getSingleMessage(req, res) {
     try {
-      const { rows } = await db.query(message.selectById, [req.params.id]);
+      const { rows } = await db.query(message.selectByIdJoinUser, [req.params.id]);
       return res.status(200).json({ 
         status: 200, 
         data: [rows[0]] 
@@ -128,10 +168,27 @@ const Message = {
     }
 	},
 
+  async updateToRead(req, res) {
+    try {
+      await db.query(message.updateStatusRead, [req.user.id, req.params.id]);
+      return res.status(200).json({ 
+        status: 200, 
+        message: `Message status successfully updated.` 
+      });
+    } catch (e) {
+      return res.status(400).json({ 
+        status: 400, 
+        error: `There was an error changing the status of this message. ${e}` 
+      });
+    }
+  },
+
   async retractMessage(req, res) {
     try {
-      const { rowCount } = await db.query(message.deleteReceived, [req.user.id, req.params.id]);
-      if (rowCount === 0) {
+      const { rows } = await db.query(message.selectReceiver, [req.params.id]);
+      const result = await db.query(message.deleteReceived, [rows[0].receiver_id, req.params.id]);
+      await db.query(message.updateStatusDraft, [req.params.id])
+      if (!result.rows[0]) {
         return res.status(200).json({ 
           status: 200, 
           message: 'Message successfully retracted.' 
@@ -147,8 +204,8 @@ const Message = {
 	
   async deleteReceivedMessage(req, res) {
     try {
-      const { rowCount } = await db.query(message.deleteReceived, [req.user.id, req.params.id]);
-      if (rowCount === 0) {
+      const result  = await db.query(message.deleteReceived, [req.user.id, req.params.id]);
+      if (!result.rows[0]) {
         return res.status(200).json({ 
           status: 200, 
           message: 'Message successfully deleted.' 
@@ -165,8 +222,8 @@ const Message = {
 
   async deleteSentMessage(req, res) {
     try {
-      const { rowCount } = await db.query(message.deleteSent, [req.user.id, req.params.id]);
-      if (rowCount === 0) {
+      const result = await db.query(message.deleteSent, [req.user.id, req.params.id]);
+      if (!result.rows[0]) {
         return res.status(200).json({ 
           status: 200, 
           message: 'Message successfully deleted.' 
@@ -178,7 +235,6 @@ const Message = {
         error: `There was an error deleting this Message. ${e}` 
       });
     }
-	}
-	
+	}  
 };
 export default Message;

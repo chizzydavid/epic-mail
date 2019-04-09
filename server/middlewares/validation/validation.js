@@ -65,7 +65,7 @@ const Validate = {
 
     if (email === '') errors.push('Please enter an email address.');
     else
-    if (!/^\S+@\S+\.[a-zA-Z0-9]+$/.test(email)) { errors.push('Please enter a valid email address.'); }
+    if (!/^\S+@\S+\.[\w]+$/.test(email)) { errors.push('Please enter a valid email address.'); }
     if (password === '') errors.push('Please enter a password');
     if (errors.length !== 0) { 
       return res.status(400).json({ 
@@ -80,7 +80,7 @@ const Validate = {
   sendMessage(req, res, next) {
     req.values = {};
     Object.entries(req.body).forEach((input) => { req.values[input[0]] = input[1].trim(); });
-    const { subject, message, receiver } = req.values;
+    const { subject, message, recipient } = req.values;
     const errors = [];
 
     if (subject === '') { errors.push('Message must have a subject.'); }
@@ -89,9 +89,32 @@ const Validate = {
 
     // check for a receiver if the message is not being sent to a group.
     if (!req.params.groupId) {
-      if (receiver === '') { errors.push('Please enter the message recipient'); }
+      if (recipient === '') { errors.push('Please enter the message recipient'); }
     }
 
+    if (errors.length !== 0) { 
+      return res.status(400).json({ 
+        status: 400, 
+        error: errors 
+      });
+    }
+
+    next();
+  },
+
+  saveDraft(req, res, next) {
+    req.values = {};
+    Object.entries(req.body).forEach((input) => { req.values[input[0]] = input[1].trim(); });
+    const { subject, message, recipient } = req.values;
+    const errors = [];
+
+    if (subject === '' && message === '' && recipient === '') { 
+      errors.push('Draft must have a subject, message or a receiver\'s address.'); 
+    }
+    if (recipient !== '') {
+      if (!/^\S+@\S+\.[\w]+$/.test(recipient))
+        errors.push('Receiver\'s email address is invalid.');
+    }
     if (errors.length !== 0) { 
       return res.status(400).json({ 
         status: 400, 

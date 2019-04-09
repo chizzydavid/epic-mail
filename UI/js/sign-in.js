@@ -2,7 +2,6 @@ const form = document.querySelector('#login-form'),
 	feedback = document.querySelector('#form-feedback'),
 	email = document.querySelector('#email'),
 	password = document.querySelector('#password')
-	url = `http://localhost:5000/api/v2/auth/login`;
 
 
 const displayFeedback = (message, status) => {
@@ -30,7 +29,7 @@ const sendUserData = async () => {
 	let result = {};
 	Array.from(formData.entries()).forEach(entry => data[entry[0]] = entry[1]);
 	try {
-		const response = await fetch(`${url}`, {
+		const response = await fetch(`${url}auth/login`, {
 			method: 'POST',
 			body: JSON.stringify(data),
 			headers: { 'Content-Type': 'application/json'}
@@ -43,8 +42,9 @@ const sendUserData = async () => {
 			//store token using document.cookie
 			//cookie storage is not working for some reason 
 			//going ahead to use local storage for the mean time
-			localStorage.setItem('token', result.data[0].token);
-			window.location.replace('view-inbox.html');
+			localStorage.setItem('epicMailToken', result.data[0].token);
+			localStorage.setItem('userId', result.data[0].user.user_id);
+			location.href = location.href.replace('sign-in.html','view-inbox.html');
 		}
 		else if (result.status === 400 && Array.isArray(result.error)) {
 			const errors = result.error.join('</br>');

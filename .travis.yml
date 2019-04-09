@@ -17,5 +17,7 @@ after_script:
   - npm run coverage
   - npm run report-coverage
   - npm run coveralls
-
-
+deploy:
+  provider: heroku
+  api_key: 
+    secure: 2c2041d0-6978-4cc6-94f3-a61bcfc45e6e
