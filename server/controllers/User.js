@@ -51,7 +51,7 @@ const User = {
       const token = Helper.generateToken(rows[0].user_id);
       return res.status(200).json({ 
         status: 200, 
-        data: [{ token }] 
+        data: [{ token, user: rows[0] }] 
       });
     } catch (e) {
       return res.status(400).json({ 

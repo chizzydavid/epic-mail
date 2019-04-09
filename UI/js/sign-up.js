@@ -6,8 +6,7 @@ const feedback = document.querySelector('#form-feedback'),
 	email = document.querySelector('#email'),
 	password = document.querySelector('#password'),
 	imgUpload = document.querySelector('#image-upload'),
-	confirmPassword = document.querySelector('#confirm-password')
-	url = `http://localhost:5000/api/v2/auth/signup`;
+	confirmPassword = document.querySelector('#confirm-password');
 
 
 const displayFeedback = (message, status) => {
@@ -28,7 +27,7 @@ const validateInput = (e) => {
 	if (!nameRegx.test(firstName.value.trim()) || !nameRegx.test(secondName.value.trim()))
 	  displayFeedback('Please enter a valid name', 'fail');
 
-	if (!/^\S+@\S+\.[a-zA-Z0-9]+$/.test(email.value.trim()))
+	if (!/^\S+@\S+\.[\w]+$/.test(email.value.trim()))
 	  displayFeedback('Please enter a valid email address', 'fail');
 
 	if (password.value.trim() !== confirmPassword.value.trim())
@@ -45,14 +44,14 @@ const validateInput = (e) => {
 
 const sendUserData = async () => {
 	const formData = new FormData(form);
+	let result = {};
 	try {
-		const response = await fetch(`${url}`, {
+		const response = await fetch(`${url}auth/signup`, {
 			method: 'POST',
 			body: formData,
 			headers: { }
 		});
-		console.log(response);
-		const result = await response.json();
+		result = await response.json();
 		if (result.status === 201) {
 			displayFeedback(`Your account was successfully created. </br> 
 			Please <strong><a href="sign-in.html">Login.</a></strong> to continue.`, 'success')

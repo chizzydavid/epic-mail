@@ -10,22 +10,31 @@ const message = {
 	insert: `INSERT INTO messages(created_at, subject, message, sender_id, receiver_id, parent_msg_id, status )
 		VALUES($1, $2, $3, $4, $5, $6, $7) returning *`,
 
-	selectAllReceived: `SELECT DISTINCT I.receiver_id, M.message_id, M.subject, M.message, M.parent_msg_id, M.status, M.created_at 
+	updateStatusUnread: `UPDATE messages SET status='unread' WHERE receiver_id = $1 AND status = 'sent'`,
+	updateStatusRead: `UPDATE messages SET status='read' WHERE receiver_id = $1 AND message_id = $2`,
+	updateStatusDraft: `UPDATE messages SET status='draft' WHERE message_id = $1`,
+	selectAllReceived: `SELECT DISTINCT I.receiver_id, M.message_id, M.sender_id, M.subject, M.message, M.parent_msg_id, M.status, M.created_at 
 		FROM inbox I INNER JOIN messages M USING(receiver_id) WHERE receiver_id = $1 AND I.message_id=M.message_id`,
 
-	selectAllUnread: `SELECT DISTINCT I.receiver_id, M.message_id, M.subject, M.message, M.parent_msg_id, M.status, M.created_at 
-		FROM inbox I INNER JOIN messages M USING(receiver_id) WHERE receiver_id = $1 AND status=$2`,
+	selectAllCategory: `SELECT DISTINCT I.receiver_id, M.message_id, M.sender_id, M.subject, M.message, M.parent_msg_id, M.status, M.created_at 
+		FROM inbox I INNER JOIN messages M USING(receiver_id) WHERE receiver_id = $1 AND status=$2 AND I.message_id=M.message_id`,
 	
+	selectAllDrafts: `SELECT DISTINCT O.sender_id, M.message_id, M.subject, M.message, M.receiver_id, M.status, U.email
+		FROM outbox O INNER JOIN messages M USING(sender_id) INNER JOIN users U ON(M.receiver_id = U.user_id) 
+		WHERE sender_id = $1 AND status=$2 AND O.message_id=M.message_id`,
+
 	selectAllSent: `SELECT DISTINCT O.sender_id, M.message_id, M.subject, M.message, M.parent_msg_id, M.status, M.created_at 
-		FROM outbox O INNER JOIN messages M USING(sender_id) WHERE sender_id = $1 AND O.message_id=M.message_id`,
+		FROM outbox O INNER JOIN messages M USING(sender_id) WHERE sender_id = $1 AND O.message_id=M.message_id AND status != 'draft'`,
 
 	inboxQuery: `INSERT INTO inbox (receiver_id, message_id) VALUES ($1, $2)`,
 	sentQuery: `INSERT INTO outbox (sender_id, message_id) VALUES ($1, $2)`,
 	selectById: `SELECT * FROM messages WHERE message_id =$1`,
+	selectByIdJoinUser: `SELECT M.message_id, M.sender_id, M.subject, M.message, M.parent_msg_id, M.status, M.created_at, U.email, U.first_name, U.last_name 
+	FROM messages M INNER JOIN users U ON M.sender_id = U.user_id AND message_id = $1`,
+	selectReceiver: `SELECT receiver_id FROM messages WHERE message_id =$1`,
 	selectUser: `SELECT user_id FROM users WHERE email = $1`,
 	deleteReceived: `DELETE FROM inbox WHERE receiver_id = $1 AND message_id = $2`,
 	deleteSent: `DELETE FROM outbox WHERE sender_id = $1 AND message_id = $2`
-	
 }
 
 const group = {

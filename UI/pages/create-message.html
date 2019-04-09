@@ -15,39 +15,35 @@
             <p class="logo"><a href="../index.html"><img class="logo-img" src="../img/epic_logo_white.png"></a></p>
             <i id="nav-icon" class="fa fa-bars"></i>
           </div>
-          
+
           <div class="navbar" id="navigation" data-page="nav">
             <a href="../index.html">Home</a>
             <a href="view-inbox.html">Inbox</a>
             <a href="create-message.html">Compose</a>
             <a href="all-groups.html">Groups</a>
-            <a href="../index.html" id="logout">Logout</a>  
+            <a href="" id="logout">Logout</a>  
           </div>
         </nav>
       </header>
 
       <div class="container">
-        <form id="login-form">
+        <form id="send-message-form">
           <h3 class="">Create New Message</h3>
           <div>
-            <p id="send-message-form-error"></p>
+            <p id="form-feedback"></p>
 
             <p class="label">To</p>
-            <input type="text" id="msg-recipient" required placeholder="Enter recipient">
+            <input class="message-input" name="recipient" type="text" id="msg-recipient" placeholder="Enter recipient">
 
             <p class="label">Send To Group</p>  
-            <select id="select-group">
-              <option value="">Select Group</option>
-              <option value=""> Group One Sample</option>
-              <option value=""> Group Two Sample</option>
-              <option value=""> Group Three Sample</option>
+            <select name="group" id="select-group">
             </select>
 
             <p class="label">Subject</p>
-            <input type="text" id="msg-subject" required placeholder="Subject">
+            <input class="message-input" name="subject" type="text" id="msg-subject" placeholder="Subject">
 
             <p class="label">Message</p>
-            <textarea class="" id="msg-body" name="message" placeholder="Message" rows="8" cols="30"></textarea>
+            <textarea class="message-input" id="msg-body" name="message" placeholder="Message" rows="8" cols="30"></textarea>
             
             <button type="submit" id="save-draft">Save as Draft</button>
             <button type="submit" id="send-message">Send Message</button>
@@ -56,9 +52,6 @@
       </div>
 
     </section>
-  
-
-
     <footer>    
       <div class="" id="footer">
         <p>&copy; 2019, <strong>EPIC MAIL</strong>
@@ -70,5 +63,6 @@
 
 
     <script src="../js/nav.js"> </script>
+    <script src="../js/create-message.js"> </script>
   </body>
 </html>
