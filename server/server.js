@@ -3,9 +3,9 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
+import path from 'path';
 import routes from './routes/index';
 import swaggerDoc from '../epicmail-doc.json';
-import path from 'path';
 
 
 dotenv.config();

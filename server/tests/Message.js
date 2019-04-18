@@ -5,7 +5,8 @@ import app from '../server';
 chai.use(chaiHttp);
 chai.should();
 
-let senderToken, receiverToken;
+let senderToken; let
+  receiverToken;
 const url = '/api/v2/messages';
 
 describe('Testing Message Endpoints /api/v2/messages', () => {
@@ -49,7 +50,6 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
         senderToken = res.body.data[0].token;
         done();
       });
-
   });
 
   before((done) => {
@@ -64,13 +64,12 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
         receiverToken = res.body.data[0].token;
         done();
       });
-
   });
 
   after((done) => {
     const message = {
       subject: 'Hello Chizzy',
-      message: ` you, Send me a mail sometimeIt's nice to meet you, Send me a mail sometime`,
+      message: 'Send me a mail sometimeIt\'s nice to meet you, Send me a mail sometime',
       recipient: 'davidchizindu@gmail.com',
     };
 
@@ -84,7 +83,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
   after((done) => {
     const message = {
       subject: 'David Where are you',
-      message: ` Hey man give me a call theHey mHey man give me a call theHey man give me a call theHey man give me a call thean give me a call theHey man give me a call theHey man give me a call theHey man give me a call theHey man give me a call theHey man give me a call the moment you get this. Let's see if we can schedule a meet - up.`,
+      message: ' Hey man give me a call theHey mHey man give me a call theHey man give me a call theHey man give me a call thean give me a call theHey man give me a call theHey man give me a call theHey man give me a call theHey man give me a call theHey man give me a call the moment you get this. Let\'s see if we can schedule a meet - up.',
       recipient: 'davidchizindu@gmail.com',
     };
 
@@ -98,7 +97,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
   after((done) => {
     const message = {
       subject: 'Hey Tom Whatsup',
-      message: ` Hey man give me a call the moment you get this. Let's see if we can schedule a meet - upHey man give me a call theHey man give me a call theHey man give me a call theHey man give me a call theHey man give me a call theHey man give me a call theHey man give me a call theHey man give me a call the.`,
+      message: ' Hey man give me a call the moment you get this. Let\'s see if we can schedule a meet - upHey man give me a call theHey man give me a call theHey man give me a call theHey man give me a call theHey man give me a call theHey man give me a call theHey man give me a call theHey man give me a call the.',
       recipient: 'tomcruise@gmail.com',
     };
 
@@ -110,6 +109,24 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
   });
 
   describe('POST/ - Send a Message', () => {
+    it('Should return status 201(Created) and a Message object', (done) => {
+      const message = {
+        subject: 'Hello Mail',
+        message: "It's nice to meet you, Send me a mail sometime.",
+        recipient: 'tomcruise@gmail.com',
+      };
+
+      chai.request(app)
+        .post(`${url}`)
+        .set('authorization', senderToken)
+        .send(message)
+        .end((err, res) => {
+          res.body.should.have.status(201);
+          res.body.should.have.property('data').which.is.an('array');
+          done();
+        });
+    });
+
     it('Should return status 201(Created) and a Message object', (done) => {
       const message = {
         subject: 'Hello Mail',
@@ -166,7 +183,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
     it('Should return status 201(Created) and a Message(draft) object', (done) => {
       const message = {
         subject: '',
-        message: "",
+        message: '',
         recipient: 'tomcruise@gmail.com',
       };
 
@@ -216,7 +233,6 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
           done();
         });
     });
-    
   });
 
   describe('GET/ - Get all recieved messages', () => {
@@ -245,7 +261,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
     });
   });
 
-  describe('GET/ unread - Get all drafts', () => {
+  describe('GET/ drafts - Get all drafts', () => {
     it('Should return status 200(OK) and an array of drafts', (done) => {
       chai.request(app)
         .get(`${url}/draft`)
@@ -267,7 +283,7 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
           res.body.should.have.property('message').equal('You have no draft messages.');
           done();
         });
-    })  
+    });
   });
 
   describe('GET/ sent - Get all sent messages', () => {
@@ -333,10 +349,11 @@ describe('Testing Message Endpoints /api/v2/messages', () => {
     });
   });
 
+
   describe('DELETE/ :id - Delete a received Message', () => {
     it('Should return status 200(Message deleted successfully)', (done) => {
       chai.request(app)
-        .delete(`${url}/1`)
+        .delete(`${url}/2`)
         .set('authorization', receiverToken)
         .end((err, res) => {
           res.should.have.status(200);

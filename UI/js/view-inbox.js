@@ -8,7 +8,7 @@ const feedback = document.querySelector('#feedback'),
 	token = localStorage.epicMailToken,
 	userId = localStorage.userId;
 
-function loader(msg) {
+const loader = (msg) => {
 	feedback.classList.add('hide');
 	msg === 'show' ? wait.classList.remove('hide') : wait.classList.add('hide')
 }
@@ -73,9 +73,6 @@ const fetchMessages = async (query) => {
 			headers: { 'Authorization': token }
 		});
 		result = await response.json();
-		console.log(response);
-		console.log(result);
-		if (result.error !== undefined) console.log(result.error);
 
 		if (result.status === 200 && result.data !== undefined) {
 			displayMessages(result.data);
@@ -89,7 +86,6 @@ const fetchMessages = async (query) => {
 
 	} catch (e) {
 		displayFeedback('There was a problem getting your messages, please try again.')
-		console.log(`An error occured while fetching your messages. ${e || result.error}`);
 	}
 }
 
@@ -101,16 +97,16 @@ const messageBtnHandler = (e) => {
 		fetchMessages(category);
 		messageBtns.forEach(btn => btn.classList.remove('active'));
 		const newHeader = category.replace(category[0], category[0].toUpperCase());
-		msgHeader.innerText = `${newHeader}${category === 'draft' ? 's' : category === 'all' ?
-		' Received Messages': ' Messages'}`;
+		msgHeader.innerText = 
+			`${newHeader}${category === 'draft' ? 's' : category === 'all' ? ' Received Messages': ' Messages'}`;
 
 		if (window.innerWidth <= 760) {
 			messageBtns.forEach(btn => btn.classList.add('hide'));
 			inboxNavBtn.click();
 			el.tagName === 'LI' ? el.classList.remove('hide') : el.parentElement.classList.remove('hide');
 		}
-		el.tagName === 'LI' ? el.classList.add('active') : el.parentElement.classList.add('active');
 
+		el.tagName === 'LI' ? el.classList.add('active') : el.parentElement.classList.add('active');
 	}
 	
 	else return;
@@ -142,11 +138,9 @@ const handleNavResize = () => {
 			if (!btn.classList.contains('active')) btn.classList.add('hide');		
 		});		
 	}
-	
 }
 
 const viewMessage = async (e) => {
-	let result = {};
 	try {
 		const msg = e.target,
 		  msgId = msg.parentElement.getAttribute('data-message-id'),
@@ -158,12 +152,11 @@ const viewMessage = async (e) => {
 				method: 'PATCH',
 				headers: { 'Authorization': token }
 			});
-			result = await response.json();
 		}
 		localStorage.setItem('viewMessageId', msgId);
 		location.href = location.href.replace('view-inbox.html', 'view-message.html');
 	} catch(e) {
-		console.log(`An error occured while updating your message status. ${e || result.error}`);
+		displayInfo(`An error occured while processing your request, please try again.`);
 	}
 }
 
@@ -176,18 +169,26 @@ const retractMessage = async (e) => {
 			headers: { 'Authorization': token }
 		});
 		result = await response.json();
-		if (result.error !== undefined) console.log(result.error);
 
-		else if (result.status === 200 && result.message !== undefined) {
+		if (result.status === 200 && result.message !== undefined) {
 			const message = msg.parentElement.parentElement.parentElement.parentElement;
 			message.classList.add('fadeout');
-			message.addEventListener('transitionend', (e) => message.parentElement.removeChild(message));
+
+			message.addEventListener('transitionend', (e) => {
+				message.parentElement.removeChild(message);
+				displayInfo('Message Retracted');
+			});
 		}
+
+		else if (result.error !== undefined) {
+			displayInfo('There was a problem deleting this message, please try again.'); 
+		}		
+
 	} catch (e) {
-		displayFeedback('There was a problem retracting this message, please try again.')
-		console.log(`An error occured while retracting this message. ${e || result.error}`);
+		displayInfo('There was a problem retracting this message, please try again.')
 	}	
 }
+
 const deleteMessage = async (e) => {
 	const msg = e.target;
 	let result = {};
@@ -198,25 +199,31 @@ const deleteMessage = async (e) => {
 			headers: { 'Authorization': token }
 		});
 		result = await response.json();
-		if (result.error !== undefined) console.log(result.error);
 
-		else if (result.status === 200 && result.message !== undefined) {
+		if (result.status === 200 && result.message !== undefined) {
 			const message = msg.parentElement.parentElement.parentElement.parentElement;
 			message.classList.add('fadeout');
-			message.addEventListener('transitionend', (e) => message.parentElement.removeChild(message));
+
+			message.addEventListener('transitionend', (e) => {
+				message.parentElement.removeChild(message);
+			});
 		}
+		else if (result.error !== undefined) {
+			displayInfo('There was a problem deleting this message, please try again.'); 
+		}	
+	
 	} catch (e) {
-		displayFeedback('There was a problem deleting this message, please try again.')
-		console.log(`An error occured while fetching your messages. ${e || result.error}`);
+		displayInfo('There was a problem deleting this message, please try again.')
 	}	
 }
 
 const editDraft = (e) => {
 	const draft = e.target;
-	let subject = draft.parentElement.parentElement.parentElement.previousElementSibling.innerText,
+	const subject = draft.parentElement.parentElement.parentElement.previousElementSibling.innerText,
 	message = draft.nextElementSibling.innerText,
 	receiver = draft.getAttribute('data-draft-receiver'),
 	id = draft.id;
+	
 	const draftMessageData = JSON.stringify({id, subject, message, receiver});
 	localStorage.setItem('draftMessageData', draftMessageData);
 	location.href = location.href.replace('view-inbox.html', 'create-message.html')

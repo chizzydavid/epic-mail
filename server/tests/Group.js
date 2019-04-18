@@ -5,7 +5,8 @@ import app from '../server';
 chai.use(chaiHttp);
 chai.should();
 
-let token;
+let token; let
+  creatorToken;
 const url = '/api/v2/groups';
 
 describe('Testing Group Endpoints /api/v2/groups', () => {
@@ -37,12 +38,56 @@ describe('Testing Group Endpoints /api/v2/groups', () => {
       });
   });
 
+  before((done) => {
+    const user = {
+      email: 'davidchizindu@gmail.com',
+      password: 'chizindudavid',
+    };
+    chai.request(app)
+      .post('/api/v2/auth/login')
+      .send(user)
+      .end((err, res) => {
+        creatorToken = res.body.data[0].token;
+        done();
+      });
+  });
+
+
+  after((done) => {
+    const group = {
+      name: 'Port Harcourt Dudes',
+      description: 'New group for all my dudes in port harcourt.',
+      members: [2, 4],
+    };
+
+    chai.request(app)
+      .post(`${url}`)
+      .set('authorization', creatorToken)
+      .send(group)
+      .end(done);
+  });
+
+  after((done) => {
+    const group = {
+      name: 'Bootcamp Guys',
+      description: 'New group for all my bootcamp buddies.',
+      members: [2, 4],
+    };
+
+    chai.request(app)
+      .post(`${url}`)
+      .set('authorization', creatorToken)
+      .send(group)
+      .end(done);
+  });
+
+
   describe('POST/ - Create a Group', () => {
     it('Should return status 201(Created) and a Group object', (done) => {
       const group = {
         name: 'Bootcamp Guys',
         description: 'New group for all my bootcamp buddies.',
-        members: [2, 4]
+        members: [2, 4],
       };
 
       chai.request(app)
@@ -102,11 +147,17 @@ describe('Testing Group Endpoints /api/v2/groups', () => {
     });
   });
 
-  describe('GET/ :groupId/:name - Edit Group Name', () => {
+  describe('GET/ :groupId - Edit Group Name', () => {
     it('Should return status 200(OK) and the Updated group', (done) => {
+      const group = {
+        name: 'Hello Mail updated',
+        description: 'Mailing group edited',
+      };
+
       chai.request(app)
-        .patch(`${url}/1/Bootcamp Guys Updated`)
+        .put(`${url}/1`)
         .set('authorization', token)
+        .send(group)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property('data').which.is.an('array');
