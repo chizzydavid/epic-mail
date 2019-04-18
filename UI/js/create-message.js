@@ -1,49 +1,43 @@
 const form = document.querySelector('#send-message-form'),
 	feedback = document.querySelector('#form-feedback'),
 	wait = document.querySelector('#loader'),
-	inputFields = Array.from(document.querySelectorAll('.message-input')),
 	email = document.querySelector('#msg-recipient'),
 	token = localStorage.epicMailToken,
-	userId = localStorage.userId,	
 	replyMessage = localStorage.replyMessageData,
 	draftMessage = localStorage.draftMessageData,
-	msgSubject = document.querySelector('#msg-subject');
-	msgBody = document.querySelector('#msg-body');
-	saveDraftBtn = document.querySelector('#save-draft'),
-	sendMsgBtn = document.querySelector('#send-message'),
+	msgSubject = document.querySelector('#msg-subject'),
+	msgBody = document.querySelector('#message-body'),
 	groupSelect = document.querySelector('#select-group');
 
 let parentMessageId = 0,
-  msgIsDraft = false,
-  draftId = 0;
+	msgIsDraft = false,
+	sendMessageToGroupId = localStorage.sendMessageToGroupId,
+	draftId = 0;
 
 const displayFeedback = (message, status, err = true) => {
 	feedback.className = status;
 	feedback.innerHTML = message;
-	feedback.scrollIntoView({behavior: "smooth", block: "end"});
+	feedback.scrollIntoView({ behavior: "smooth", block: "end" });
 	if (err) throw Error('');
 }
 
 const displayGroups = (groups) => {
-	if (!groups.length) {
-		groupSelect.insertAdjacentHTML('beforeend', `<option value="">No Groups Available</option>`);
-		return;
-	}
 	groupSelect.innerHTML = `<option value="">Select Group</option>`;
+
 	groups.forEach(group => {
 		let newGroupOption = `<option value="${group.group_id}">${group.name}</option>`
 		groupSelect.insertAdjacentHTML('beforeend', newGroupOption);
 	});
+	setMessageToGroup();
 }
 
 const setReplyParams = () => {
 	if (replyMessage) {
-		const { id, receiver } = JSON.parse(replyMessage);
-		parentMessageId = id;
+		const { msgId, receiver } = JSON.parse(replyMessage);
+		parentMessageId = msgId;
 		email.value = receiver;
 		msgSubject.focus();
 		localStorage.removeItem('replyMessageData');
-
 	}
 	else return;
 }
@@ -51,13 +45,25 @@ const setReplyParams = () => {
 const setDraftParams = () => {
 	if (draftMessage) {
 		const {id, subject, message, receiver } = JSON.parse(draftMessage);
-		console.log(id);
+		let recipient = receiver === 'null' ? '' : recipient;
 		draftId = Number(id);
-	  msgIsDraft = true;
-		email.value = receiver;
-		msgSubject.value = subject
-		msgBody.value = message;
+		msgIsDraft = true;
+		//insert draft values into the form fields
+		[email.value, msgSubject.value, msgBody.value] = [recipient, subject, message];
 		localStorage.removeItem('draftMessageData');
+	}
+	else return;
+}
+
+const setMessageToGroup = () => {
+	// if the message is to be sent to a group, select the group 
+	// and disable input field for single recipients
+	if (sendMessageToGroupId) {
+		const id = localStorage.sendMessageToGroupId;
+		document.querySelector('#msg-recipient').disabled = true;
+		msgSubject.focus();
+		groupSelect.value = id;
+		localStorage.removeItem('sendMessageToGroupId');
 	}
 	else return;
 }
@@ -65,6 +71,7 @@ const setDraftParams = () => {
 const populateForm = async () => {
 	setReplyParams();
 	setDraftParams();
+
 	//fetch user's groups
 	let result = {};
 	try {
@@ -77,18 +84,21 @@ const populateForm = async () => {
 		if (result.status === 200 && result.data !== undefined) {
 			displayGroups(result.data);
 		}
+		if (result.status === 200 && result.message !== undefined) {
+			groupSelect.insertAdjacentHTML('beforeend', `<option value="">No Groups Available</option>`);
+		}
 		else if (result.status === 401) {
-			displayFeedback('There was a problem getting your groups, please try again.', 'fail', false);
+			displayFeedback('There was a problem getting your groups, please refresh the page.', 'fail', false);
 		}
 
 	} catch (e) {
 		displayFeedback('There was a problem getting your groups, please refresh the page.', 'fail', false)
-		console.log(`An error occured while fetching your messages. ${e || result.error}`);
 	}
 }
 
 const sendDraft = async (e) => {
 	e.preventDefault();
+	feedback.className = '';
 	const formData = new FormData(form);
 	let data = {};
 	let result = {};
@@ -123,38 +133,44 @@ const sendDraft = async (e) => {
 			displayFeedback('Message recipient is not a registered user.', 'fail', false)
 		}			
 	} catch (e) {
-		displayFeedback(`There was a problem saving your draft, please try again. ${e}`, 'fail', true);
-			
-		console.log(`An error occured while saving your draft. ${e || result.error}`);
+		displayFeedback(`There was a problem saving your draft, please try again`, 'fail');
 	}
 }
 
-const sendMessage = async (e) => {
-	e.preventDefault();
-	let data = {}, result = {};	
-	const formData = new FormData(form);
-	if (!parentMessageId) formData.append('parentMessageId', parentMessageId);
-
+const validateMessage = () => {
 	if (!msgSubject.value.trim() && !msgBody.value.trim()) {
 		displayFeedback('Message should have a subject and a body.', 'fail');
 	}
-
 	if (!email.value.trim() && !groupSelect.value.trim()) {
 		displayFeedback('Message should have a recipient', 'fail');
 	}
-
 	if (email.value.trim() && !groupSelect.value.trim()) {
 		if (!/^\S+@\S+\.[\w]+$/.test(email.value))
 	  	displayFeedback('Invalid email address for recipient', 'fail');
 	}
-
 	if (email.value !== "" && groupSelect.value !== "") {
 		displayFeedback('You can\'t send a message to both an individual and a group', 'fail');
-	}
+	}	
+	if (groupSelect.value) sendMessageToGroupId = groupSelect.value;
+}
 
-	Array.from(formData.entries()).forEach(entry => data[entry[0]] = entry[1].trim());
+const sendMessage = async (e) => {
+	e.preventDefault();
+	feedback.className = '';
+	let data = {}, result = {};	
+	const formData = new FormData(form);
+
+	if (Number(parentMessageId)) 
+		formData.append('parentMessageId', parentMessageId);
+
+	validateMessage();
+
+	Array.from(formData.entries())
+		.forEach(entry => data[entry[0]] = entry[1].trim());
+
+	const query = sendMessageToGroupId ? `groups/${sendMessageToGroupId}/messages` : `messages`;
 	try {
-		const response = await fetch(`${url}messages`, {
+		const response = await fetch(`${url}${query}`, {
 			method: 'POST',
 			body: JSON.stringify(data),
 			headers: { 
@@ -162,23 +178,21 @@ const sendMessage = async (e) => {
 				'Authorization': token,
 			}
 		});
-		console.log(response);
 		result = await response.json();
-		console.log(result);
 		
 		if (result.status === 201) {
 			displayFeedback('Message sent successfully.', 'success', false);
-			console.log(msgIsDraft, draftId);
 			if (msgIsDraft && draftId) {
 				const res = await fetch(`${url}messages/sent/${draftId}`, {
 					method: 'DELETE',
 					headers: { 'Authorization': token }
 				});
-				console.log(res);
-				const ress = await res.json();
-				console.log(ress);
-
+				await res.json();
 			}
+		}
+
+		else if (result.status === 200 && result.message !== undefined) {
+			displayFeedback(result.message, 'fail', false);
 		}
 
 		else if (result.status === 400 && Array.isArray(result.error)) {
@@ -191,19 +205,19 @@ const sendMessage = async (e) => {
 		}
 
 	} catch (e) {
-		displayFeedback(`There was a problem saving your draft, please try again. ${e}`, 'fail');
-		console.log(`An error occured while saving your draft. ${e || result.error}`);
+		displayFeedback(`There was a problem sending this message, please try again`, 'fail');
 	}  
 }
 
 const init = () => {
 	isLoggedIn();
 	populateForm();
-	inputFields.forEach(input => {
+	Array.from(document.querySelectorAll('.message-input')).forEach(input => {
 		input.addEventListener('focus', () => feedback.className = '');
 	});
-	saveDraftBtn.addEventListener('click', sendDraft);
-	sendMsgBtn.addEventListener('click', sendMessage);
+	document.querySelector('#save-draft').addEventListener('click', sendDraft);
+	document.querySelector('#send-message').addEventListener('click', sendMessage);
 }
 
 init();
+

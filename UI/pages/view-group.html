@@ -30,52 +30,40 @@
 
       <div class="main-container">
         <main class="group-container"> 
-          <h3>Group Title</h3>
+          <h3></h3>
+          <p class="msg-excerpt">  </p>
 
-          <div class="msg-body"> 
-            <p class="msg-excerpt">group description dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  </p>
+          <div id="msg-body">
+            <aside id="group-features">
+              <p id="send-msg-group-btn">Send Message To Group <i class="fa fa-plus"> </i></p>
 
-            <div class="member-container">
-              <div class="group-members">
-                <h4>Members</h4>
-                <p class="member"><span>User One</span> <i id="" class="delete-member fa fa-trash"></i></p>
-                <p class="member"><span>User Two</span> <i id="" class="delete-member fa fa-trash"></i></p>
-                <p class="member"><span>User Three </span><i id="" class="delete-member fa fa-trash"></i></p>
-                <p class="member"><span>User Four</span> <i id="" class="delete-member fa fa-trash"></i></p>
-                <p class="member"><span>User Five</span> <i id="" class="delete-member fa fa-trash"></i></p>
-              </div>
-
-              <form id="create-group-form">
-                <h3 class="">Add Group Members</h3>
+              <form id="add-member-form">
+                <div id="add-member-header">
+                  <p id="member-head">Add New Members</p>
+                  <i id="show-member-btn" class="fa fa-caret-down"> </i>
+                </div>
                 <div>
-                  <p id="send-message-form-error"></p>
-                <div class="member-list-wrapper">
-                    <p><input type="checkbox" value="" >User One </p>
-                    <p><input type="checkbox" value="" >User Two </p>
-                    <p><input type="checkbox" value="" >User Three </p>
-                    <p><input type="checkbox" value="" >User Four </p>            
-                    <p><input type="checkbox" value="" >User Five </p>
-                    <p><input type="checkbox" value="" >User Six </p>
-                  </div>
-      
-                  <button type="submit" id="create-group">Add</button>
+                  <p class="hide" id="group-feedback"></p>
+                  <div class="member-list-wrapper"> </div>
+                  <button type="submit" id="add-members-btn">Add</button>
                 </div>
               </form>
+            </aside>
 
-
+            <div id="member-container">
+              <p id="group-member-list-head">Group Members</p>
+              <div class="group-members"> </div>
             </div>
- 
           </div>
 
           <div class="group-controls">
-            <p>Edit Group</p>
-            <p>Delete Group</p>
+            <p id="edit-group">Edit Group</p>
+            <p id="delete-group">Delete Group</p>
           </div>
         </main>
       </div>
     </section>
-    <footer>    
+    <footer>  
       <div class="" id="footer">
         <p>&copy; 2019, <strong>EPIC MAIL</strong>
         <br>
@@ -85,5 +73,6 @@
     </footer>
     
     <script src="../js/nav.js"></script>
+    <script src="../js/view-group.js"></script>
   </body>
 </html>
