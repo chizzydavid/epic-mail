@@ -34,16 +34,12 @@ const sendUserData = async () => {
 			body: JSON.stringify(data),
 			headers: { 'Content-Type': 'application/json'}
 		});
-		console.log(response);
 		result = await response.json();
-		console.log(result);
-		
 		if (result.status === 200) {
-			//store token using document.cookie
-			//cookie storage is not working for some reason 
-			//going ahead to use local storage for the mean time
+
 			localStorage.setItem('epicMailToken', result.data[0].token);
-			localStorage.setItem('userId', result.data[0].user.user_id);
+			localStorage.setItem('epicMailUserId', result.data[0].user.user_id);
+			localStorage.setItem('epicMailUserPhoto', result.data[0].user.photo);
 			location.href = location.href.replace('sign-in.html','view-inbox.html');
 		}
 		else if (result.status === 400 && Array.isArray(result.error)) {
@@ -60,10 +56,8 @@ const sendUserData = async () => {
 		if (e.message === 'Failed to fetch')
 			displayFeedback('There was a problem login you in, please try again.', 'fail');
 			
-		console.log(`An error occured while login you in. ${e || result.error}`);
 	}
 }
-
 
 function eventListeners() {
 	document.querySelector('#submit-login').addEventListener('click', validateInput);

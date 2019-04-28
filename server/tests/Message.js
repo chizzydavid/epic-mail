@@ -5,8 +5,8 @@ import app from '../server';
 chai.use(chaiHttp);
 chai.should();
 
-let senderToken; let
-  receiverToken;
+let senderToken; 
+let receiverToken;
 const url = '/api/v2/messages';
 
 describe('Testing Message Endpoints /api/v2/messages', () => {
