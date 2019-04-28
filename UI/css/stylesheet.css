@@ -90,7 +90,7 @@ div[data-home="nav"] {
   margin: 0px;
   letter-spacing: 1px;
   font-size: 13px;
-  padding: 23px 15px;
+  padding: 22px 15px;
   text-transform: uppercase;
 }
 .navbar a:hover {
@@ -108,7 +108,42 @@ div[data-home="nav"] a:hover {
   color: white;
   border-radius: 5px;
 }
-
+#user-profile {
+  text-align: center;
+  padding: 0px;
+  display: inline-block;
+}
+#user-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  position: relative;
+  top: 15px;
+  margin: 0 auto;
+}
+#user-name {
+  margin-bottom: 0px;
+  margin-top: 7px;
+  display: block;
+  font-size: 10px;
+}
+#user-profile:hover {
+  font-weight: normal;
+}
+#msg-count {
+  background-color: var(--sec-color);
+  position: relative;
+  color: #f5f5f5;
+  top: 20px;
+  right: 5px;
+  display: inline-block;
+  margin:0;
+  padding:1px;
+  height: 20px;
+  width: 20px;
+  font-size: 12px;
+  border-radius: 50%;
+}
 #background {
   height:40em;
   position:absolute;
@@ -141,7 +176,6 @@ div[data-home="nav"] a:hover {
   font-size: 30px;
   margin-top: 10px;
 }
-
 #buttons {
   margin: 30px 0px;
   text-align: center;
@@ -223,7 +257,7 @@ a {
     padding-right: 4em;
   }
   .navbar a {
-    padding: 23px 8px;
+    padding: 22px 8px;
     margin: 0;
   }
   .logo-img {
@@ -325,6 +359,12 @@ a {
   .navbar a:hover {
     background: white;
     color: #043565;
+  }
+  #user-img {
+    top: 0px;
+  }
+  #msg-count {
+    top: 0px;
   }
   #about {
     font-size: 14px;
@@ -480,8 +520,8 @@ button[type="submit"]:focus {
   div[data-page="nav"] {
     padding-right: 20px;
   }
-  #page-nav .navbar a {
-    padding: 23px 5px;
+  #page-nav .navbar a:not(:last-child) {
+    padding: 22px 5px;
   }
 }
 
@@ -500,10 +540,13 @@ button[type="submit"]:focus {
   #login-form input {
     width: 100%;
   }
-
   button[type="submit"] {
     width: 100%;
   }
+  #user-profile {
+    width: 100%;
+    padding: 10px auto;
+  } 
 }
 
 @media screen and (max-width: 600px) {
@@ -537,8 +580,8 @@ button[type="submit"]:focus {
   display: flex;
   flex-direction: row;
   padding: 0 10em;
-  line-height: 1.5em;}
-
+  line-height: 1.5em;
+}
 .messages-nav {
   flex: 1;
   min-width: 270px;
@@ -606,6 +649,23 @@ button[type="submit"]:focus {
   border-radius: 5px;
   box-shadow: 2px 2px 10px rgba(0,0,0,0.6);
   transition: opacity .3s ease;
+  display: flex;
+  flex-direction:row;
+}
+.message-img {
+  width: 100px;
+  min-width: 100px;
+}
+.message-img img {
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  display:block;
+  margin:0 auto;
+}
+.message-text {
+  margin-left: 5%;
+  width: 80%;
 }
 .msg-excerpt {
   margin: 7px 0;
@@ -663,7 +723,7 @@ button[type="submit"]:focus {
   font-size: 22px;
   color: var(--sec-color);
   margin:0;
-  margin-left: 48%;
+  margin-left: 38%;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -761,11 +821,15 @@ button[type="submit"]:focus {
     width: 130px;
     padding: 10px;
   }
+  .message-img img {
+    width: 75px;
+    height: 75px;
+  }
 }
 
 
 /*VIEW MESSAGE*/
-.sent, .received {
+.group.view {
   margin-bottom: 40px;
   width: 64%;
 }
@@ -776,6 +840,16 @@ button[type="submit"]:focus {
   margin-right: 35%;
 }
 
+@media screen and (max-width: 660px) {
+  .group.view {
+    margin-bottom: 40px;
+    width: 100%;
+  }
+  .sent, .received {
+    margin-right: 0;
+    margin-left: 0;
+  }  
+}
 
 @media screen and (max-width: 500px) {
   .main-container {
@@ -785,7 +859,6 @@ button[type="submit"]:focus {
     padding:10px 0;
   }
 }
-
 
 /*CREATE MESSAGE*/
 textarea {
@@ -803,6 +876,19 @@ textarea {
 }
 #save-draft {
   margin-right: 2.5%;
+}
+
+/*ALL GROUPS */
+
+.group {
+  padding: 15px 17px;
+  width: 100%;
+  margin-bottom: 10px; 
+  color: #666;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+  transition: opacity .3s ease;
 }
 
 

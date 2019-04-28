@@ -22,7 +22,7 @@ const createGroup = (groupItem) => {
 	  	groupDesc = description.length > 70 ? `${description.substr(0, 70)}...` : description ;
 
 	return `
-		<div class="message" data-group-id="${id}">
+		<div class="group" data-group-id="${id}">
 			<h4 class="group-title">${name} </h4>
 			<div class="msg-body"> 
 				<p class="msg-excerpt">${groupDesc}</p>
@@ -36,7 +36,7 @@ const createGroup = (groupItem) => {
 				</div> 
 			</div>
 		</div>
-   `
+	`
 }
 
 const displayGroups = (groups) => {

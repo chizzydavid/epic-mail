@@ -15,7 +15,7 @@ const createMessage = (messageItem) => {
 		senderAtTime = `From <strong>${first_name} ${last_name}</strong> at ${time}`;
 
 	return `
-		<div class="message view ${type}" data-message-id="${id}" data-message-type="${type}" data-message-status="${status}">
+		<div class="group view ${type}" data-message-id="${id}" data-message-type="${type}" data-message-status="${status}">
 			<h4 class="message-title"> ${subject}</h4>
 			<p class="msg-from">${senderAtTime}</p>
 			<div class="msg-body"> 

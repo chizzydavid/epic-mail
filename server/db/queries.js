@@ -13,13 +13,17 @@ const message = {
   updateStatusUnread: 'UPDATE messages SET status=\'unread\' WHERE receiver_id = $1 AND status = \'sent\'',
   updateStatusRead: 'UPDATE messages SET status=\'read\' WHERE receiver_id = $1 AND message_id = $2',
   updateStatusDraft: 'UPDATE messages SET status=\'draft\' WHERE message_id = $1',
-  selectAllReceived: `SELECT DISTINCT I.receiver_id, M.message_id, M.sender_id, M.subject, M.message, M.parent_msg_id, M.status, M.created_at 
+  selectAllReceived: `SELECT DISTINCT I.receiver_id, M.message_id, M.sender_id, M.subject, M.message, M.parent_msg_id, M.status, M.created_at, U.photo
 		FROM inbox I 
-		INNER JOIN messages M USING(message_id) WHERE I.receiver_id = $1 AND I.receiver_id != M.sender_id ORDER BY M.message_id DESC`,
+    INNER JOIN messages M USING(message_id) 
+    INNER JOIN users U ON (M.sender_id = U.user_id) 
+    WHERE I.receiver_id = $1 AND I.receiver_id != M.sender_id ORDER BY M.message_id DESC`,
 
-  selectAllCategory: `SELECT DISTINCT I.receiver_id, M.message_id, M.sender_id, M.subject, M.message, M.parent_msg_id, M.status, M.created_at 
-		FROM inbox I 
-		INNER JOIN messages M USING(receiver_id) WHERE receiver_id = $1 AND status=$2 AND I.message_id=M.message_id ORDER BY M.message_id DESC`,
+  selectAllCategory: `SELECT DISTINCT I.receiver_id, M.message_id, M.sender_id, M.subject, M.message, M.parent_msg_id, M.status, M.created_at, U.photo
+    FROM inbox I
+    INNER JOIN messages M USING(receiver_id)
+    INNER JOIN users U ON (M.sender_id = U.user_id) 
+    WHERE receiver_id = $1 AND status=$2 AND I.message_id=M.message_id ORDER BY M.message_id DESC`,
 
   selectAllDrafts: `SELECT DISTINCT O.sender_id, M.message_id, M.subject, M.message, M.receiver_id, M.status, U.email
 		FROM outbox O 
@@ -27,10 +31,11 @@ const message = {
 		FULL OUTER JOIN users U ON(M.receiver_id = U.user_id) 
 		WHERE sender_id = $1 AND status=$2 AND O.message_id=M.message_id ORDER BY M.message_id DESC`,
 
-  selectAllSent: `SELECT DISTINCT O.sender_id, M.message_id, M.subject, M.message, M.parent_msg_id, M.status, M.created_at 
+  selectAllSent: `SELECT DISTINCT O.sender_id, M.message_id, M.subject, M.message, M.parent_msg_id, M.status, M.created_at, U.photo
 		FROM outbox O 
-		INNER JOIN messages M USING(sender_id) 
-		WHERE sender_id = $1 AND O.message_id=M.message_id AND status != 'draft' ORDER BY M.message_id DESC`,
+		INNER JOIN messages M USING(sender_id)
+    INNER JOIN users U ON (M.sender_id = U.user_id)
+    WHERE sender_id = $1 AND O.message_id=M.message_id AND status != 'draft' ORDER BY M.message_id DESC`,
 
   inboxQuery: 'INSERT INTO inbox (receiver_id, message_id) VALUES ($1, $2)',
   sentQuery: 'INSERT INTO outbox (sender_id, message_id) VALUES ($1, $2)',
@@ -45,8 +50,8 @@ const message = {
   deleteAllReceived: 'DELETE FROM inbox WHERE message_id = $1',
   deleteSent: 'DELETE FROM outbox WHERE sender_id = $1 AND message_id = $2',
   verifyQuery: `SELECT M.message_id, O.sender_id, I.receiver_id FROM messages M 
-	    FULL OUTER JOIN outbox O ON(M.message_id=O.message_id) 
-	    FULL OUTER JOIN inbox I ON(M.message_id=I.message_id) WHERE M.message_id=$1`,
+    FULL OUTER JOIN outbox O ON(M.message_id=O.message_id) 
+    FULL OUTER JOIN inbox I ON(M.message_id=I.message_id) WHERE M.message_id=$1`,
 };
 
 const group = {

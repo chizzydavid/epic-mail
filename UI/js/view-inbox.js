@@ -5,8 +5,9 @@ const feedback = document.querySelector('#feedback'),
 	wait = document.querySelector('#loader'),
 	inboxNav = document.querySelector('#nav-wrapper'),
 	inboxNavBtn = document.querySelector('#inbox-nav-btn'),
+	msgCount = document.querySelector('#msg-count'),
 	token = localStorage.epicMailToken,
-	userId = localStorage.userId;
+	userId = localStorage.epicMailUserId;
 
 const loader = (msg) => {
 	feedback.classList.add('hide');
@@ -22,34 +23,40 @@ const displayFeedback = (message) => {
 }
 
 const createMessage = (messageItem) => {
-	const { message_id, subject, email, sender_id, message, status } = messageItem;
-	let id = message_id;
-	const msgBody = message.length >= 70 ? `${message.substr(0, 70)}...` : message ;
+	const { message_id, subject, email, sender_id, message, status, photo } = messageItem;
+	const id = message_id;
+	const msgBody = message.length >= 70 ? `${message.substr(0, 70)}...` : message;
 	const type = Number(userId) === sender_id ? 'sent' : 'received';
+	const msgStatus = status.replace(status[0], status[0].toUpperCase());
+	const userImg = `${imgUrl}${photo === undefined ? localStorage.epicMailUserPhoto : photo}`;
 
 	return `
 		<div class="message" data-message-id="${id}" data-message-type="${type}" data-message-status="${status}">
-      <h4 class="message-title ${status == 'unread' ? 'unread' : ''} ">
-			  ${subject}
-      </h4>
-      <div class="msg-body"> 
-        <p class="msg-excerpt">${msgBody}</p>
-        <div class="msg-details">
-          <p>Status: <span class="status-${status} msg-status">	${status.replace(status[0], status[0].toUpperCase())} </span>
-          </p>
-          <div class="msg-buttons">
-          	${status === 'draft' ? 
+
+			<div class="message-img">
+				<img src="${userImg}" id="msg-sender-img"/>
+			</div>
+		
+			<div class="message-text">
+				<h4 class="message-title ${status == 'unread' ? 'unread' : ''} ">${subject}	</h4>
+	
+				<div class="msg-body"> 
+					<p class="msg-excerpt">${msgBody}</p>
+					<div class="msg-details">
+						<p>Status: <span class="status-${status} msg-status">${msgStatus} </span> </p>
+						<div class="msg-buttons">
+							${status === 'draft' ? 
 							'<i id="' + `${id}` + '" data-draft-receiver="' + `${email}` + '" class="edit-draft fa fa-edit"></i>' +
 							'<p class="hide">' + `${message}` + '</p>' : ''  }
 							
-						${type === 'sent' && status !== 'draft' ?
+							${type === 'sent' && status !== 'draft' ?
 							'<i id="' + `${id}` + '" class="retract-message fa fa-undo"></i>' : ''  }
-								
-				      <i id="${id}" data-message-type="${type}" class="delete-message fa fa-trash"></i>
-          </div>            
-        </div> 
-      </div>
-    </div>
+							<i id="${id}" data-message-type="${type}" class="delete-message fa fa-trash"></i>
+						</div>            
+					</div> 
+				</div>    
+			</div>
+		</div>
    `
 }
 
@@ -75,6 +82,10 @@ const fetchMessages = async (query) => {
 		result = await response.json();
 
 		if (result.status === 200 && result.data !== undefined) {
+			if (result.newMsgCount !== undefined) {
+				localStorage.newMsgCount = result.newMsgCount;
+				msgCount.innerText = result.newMsgCount;
+			}
 			displayMessages(result.data);
 		}
 		else if (result.status === 200 && result.message !== undefined) {
@@ -143,15 +154,19 @@ const handleNavResize = () => {
 const viewMessage = async (e) => {
 	try {
 		const msg = e.target,
-		  msgId = msg.parentElement.getAttribute('data-message-id'),
-		  msgType = msg.parentElement.getAttribute('data-message-type'); 
+		  msgId = msg.parentElement.parentElement.getAttribute('data-message-id'),
+		  msgType = msg.parentElement.parentElement.getAttribute('data-message-type'); 
 
-		//If message is a received-message and if its unread, send a request to mark it as read
+		//If message is a received-message and if its unread, send a request to update its status to 'read'
 		if (msg.classList.contains('unread') && msgType === 'received') {
-		  const response = await fetch(`${url}messages/${msgId}`, {
+			const response = await fetch(`${url}messages/${msgId}`, {
 				method: 'PATCH',
 				headers: { 'Authorization': token }
 			});
+			localStorage.newMsgCount = 
+				localStorage.newMsgCount == 0 ? 0 : localStorage.newMsgCount - 1;
+			 
+			msgCount.innerText = localStorage.newMsgCount;
 		}
 		localStorage.setItem('viewMessageId', msgId);
 		location.href = location.href.replace('view-inbox.html', 'view-message.html');
@@ -244,10 +259,7 @@ const handleMsgContainerClick = (e) => {
 }
 
 function init() {
-	isLoggedIn();;
-	if (token === undefined || token === '') {
-		location.href = location.href.replace('view-inbox.html', 'sign-in.html');
-	}
+	isLoggedIn();
 	fetchMessages('all');
 	document.querySelector('.messages-nav ul').addEventListener('click', messageBtnHandler);
 	inboxNavBtn.addEventListener('click', inboxNavBtnHandler);
