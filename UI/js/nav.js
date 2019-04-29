@@ -4,8 +4,8 @@ const navIcon = document.querySelector('#nav-icon') ||
 	nav = document.querySelector('.navbar'),
 	logoutBtn = document.querySelector('#logout'),
 	imgUrl = `https://res.cloudinary.com/chizzydavid/image/upload/`,
-	url = `http://localhost:5000/api/v2/`; 
-	//https://chizzy-epicmail.herokuapp.com/api/v2/;
+	url = `https://chizzy-epicmail.herokuapp.com/api/v2/`; 
+	//http://localhost:5000/api/v2/;
 
 function showNavbar() {
 	if (navIcon.classList.contains("fa-bars")) {
