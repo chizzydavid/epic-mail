@@ -84,6 +84,7 @@ const Message = {
   async getAllReceived(req, res) {
     try {
       await db.query(message.updateStatusUnread, [req.user.id]);
+      const result = await db.query(message.selectAllCategory, [req.user.id, 'unread']);
       const { rows, rowCount } = await db.query(message.selectAllReceived, [req.user.id]);
       if (rowCount === 0) {
         return res.status(200).json({
@@ -94,6 +95,7 @@ const Message = {
       return res.status(200).json({
         status: 200,
         data: [...rows],
+        newMsgCount: result.rowCount
       });
     } catch (e) {
       return res.status(400).json({

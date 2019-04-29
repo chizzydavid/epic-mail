@@ -10,7 +10,7 @@ const feedback = document.querySelector('#form-feedback'),
 
 
 const displayFeedback = (message, status) => {
-	feedback.classList.add(status);
+	feedback.className = status;
 	feedback.innerHTML = message;
 	feedback.scrollIntoView({behavior: "smooth", block: "center"});
 	throw'';

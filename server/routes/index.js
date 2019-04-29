@@ -6,8 +6,13 @@ import Message from '../controllers/Message';
 import Group from '../controllers/Group';
 import Validate from '../middlewares/validation/validation';
 import Auth from '../middlewares/Auth';
+import cloudinary from 'cloudinary';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const router = Router();
+
+// multer configuration
 const storage = multer.diskStorage({
   destination: './server/uploads',
   filename: (req, file, cb) => {
@@ -26,6 +31,14 @@ const upload = multer({
   },
 }).single('photo');
 
+// cloudinary configuration
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
+
+// upload image file to the server
 const uploadFile = (req, res, next) => {
   upload(req, res, (e) => {
     if (e) {
@@ -34,6 +47,23 @@ const uploadFile = (req, res, next) => {
         error: `Error uploading image. ${e}`,
       });
     }
+
+    // upload image from local server to cloudinary server
+
+    //extract name of image file excluding the extension
+    if (req.file) {
+      const imgName = req.file.filename.replace(/.\w+$/, '');
+      cloudinary.v2.uploader.upload(req.file.path, {public_id: imgName}, (err, image) => {
+        if (err) {
+          return res.status(400).json({
+            status: 400,
+            error: `Error uploading image. ${err}`,
+          });
+        }
+      });      
+    }
+
+
     next();
   });
 };

@@ -1,7 +1,9 @@
 # EPIC MAIL
 
 [![Build Status](https://travis-ci.org/chizzydavid/epic-mail.svg?branch=develop)](https://travis-ci.org/chizzydavid/epic-mail)
-[![Coverage Status](https://coveralls.io/repos/github/chizzydavid/epic-mail/badge.svg?branch=api-fix)](https://coveralls.io/github/chizzydavid/epic-mail?branch=api-fix)
+
+[![Coverage Status](https://coveralls.io/repos/github/chizzydavid/epic-mail/badge.svg?branch=develop)](https://coveralls.io/github/chizzydavid/epic-mail?branch=develop)
+
 [![Maintainability](https://api.codeclimate.com/v1/badges/edea618274a9d1503548/maintainability)](https://codeclimate.com/github/chizzydavid/epic-mail/maintainability)
 
 ### Project Overview
@@ -38,23 +40,38 @@ You can find the documentation for the Epic Mail API [here](http://chizzy-epicma
 Pivotal Tracker was the project management tool used in building this project. You can view this project on PT [here](https://www.pivotaltracker.com/n/projects/2314472)
 
 ### API Endpoints
-**You can access all endpoints on [Heroku](http://chizzy-epicmail.herokuapp.com/api/v1/)**
+**You can access all endpoints on [Heroku](http://chizzy-epicmail.herokuapp.com/api/v2/)**
 
 | HTTP METHOD        | API ENDPOINT   | DESCRIPTION  |
 | ------------- |:-------------:|:-----:|
-| POST      | *api/v1/auth/signup* | Creates Account |
-| POST      | *api/v1/auth/login* | User Login |
-| GET      | *api/v1/users* | Gets all users |
-| GET      | *api/v1/users/:id* | Gets a Single user |
-| PUT     | *api/v1/users/:id* | Edits a User |
-| DELETE    | *api/v1/users/:id* | Deletes a user |
-| POST      | *api/v1/messages* | Sends a Message|
-| GET      | *api/v1/messages* | Gets all received messages |
-| GET      | *api/v1/messages/:id* | Gets a single message |
-| GET      | *api/v1/messages/unread* | Gets all unread messages |
-| GET      | *api/v1/messages/sent* | Gets all sent messages |
-| DELETE   | *api/v1/messages/:id* | Deletes a message |
-
+| POST      | *api/v2/auth/signup* | Creates Account |
+| POST      | *api/v2/auth/login* | User Login |
+| GET      | *api/v2/users* | Gets all users |
+| GET      | *api/v2/users/:id* | Gets a Single user |
+| PUT     | *api/v2/users/:id* | Edits a User |
+| DELETE    | *api/v2/users/:id* | Deletes a user |
+|                |              |              |
+| POST      | *api/v2/messages* | Sends a Message|
+| POST      | *api/v2/messages/draft* | Saves message as draft|
+| GET      | *api/v2/messages* | Gets all received messages |
+| GET      | *api/v2/messages/:id* | Gets a single message |
+| PATCH      | *api/v2/messages/:id* | Updates message to read |
+| GET      | *api/v2/messages/read* | Gets all read messages |
+| GET      | *api/v2/messages/unread* | Gets all unread messages |
+| GET      | *api/v2/messages/draft* | Gets all drafts |
+| GET      | *api/v2/messages/sent* | Gets all sent messages |
+| DELETE   | *api/v2/messages/retract/:id* | Retracts a message |
+| DELETE   | *api/v2/messages/sent/:id* | Deletes a sent message |
+| DELETE   | *api/v2/messages/:id* | Deletes a received message |
+|                |              |              |
+| POST     | *api/v2/groups* | Creates a Group|
+| GET      | *api/v2/groups* | Gets all User Groups |
+| GET      | *api/v2/groups/:groupId* | Gets a single group |
+| PUT      | *api/v2/groups/:groupId* | Edits a single group |
+| POST     | *api/v2/groups/:groupId/messages* | Send message to group |
+| POST     | *api/v2/groups/:groupId/users* | Add user to a group |
+| DELETE   | *api/v2/groups/:groupId/users/:id* | Delete user from group |
+| DELETE   | *api/v2/groups/:groupId* | Deletes a group |
 
 ### Author 
 ***Chizindu David***

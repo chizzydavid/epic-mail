@@ -6,15 +6,14 @@ const User = {
   async createUser(req, res) {
     try {
       const hashPassword = Helper.hashPassword(req.values.password);
-      const imgName = req.file ? req.file.filename : 'avatar.jpg';
-      const imgPath = `${req.headers.host}/uploads/${imgName}`;
+      const imgName = req.file ? req.file.filename : 'default-user.png';
       const values = [
         req.values.email,
         req.values.firstName,
         req.values.lastName,
         hashPassword,
         req.values.is_admin || 0,
-        imgPath,
+        imgName,
       ];
 
       const { rows } = await db.query(user.insert, values);
