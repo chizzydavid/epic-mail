@@ -4,7 +4,7 @@ import { message, group } from '../db/queries';
 
 const Group = {
   async createGroup(req, res) {
-    const values = [req.values.name, req.values.description || '', req.user.id];
+    const values = [req.values.name, req.values.description || '', req.user.user_id];
     const { members } = req.body;
     try {
       const { rows } = await db.query(group.insert, values);
@@ -19,7 +19,7 @@ const Group = {
       }
       return res.status(201).json({
         status: 201,
-        data: [rows[0]],
+        data: rows[0],
       });
     } catch (e) {
       return res.status(400).json({
@@ -31,7 +31,7 @@ const Group = {
 
   async getAllUserGroups(req, res) {
     try {
-      const { rows, rowCount } = await db.query(group.selectByOwner, [req.user.id]);
+      const { rows, rowCount } = await db.query(group.selectByOwner, [req.user.user_id]);
       if (rowCount === 0) {
         return res.status(200).json({
           status: 200,
@@ -60,7 +60,7 @@ const Group = {
       const { rows } = await db.query(group.updateGroup, values);
       return res.status(200).json({
         status: 200,
-        data: [rows[0]],
+        data: rows[0],
       });
     } catch (e) {
       return res.status(400).json({
@@ -135,7 +135,7 @@ const Group = {
         moment().format('MMMM Do YYYY, h:mm:ss a'),
         req.values.subject,
         req.values.message,
-        req.user.id,
+        req.user.user_id,
         0,
         req.values.parentMessageId || 0,
         'sent',
@@ -153,7 +153,7 @@ const Group = {
 
       return res.status(201).json({
         status: 201,
-        data: [rows[0]],
+        data: rows[0],
       });
     } catch (e) {
       return res.status(400).json({

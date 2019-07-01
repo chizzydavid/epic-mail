@@ -3,3 +3,4 @@ node_modules/
 coverage/
 server/uploads/
 .env
+.DS_Store

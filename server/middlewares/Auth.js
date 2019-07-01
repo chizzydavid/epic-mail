@@ -17,7 +17,7 @@ const Auth = {
 
     try {
       const decoded = jwt.verify(token, process.env.SECRETKEY);
-      req.user = { id: decoded.userId };
+      req.user = decoded.user;
       next();
     } catch (e) {
       return res.status(400).json({
