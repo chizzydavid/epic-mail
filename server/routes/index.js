@@ -1,13 +1,14 @@
 import { Router } from 'express';
 import multer from 'multer';
+import cloudinary from 'cloudinary';
+import dotenv from 'dotenv';
 import path from 'path';
 import User from '../controllers/User';
 import Message from '../controllers/Message';
 import Group from '../controllers/Group';
 import Validate from '../middlewares/validation/validation';
 import Auth from '../middlewares/Auth';
-import cloudinary from 'cloudinary';
-import dotenv from 'dotenv';
+
 
 dotenv.config();
 const router = Router();
@@ -35,8 +36,8 @@ const upload = multer({
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
-})
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // upload image file to the server
 const uploadFile = (req, res, next) => {
@@ -50,17 +51,17 @@ const uploadFile = (req, res, next) => {
 
     // upload image from local server to cloudinary server
 
-    //extract name of image file excluding the extension
+    // extract name of image file excluding the extension
     if (req.file) {
       const imgName = req.file.filename.replace(/.\w+$/, '');
-      cloudinary.v2.uploader.upload(req.file.path, {public_id: imgName}, (err, image) => {
+      cloudinary.v2.uploader.upload(req.file.path, { public_id: imgName }, (err) => {
         if (err) {
           return res.status(400).json({
             status: 400,
             error: `Error uploading image. ${err}`,
           });
         }
-      });      
+      });
     }
 
 

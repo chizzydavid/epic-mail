@@ -19,7 +19,7 @@ const Group = {
       }
       return res.status(201).json({
         status: 201,
-        data: [rows[0]],
+        data: rows[0],
       });
     } catch (e) {
       return res.status(400).json({
@@ -60,7 +60,7 @@ const Group = {
       const { rows } = await db.query(group.updateGroup, values);
       return res.status(200).json({
         status: 200,
-        data: [rows[0]],
+        data: rows[0],
       });
     } catch (e) {
       return res.status(400).json({
@@ -153,7 +153,7 @@ const Group = {
 
       return res.status(201).json({
         status: 201,
-        data: [rows[0]],
+        data: rows[0],
       });
     } catch (e) {
       return res.status(400).json({
