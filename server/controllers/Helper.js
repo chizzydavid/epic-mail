@@ -4,8 +4,8 @@ import bcrypt from 'bcryptjs';
 
 dotenv.config();
 const Helper = {
-  generateToken(id) {
-    return jwt.sign({ userId: id }, process.env.SECRETKEY);
+  generateToken(user) {
+    return jwt.sign({ user }, process.env.SECRETKEY, { expiresIn: '7d' });
   },
 
   hashPassword(password) {

@@ -18,10 +18,20 @@ const User = {
 
       const { rows } = await db.query(user.insert, values);
       if (rows[0].user_id) {
-        const token = Helper.generateToken(rows[0].user_id);
+        console.log(rows[0]);
+        const {
+          user_id, email, first_name, last_name, photo,
+        } = rows[0];
+
+        const userData = {
+          user_id, email, first_name, last_name, photo,
+        };
+
+        const token = Helper.generateToken({ ...userData });
         return res.status(201).json({
           status: 201,
-          data: [{ token }],
+          message: 'User successfully registered',
+          data: { token, user: userData },
         });
       }
     } catch (e) {
@@ -47,10 +57,18 @@ const User = {
           error: 'Invalid Login Credentials.',
         });
       }
-      const token = Helper.generateToken(rows[0].user_id);
+      const {
+        user_id, email, first_name, last_name, photo,
+      } = rows[0];
+
+      const userData = {
+        user_id, email, first_name, last_name, photo,
+      };
+
+      const token = Helper.generateToken({ ...userData });
       return res.status(200).json({
         status: 200,
-        data: [{ token, user: rows[0] }],
+        data: { token, user: userData },
       });
     } catch (e) {
       return res.status(400).json({
@@ -86,7 +104,7 @@ const User = {
       }
       return res.status(200).json({
         status: 200,
-        data: [rows[0]],
+        data: rows[0],
       });
     } catch (e) {
       return res.status(400).json({

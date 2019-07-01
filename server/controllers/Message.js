@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 import moment from 'moment';
 import db from '../db';
 import { message } from '../db/queries';
@@ -31,7 +32,7 @@ const Message = {
       await db.query(`INSERT INTO outbox (sender_id, message_id) VALUES (${sender_id}, ${message_id}) returning *`);
       return res.status(201).json({
         status: 201,
-        data: [rows[0]],
+        data: rows[0],
       });
     } catch (e) {
       return res.status(400).json({
@@ -71,7 +72,7 @@ const Message = {
 
       return res.status(201).json({
         status: 201,
-        data: [rows[0]],
+        data: rows[0],
       });
     } catch (e) {
       return res.status(400).json({
