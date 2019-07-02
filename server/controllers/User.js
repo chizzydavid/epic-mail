@@ -18,7 +18,6 @@ const User = {
 
       const { rows } = await db.query(user.insert, values);
       if (rows[0].user_id) {
-        console.log(rows[0]);
         const {
           user_id, email, first_name, last_name, photo,
         } = rows[0];
