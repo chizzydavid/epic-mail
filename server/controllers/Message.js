@@ -17,7 +17,6 @@ const Message = {
       }
 
       receiver_id = result.rows[0].user_id;
-      console.log(req.user);
       const values = [
         moment().format('MMMM Do YYYY, h:mm:ss a'),
         req.values.subject,

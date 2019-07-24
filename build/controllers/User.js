@@ -5,114 +5,187 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _User = _interopRequireDefault(require("../dummy/models/User"));
+var _Helper = _interopRequireDefault(require("./Helper"));
+
+var _db = _interopRequireDefault(require("../db"));
+
+var _queries = require("../db/queries");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+const User = {
+  async createUser(req, res) {
+    try {
+      const hashPassword = _Helper.default.hashPassword(req.values.password);
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+      const imgName = req.file ? req.file.filename : 'default-user.png';
+      const values = [req.values.email, req.values.firstName, req.values.lastName, hashPassword, req.values.is_admin || 0, imgName];
+      const {
+        rows
+      } = await _db.default.query(_queries.user.insert, values);
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+      if (rows[0].user_id) {
+        const {
+          user_id,
+          email,
+          first_name,
+          last_name,
+          photo
+        } = rows[0];
+        const userData = {
+          user_id,
+          email,
+          first_name,
+          last_name,
+          photo
+        };
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+        const token = _Helper.default.generateToken({ ...userData
+        });
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var User = {
-  createUser: function createUser(req, res) {
-    var newUser = _User.default.create(req.body);
-
-    return res.status(201).json({
-      status: 201,
-      data: _objectSpread({}, newUser)
-    });
-  },
-  loginUser: function loginUser(req, res) {
-    var _req$body = req.body,
-        email = _req$body.email,
-        password = _req$body.password;
-
-    var userLogin = _User.default.login({
-      email: email,
-      password: password
-    });
-
-    if (userLogin.message === 'User not found') {
-      return res.status(404).json({
-        status: 404,
-        error: 'User not found.'
-      });
-    }
-
-    if (userLogin.message === 'Invalid password') {
+        return res.status(201).json({
+          status: 201,
+          message: 'User successfully registered',
+          data: {
+            token,
+            user: userData
+          }
+        });
+      }
+    } catch (e) {
       return res.status(400).json({
         status: 400,
-        error: 'Invalid password.'
+        error: `An error occured while creating your account. ${e}`
       });
     }
-
-    return res.status(200).json({
-      status: 200,
-      data: _objectSpread({}, userLogin)
-    });
   },
-  getAllUsers: function getAllUsers(req, res) {
-    var users = _User.default.findAll();
 
-    return res.status(200).json({
-      status: 200,
-      data: _toConsumableArray(users)
-    });
-  },
-  getUser: function getUser(req, res) {
-    var user = _User.default.findUser(Number(req.params.id));
+  async loginUser(req, res) {
+    try {
+      const {
+        rows
+      } = await _db.default.query(_queries.user.selectByEmail, [req.values.email]);
 
-    if (!user) {
-      return res.status(404).json({
-        status: 404,
-        error: 'User not found.'
+      if (!rows[0]) {
+        return res.status(400).json({
+          status: 400,
+          error: 'Invalid Login Credentials.'
+        });
+      }
+
+      if (!_Helper.default.comparePassword(req.values.password, rows[0].password)) {
+        return res.status(400).json({
+          status: 400,
+          error: 'Invalid Login Credentials.'
+        });
+      }
+
+      const {
+        user_id,
+        email,
+        first_name,
+        last_name,
+        photo
+      } = rows[0];
+      const userData = {
+        user_id,
+        email,
+        first_name,
+        last_name,
+        photo
+      };
+
+      const token = _Helper.default.generateToken({ ...userData
+      });
+
+      return res.status(200).json({
+        status: 200,
+        data: {
+          token,
+          user: userData
+        }
+      });
+    } catch (e) {
+      return res.status(400).json({
+        status: 400,
+        error: `An error occured while trying to log you in. ${e}`
       });
     }
-
-    return res.status(200).json({
-      status: 200,
-      data: _objectSpread({}, user)
-    });
   },
-  updateUser: function updateUser(req, res) {
-    var user = _User.default.findUser(Number(req.params.id));
 
-    if (!user) {
-      return res.status(404).json({
-        status: 404,
-        error: 'User not found.'
+  async getAllUsers(req, res) {
+    try {
+      const {
+        rows
+      } = await _db.default.query(_queries.user.selectAll);
+      return res.status(200).json({
+        status: 200,
+        data: [...rows]
+      });
+    } catch (e) {
+      return res.status(400).json({
+        status: 400,
+        error: `There was an error getting all users. ${e}`
       });
     }
-
-    var updatedUser = _User.default.update(req.params.id, req.body);
-
-    return res.status(201).json({
-      status: 201,
-      data: _objectSpread({}, updatedUser)
-    });
   },
-  deleteUser: function deleteUser(req, res) {
-    var user = _User.default.findUser(Number(req.params.id));
 
-    if (!user) {
-      return res.status(404).json({
-        status: 404,
-        error: 'User not found.'
+  async getSingleUser(req, res) {
+    try {
+      const {
+        rows
+      } = await _db.default.query(_queries.user.selectById, [req.params.id]);
+
+      if (!rows[0]) {
+        return res.status(404).json({
+          status: 404,
+          error: 'User not found.'
+        });
+      }
+
+      return res.status(200).json({
+        status: 200,
+        data: rows[0]
+      });
+    } catch (e) {
+      return res.status(400).json({
+        status: 400,
+        error: `There was an error retrieving this User. ${e}`
       });
     }
+  },
 
-    var ref = _User.default.delete(req.params.id);
+  async deleteUser(req, res) {
+    try {
+      const {
+        rowCount
+      } = await _db.default.query(_queries.user.selectById, [req.params.id]);
 
-    return res.status(204).send(ref);
+      if (!rowCount) {
+        return res.status(404).json({
+          status: 404,
+          error: 'User not found.'
+        });
+      }
+
+      const {
+        rows
+      } = await _db.default.query(_queries.user.delete, [req.params.id]);
+
+      if (!rows[0]) {
+        return res.status(200).json({
+          status: 200,
+          message: 'User successfully deleted.'
+        });
+      }
+    } catch (e) {
+      return res.status(400).json({
+        status: 400,
+        error: `There was an error deleting this User. ${e}`
+      });
+    }
   }
+
 };
 var _default = User;
 exports.default = _default;
