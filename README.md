@@ -1,9 +1,7 @@
 # EPIC MAIL
 
 [![Build Status](https://travis-ci.org/chizzydavid/epic-mail.svg?branch=develop)](https://travis-ci.org/chizzydavid/epic-mail)
-
 [![Coverage Status](https://coveralls.io/repos/github/chizzydavid/epic-mail/badge.svg?branch=develop)](https://coveralls.io/github/chizzydavid/epic-mail?branch=develop)
-
 [![Maintainability](https://api.codeclimate.com/v1/badges/edea618274a9d1503548/maintainability)](https://codeclimate.com/github/chizzydavid/epic-mail/maintainability)
 
 ### Project Overview

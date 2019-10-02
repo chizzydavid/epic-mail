@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 import moment from 'moment';
 import db from '../db';
 import { message } from '../db/queries';
@@ -16,11 +17,12 @@ const Message = {
       }
 
       receiver_id = result.rows[0].user_id;
+      console.log(req.user);
       const values = [
         moment().format('MMMM Do YYYY, h:mm:ss a'),
         req.values.subject,
         req.values.message,
-        req.user.id,
+        req.user.user_id,
         receiver_id,
         req.values.parentMessageId || 0,
         'sent',
@@ -31,7 +33,7 @@ const Message = {
       await db.query(`INSERT INTO outbox (sender_id, message_id) VALUES (${sender_id}, ${message_id}) returning *`);
       return res.status(201).json({
         status: 201,
-        data: [rows[0]],
+        data: rows[0],
       });
     } catch (e) {
       return res.status(400).json({
@@ -59,7 +61,7 @@ const Message = {
         moment().format('MMMM Do YYYY, h:mm:ss a'),
         req.values.subject,
         req.values.message,
-        req.user.id,
+        req.user.user_id,
         receiver_id || 0,
         req.values.parentMessageId || 0,
         'draft',
@@ -71,7 +73,7 @@ const Message = {
 
       return res.status(201).json({
         status: 201,
-        data: [rows[0]],
+        data: rows[0],
       });
     } catch (e) {
       return res.status(400).json({
@@ -83,9 +85,9 @@ const Message = {
 
   async getAllReceived(req, res) {
     try {
-      await db.query(message.updateStatusUnread, [req.user.id]);
-      const result = await db.query(message.selectAllCategory, [req.user.id, 'unread']);
-      const { rows, rowCount } = await db.query(message.selectAllReceived, [req.user.id]);
+      await db.query(message.updateStatusUnread, [req.user.user_id]);
+      const result = await db.query(message.selectAllCategory, [req.user.user_id, 'unread']);
+      const { rows, rowCount } = await db.query(message.selectAllReceived, [req.user.user_id]);
       if (rowCount === 0) {
         return res.status(200).json({
           status: 200,
@@ -109,7 +111,7 @@ const Message = {
     return async function (req, res, next) {
       const query = category === 'draft' ? message.selectAllDrafts : message.selectAllCategory;
       try {
-        const { rows, rowCount } = await db.query(query, [req.user.id, category]);
+        const { rows, rowCount } = await db.query(query, [req.user.user_id, category]);
         if (rowCount === 0) {
           return res.status(200).json({
             status: 200,
@@ -132,7 +134,7 @@ const Message = {
 
   async getAllSent(req, res) {
     try {
-      const { rows, rowCount } = await db.query(message.selectAllSent, [req.user.id]);
+      const { rows, rowCount } = await db.query(message.selectAllSent, [req.user.user_id]);
       if (rowCount === 0) {
         return res.status(200).json({
           status: 200,
@@ -177,7 +179,7 @@ const Message = {
 
   async updateToRead(req, res) {
     try {
-      await db.query(message.updateStatusRead, [req.user.id, req.params.id]);
+      await db.query(message.updateStatusRead, [req.user.user_id, req.params.id]);
       return res.status(200).json({
         status: 200,
         message: 'Message status successfully updated.',
@@ -218,7 +220,7 @@ const Message = {
 
   async deleteReceivedMessage(req, res) {
     try {
-      const result = await db.query(message.deleteReceived, [req.user.id, req.params.id]);
+      const result = await db.query(message.deleteReceived, [req.user.user_id, req.params.id]);
       if (!result.rows[0]) {
         return res.status(200).json({
           status: 200,
@@ -235,7 +237,7 @@ const Message = {
 
   async deleteSentMessage(req, res) {
     try {
-      const result = await db.query(message.deleteSent, [req.user.id, req.params.id]);
+      const result = await db.query(message.deleteSent, [req.user.user_id, req.params.id]);
       if (!result.rows[0]) {
         return res.status(200).json({
           status: 200,

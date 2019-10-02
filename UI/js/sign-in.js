@@ -37,9 +37,9 @@ const sendUserData = async () => {
 		result = await response.json();
 		if (result.status === 200) {
 
-			localStorage.setItem('epicMailToken', result.data[0].token);
-			localStorage.setItem('epicMailUserId', result.data[0].user.user_id);
-			localStorage.setItem('epicMailUserPhoto', result.data[0].user.photo);
+			localStorage.setItem('epicMailToken', result.data.token);
+			localStorage.setItem('epicMailUserId', result.data.user.user_id);
+			localStorage.setItem('epicMailUserPhoto', result.data.user.photo);
 			location.href = location.href.replace('sign-in.html','view-inbox.html');
 		}
 		else if (result.status === 400 && Array.isArray(result.error)) {
