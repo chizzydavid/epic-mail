@@ -40,7 +40,7 @@ const Auth = {
       // confirm if user was a member of the group that received the message
       if (rows.length > 1) {
         const authorized = 
-          rows.some(messg => messg.receiver_id === req.user.id || messg.sender_id === req.user.id);
+          rows.some(messg => messg.receiver_id === req.user.user_id || messg.sender_id === req.user.user_id);
 
           if (!authorized) {
           return res.status(400).json({
@@ -48,7 +48,7 @@ const Auth = {
             error: 'Unauthorized access.',
           });
         }
-      } else if (req.user.id !== rows[0].sender_id && req.user.id !== rows[0].receiver_id) {
+      } else if (req.user.user_id !== rows[0].sender_id && req.user.user_id !== rows[0].receiver_id) {
         return res.status(400).json({
           status: 400,
           error: 'Unauthorized access.',
@@ -72,7 +72,7 @@ const Auth = {
           error: 'Group not found.',
         });
       }
-      if (req.user.id !== rows[0].owner_id) {
+      if (req.user.user_id !== rows[0].owner_id) {
         return res.status(401).json({
           status: 401,
           error: 'Unauthorized access.',
