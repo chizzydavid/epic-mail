@@ -43,10 +43,8 @@ const setReplyParams = () => {
 
 const setDraftParams = () => {
   if (draftMessage) {
-    const {
- id, subject, message, receiver 
-} = JSON.parse(draftMessage);
-    const recipient = receiver === 'null' ? '' : recipient;
+    const { id, subject, message, receiver } = JSON.parse(draftMessage);
+    const recipient = receiver === 'null' ? '' : receiver;
     draftId = Number(id);
     msgIsDraft = true;
     // insert draft values into the form fields
