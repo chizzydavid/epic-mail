@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Sign In | Epic Mail</title>
+    <title>Sign In | Mail Hive</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">  
      <link rel="stylesheet" href="../css/font-awesome-icons/css/font-awesome.min.css"/>     
      <link rel="stylesheet" href="../css/stylesheet.css">
+     <link rel="shortcut icon" href="../img/app-icon.png">
+
   </head>
   <body> 
     <section id="bg-wrapper"> 
@@ -36,7 +38,20 @@
 
             <p class="label">Password<i class="fa fa-asterisk"></i></p>
             <input type="password" id="password" name="password" placeholder="Enter password">                                     
-            <button type="submit" id="submit-login">Login</button>
+            <button type="submit" id="submit-login">
+              <span class="buttonText">Login</span>
+              
+              <div class="hide" id="loader">
+                <div class="sk-wave">
+                  <div class="sk-rect white sk-rect1"></div>
+                  <div class="sk-rect white sk-rect2"></div>
+                  <div class="sk-rect white sk-rect3"></div>
+                  <div class="sk-rect white sk-rect4"></div>
+                  <div class="sk-rect white sk-rect5"></div>
+                </div>
+              </div>
+              
+            </button>
             <p><a class="sign-link forgot-password" href="reset-password.html">Forgot Password?</a></p>  
             <p>Don't have an account yet? <a class="sign-link" href="sign-up.html">Sign Up</a></p>  
 
@@ -46,7 +61,7 @@
     </section>
     <footer>    
       <div class="" id="footer">
-        <p>&copy; 2019, <strong>EPIC MAIL</strong>
+        <p>&copy; 2019, <strong>MAIL HIVE</strong>
         <br>
         All trademarks and registered trademarks appearing on 
         this site are the property of their respective owners.</p>      

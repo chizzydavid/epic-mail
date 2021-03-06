@@ -1,9 +1,9 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "Epic Mail is a web application designed to make sending and receiving email messages much more efficient and user friendly.",
+    "description": "Mail Hive is a web application designed to make sending and receiving email messages much more efficient and user friendly.",
     "version": "1.0.0",
-    "title": "Epic Mail"
+    "title": "Mail Hive"
   },
   "host": "chizzy-epicmail.herokuapp.com",
   "basePath": "/api/v1/",
