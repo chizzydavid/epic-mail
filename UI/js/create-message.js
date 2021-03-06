@@ -7,7 +7,22 @@ const form = document.querySelector('#send-message-form');
 	const draftMessage = localStorage.draftMessageData;
 	const msgSubject = document.querySelector('#msg-subject');
 	const msgBody = document.querySelector('#message-body');
-	const groupSelect = document.querySelector('#select-group');
+  const groupSelect = document.querySelector('#select-group')
+  const	draftWait = document.querySelector('#save-draft #loader');
+  const draftButtonText = document.querySelector('.draftButtonText');  
+  const	messageWait = document.querySelector('#send-message #loader');
+	const messageButtonText = document.querySelector('.messageButtonText');
+
+
+const draftLoader = (msg) => {
+	msg === 'show' ? draftButtonText.classList.add('hide') : draftButtonText.classList.remove('hide');
+	msg === 'show' ? draftWait.classList.remove('hide') : draftWait.classList.add('hide');
+};
+const messageLoader = (msg) => {
+	msg === 'show' ? messageButtonText.classList.add('hide') : messageButtonText.classList.remove('hide');
+	msg === 'show' ? messageWait.classList.remove('hide') : messageWait.classList.add('hide');
+};
+
 
 let parentMessageId = 0;
 	let msgIsDraft = false;
@@ -107,6 +122,7 @@ const sendDraft = async (e) => {
 
   Array.from(formData.entries()).forEach(entry => data[entry[0]] = entry[1]);
   try {
+    draftLoader('show');
     const response = await fetch(`${url}messages/draft`, {
       method: 'POST',
       body: JSON.stringify(data),
@@ -116,6 +132,7 @@ const sendDraft = async (e) => {
       },
     });
     result = await response.json();
+    draftLoader('hide');
 
     if (result.status === 201) {
       displayFeedback('Draft saved successfully.', 'success', false);
@@ -163,6 +180,7 @@ const sendMessage = async (e) => {
 
   const query = sendMessageToGroupId ? `groups/${sendMessageToGroupId}/messages` : 'messages';
   try {
+    messageLoader('show');
     const response = await fetch(`${url}${query}`, {
       method: 'POST',
       body: JSON.stringify(data),
@@ -172,6 +190,7 @@ const sendMessage = async (e) => {
       },
     });
     result = await response.json();
+    messageLoader('hide');
 
     if (result.status === 201) {
       displayFeedback('Message sent successfully.', 'success', false);

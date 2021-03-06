@@ -6,8 +6,15 @@ const feedback = document.querySelector('#form-feedback'),
 	email = document.querySelector('#email'),
 	password = document.querySelector('#password'),
 	imgUpload = document.querySelector('#image-upload'),
-	confirmPassword = document.querySelector('#confirm-password');
+	confirmPassword = document.querySelector('#confirm-password'),
+	wait = document.querySelector('#loader'),
+	buttonText = document.querySelector('.buttonText');
 
+
+const loader = (msg) => {
+	msg === 'show' ? buttonText.classList.add('hide') : buttonText.classList.remove('hide');
+	msg === 'show' ? wait.classList.remove('hide') : wait.classList.add('hide');
+};
 
 const displayFeedback = (message, status) => {
 	feedback.className = status;
@@ -15,7 +22,7 @@ const displayFeedback = (message, status) => {
 	feedback.scrollIntoView({behavior: "smooth", block: "center"});
 	throw'';
 }
-	  
+
 const validateInput = (e) => {
 	e.preventDefault();
 	const nameRegx = /^[a-zA-Z]{2,}$/;
@@ -46,12 +53,14 @@ const sendUserData = async () => {
 	const formData = new FormData(form);
 	let result = {};
 	try {
+		loader('show');
 		const response = await fetch(`${url}auth/signup`, {
 			method: 'POST',
 			body: formData,
 			headers: { }
 		});
 		result = await response.json();
+		loader('hide');
 		if (result.status === 201) {
 			displayFeedback(`Your account was successfully created. </br> 
 			Please <strong><a href="sign-in.html">Login.</a></strong> to continue.`, 'success')
@@ -88,12 +97,11 @@ const evtListeners = () => {
 		imgPreview.src = ''; 
 		imgPreview.setAttribute('height', '0') 
 	});
-	document.querySelector('#submit').addEventListener('click', validateInput);
+	document.querySelector('#submit-signup').addEventListener('click', validateInput);
 	inputFields.forEach(input => {
 		input.addEventListener('focus', () => feedback.className = '');
 	});
 }
 
 evtListeners();
-
 

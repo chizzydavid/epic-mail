@@ -63,12 +63,12 @@ const uploadFile = (req, res, next) => {
         }
       });
     }
-
-
     next();
   });
 };
 
+
+router.get('/api/v2/test', () => {});
 router.post('/api/v2/auth/signup', uploadFile, Validate.signUp, User.createUser);
 router.post('/api/v2/auth/login', Validate.login, User.loginUser);
 router.get('/api/v2/users', Auth.verifyToken, User.getAllUsers);

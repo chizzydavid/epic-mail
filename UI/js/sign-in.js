@@ -1,8 +1,15 @@
 const form = document.querySelector('#login-form'),
 	feedback = document.querySelector('#form-feedback'),
 	email = document.querySelector('#email'),
-	password = document.querySelector('#password')
+	password = document.querySelector('#password'),
+	wait = document.querySelector('#loader'),
+	buttonText = document.querySelector('.buttonText');
 
+
+const loader = (msg) => {
+	msg === 'show' ? buttonText.classList.add('hide') : buttonText.classList.remove('hide');
+	msg === 'show' ? wait.classList.remove('hide') : wait.classList.add('hide');
+};
 
 const displayFeedback = (message, status) => {
 	feedback.classList.add(status);
@@ -29,12 +36,14 @@ const sendUserData = async () => {
 	let result = {};
 	Array.from(formData.entries()).forEach(entry => data[entry[0]] = entry[1]);
 	try {
+		loader('show');
 		const response = await fetch(`${url}auth/login`, {
 			method: 'POST',
 			body: JSON.stringify(data),
 			headers: { 'Content-Type': 'application/json'}
 		});
 		result = await response.json();
+		loader('hide');
 		if (result.status === 200) {
 
 			localStorage.setItem('epicMailToken', result.data.token);
