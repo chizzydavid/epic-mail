@@ -73,6 +73,7 @@ const displayMessages = (messages) => {
 };
 
 const fetchMessages = async (query) => {
+  msgContainer.innerHTML = '';
   loader('show');
   const category = query === 'all' ? '' : query;
   let result = {};
@@ -82,13 +83,8 @@ const fetchMessages = async (query) => {
       headers: { Authorization: token },
     });
 	result = await response.json();
-	console.log(result);
 
     if (result.status === 200 && result.data !== undefined) {
-      if (result.newMsgCount !== undefined) {
-        localStorage.newMsgCount = result.newMsgCount;
-        msgCount.innerText = result.newMsgCount;
-      }
       displayMessages(result.data);
     } else if (result.status === 200 && result.message !== undefined) {
       displayFeedback(result.message);
@@ -158,9 +154,9 @@ const viewMessage = async (e) => {
         method: 'PATCH',
         headers: { Authorization: token },
       });
-      localStorage.newMsgCount = 				localStorage.newMsgCount == 0 ? 0 : localStorage.newMsgCount - 1;
+      // localStorage.newMsgCount = localStorage.newMsgCount == 0 ? 0 : localStorage.newMsgCount - 1;
 
-      msgCount.innerText = localStorage.newMsgCount;
+      // msgCount.innerText = localStorage.newMsgCount;
     }
     localStorage.setItem('viewMessageId', msgId);
     location.href = location.href.replace('view-inbox.html', 'view-message.html');
@@ -208,7 +204,7 @@ const deleteMessage = async (e) => {
     result = await response.json();
 
     if (result.status === 200 && result.message !== undefined) {
-      const message = msg.parentElement.parentElement.parentElement.parentElement;
+      const message = msg.parentElement.parentElement.parentElement.parentElement.parentElement;
       message.classList.add('fadeout');
 
       message.addEventListener('transitionend', (e) => {

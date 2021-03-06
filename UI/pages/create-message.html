@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Create Message | Epic Mail</title>
+    <title>Create Message | Mail Hive</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">    
     <link rel="stylesheet" href="../css/font-awesome-icons/css/font-awesome.min.css"/>    
     <link rel="stylesheet" href="../css/stylesheet.css">
+    <link rel="shortcut icon" href="../img/app-icon.png">
+
   </head>
   <body>
     <section id="bg-wrapper"> 
@@ -23,7 +25,8 @@
             <a href="all-groups.html">Groups</a>
             <a href="" id="logout">Logout</a>
             <a id="user-profile">
-              <img src="" id="user-img"/><div id="msg-count"></div>
+              <img src="" id="user-img"/>
+              <!-- <div id="msg-count"></div> -->
             </a>            
           </div>
         </nav>
@@ -47,8 +50,40 @@
             <p class="label">Message <i class="fa fa-asterisk"></i></p>
             <textarea class="message-input" id="message-body" name="message" placeholder="Message" rows="8" cols="30"></textarea>
             
-            <button type="submit" id="save-draft">Save as Draft</button>
-            <button type="submit" id="send-message">Send Message</button>
+            <div class="compose-buttons">
+
+              <button type="submit" id="save-draft">
+                <span class="draftButtonText">Save as Draft</span>
+                
+                <div class="hide" id="loader">
+                  <div class="sk-wave">
+                    <div class="sk-rect white sk-rect1"></div>
+                    <div class="sk-rect white sk-rect2"></div>
+                    <div class="sk-rect white sk-rect3"></div>
+                    <div class="sk-rect white sk-rect4"></div>
+                    <div class="sk-rect white sk-rect5"></div>
+                  </div>
+                </div>
+              </button>
+
+
+              <button type="submit" id="send-message">
+                <span class="messageButtonText">Send Message</span>
+                
+                <div class="hide" id="loader">
+                  <div class="sk-wave">
+                    <div class="sk-rect white sk-rect1"></div>
+                    <div class="sk-rect white sk-rect2"></div>
+                    <div class="sk-rect white sk-rect3"></div>
+                    <div class="sk-rect white sk-rect4"></div>
+                    <div class="sk-rect white sk-rect5"></div>
+                  </div>
+                </div>
+                
+              </button>
+
+            </div>
+
           </div>
           
         </form>
@@ -57,7 +92,7 @@
     </section>
     <footer>    
       <div class="" id="footer">
-        <p>&copy; 2019, <strong>EPIC MAIL</strong>
+        <p>&copy; 2019, <strong>MAIL HIVE</strong>
         <br>
         All trademarks and registered trademarks appearing on 
         this site are the property of their respective owners.</p>      

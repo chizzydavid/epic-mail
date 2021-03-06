@@ -1,11 +1,7 @@
-# EPIC MAIL
-
-[![Build Status](https://travis-ci.org/chizzydavid/epic-mail.svg?branch=develop)](https://travis-ci.org/chizzydavid/epic-mail)
-[![Coverage Status](https://coveralls.io/repos/github/chizzydavid/epic-mail/badge.svg?branch=develop)](https://coveralls.io/github/chizzydavid/epic-mail?branch=develop)
-[![Maintainability](https://api.codeclimate.com/v1/badges/edea618274a9d1503548/maintainability)](https://codeclimate.com/github/chizzydavid/epic-mail/maintainability)
+# MAIL HIVE
 
 ### Project Overview
-Epic Mail is a web application designed to make sending and receiving email messages much more efficient and convenient.
+Mail Hive is a web application designed to make sending and receiving email messages much more efficient and convenient.
 The application allows its users to both send and receive mails from individuals. Users can create groups and send messages to all members of the group. Messages can be replied to instantly and when needed a thread could be created.
 Users can also upload a picture of their choice for their profile.
 
@@ -31,7 +27,7 @@ Users can also upload a picture of their choice for their profile.
 
 
 ### Project Documentation
-You can find the documentation for the Epic Mail API [here](http://chizzy-epicmail.herokuapp.com/api-docs)
+You can find the documentation for the Mail Hive API [here](http://chizzy-epicmail.herokuapp.com/api-docs)
 
 
 ### Pivotal Tracker

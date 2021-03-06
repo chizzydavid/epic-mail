@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Sign Up | Epic Mail</title>
+    <title>Sign Up | Mail Hive</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">    
     <link rel="stylesheet" href="../css/font-awesome-icons/css/font-awesome.min.css"/>     
     <link rel="stylesheet" href="../css/stylesheet.css">
+    <link rel="shortcut icon" href="../img/app-icon.png">
+
   </head>
   <body>
     <section id="bg-wrapper"> 
@@ -49,7 +51,21 @@
             <img  width="150px" id="image-preview">
             <input id="image-upload" name="photo" type="file" accept="image/*" >
 
-            <button type="submit" id="submit">Submit</button>
+
+            <button type="submit" id="submit-signup">
+              <span class="buttonText">Submit</span>
+              
+              <div class="hide" id="loader">
+                <div class="sk-wave">
+                  <div class="sk-rect white sk-rect1"></div>
+                  <div class="sk-rect white sk-rect2"></div>
+                  <div class="sk-rect white sk-rect3"></div>
+                  <div class="sk-rect white sk-rect4"></div>
+                  <div class="sk-rect white sk-rect5"></div>
+                </div>
+              </div>
+            </button>
+
             <p>Already have an account? <a class="sign-link" href="sign-in.html">Log In</a></p>          
           </div>
         </form>
@@ -57,7 +73,7 @@
     </section>
     <footer>    
       <div class="" id="footer">
-        <p>&copy; 2019, <strong>EPIC MAIL</strong>
+        <p>&copy; 2019, <strong>MAIL HIVE</strong>
         <br>
         All trademarks and registered trademarks appearing on 
         this site are the property of their respective owners.</p>      
